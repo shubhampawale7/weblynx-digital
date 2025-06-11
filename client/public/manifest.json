@@ -1,0 +1,21 @@
+{
+  "name": "Weblynx - Digital Services Agency",
+  "short_name": "Weblynx",
+  "description": "Your partner for custom web applications, mobile apps, SEO, and digital solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "/weblynx-logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/weblynx-logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

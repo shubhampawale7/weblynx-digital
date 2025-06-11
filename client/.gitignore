@@ -1,0 +1,35 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+/vite-build-assets # If Vite creates this
+/.vite # Vite cache directory
+
+# misc
+.DS_Store
+*.rej
+*.patch
+.prettierrc.json
+.eslintcache
+.vscode # VSCode settings and cache
+/tmp
+
+# local .env files
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# npm log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
