@@ -2,43 +2,37 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext.jsx";
-import { motion, AnimatePresence } from "framer-motion"; // Import motion and AnimatePresence
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Define a function for NavLink className to apply active styles
   const getNavLinkClass = ({ isActive }) =>
     `hover:text-blue-500 dark:hover:text-purple-400 transition-colors duration-200 ${
       isActive ? "text-blue-600 dark:text-purple-400 font-bold" : ""
     }`;
 
-  // Toggle mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Close menu when a link is clicked (for mobile)
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-    // Cleanup on component unmount
     return () => {
       document.body.style.overflow = "unset";
     };
   }, [isMenuOpen]);
 
-  // Framer Motion variants for mobile menu animation
   const menuVariants = {
     hidden: { x: "100%" },
     visible: {
@@ -55,18 +49,20 @@ const Header = () => {
     <header
       className={`py-4 px-8 shadow-md transition-colors duration-300 ${
         isDark ? "bg-gray-800 text-white" : "bg-white text-gray-800"
-      } sticky top-0 z-40 w-full`} // Added sticky top-0 and z-40 for header to stay on top
+      } sticky top-0 z-40 w-full`}
     >
       <nav className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold flex items-center gap-2">
-          <img src="/weblynx-logo.png" alt="Weblynx Logo" className="h-8" />
-          Weblynx
+          <img
+            src="/weblynx-logo.png"
+            alt="Weblynx Infotech Logo"
+            className="h-8"
+          />{" "}
+          {/* Updated alt text */}
+          Weblynx Infotech {/* UPDATED: Changed display name */}
         </Link>
 
-        {/* Desktop Navigation */}
         <ul className="hidden md:flex space-x-4 lg:space-x-6 text-md">
-          {" "}
-          {/* Adjusted spacing for more links */}
           <li>
             <NavLink to="/" className={getNavLinkClass}>
               Home
@@ -103,7 +99,6 @@ const Header = () => {
           </li>
         </ul>
 
-        {/* Mobile Hamburger Menu Button */}
         <div className="md:hidden flex items-center">
           <button
             onClick={toggleMenu}
@@ -111,16 +106,11 @@ const Header = () => {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
           >
-            {
-              isMenuOpen
-                ? "✕"
-                : "☰" /* X icon when open, hamburger when closed */
-            }
+            {isMenuOpen ? "✕" : "☰"}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -190,7 +180,7 @@ const Header = () => {
                   onClick={() => {
                     toggleTheme();
                     closeMenu();
-                  }} // Toggle theme and close menu
+                  }}
                   className="focus:outline-none text-2xl"
                   aria-label="Toggle dark/light theme"
                 >

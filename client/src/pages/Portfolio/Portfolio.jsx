@@ -14,7 +14,7 @@ const projectsData = [
     id: 1,
     title: "Ninad's Pottery - E-commerce Platform",
     description:
-      "For Ninad's Pottery, Weblynx crafted a visually captivating and fully functional e-commerce platform, enabling seamless online sales of handcrafted pottery. The solution features robust user authentication, secure payment gateway integration, intuitive product Browse, and a streamlined checkout process, significantly enhancing their digital retail presence and customer reach.",
+      "For Ninad's Pottery, Weblynx Infotech crafted a visually captivating and fully functional e-commerce platform, enabling seamless online sales of handcrafted pottery. The solution features robust user authentication, secure payment gateway integration, intuitive product Browse, and a streamlined checkout process, significantly enhancing their digital retail presence and customer reach.", // UPDATED
     technologies: [
       "React",
       "Node.js",
@@ -32,7 +32,7 @@ const projectsData = [
     id: 2,
     title: "Prani Seva Ashram - Dog NGO Website",
     description:
-      "Weblynx developed a dynamic and compassionate website for Prani Seva Ashram, a non-profit dog NGO. This platform facilitates increased community engagement through features like adoption insights, real-time donation tracking, and efficient volunteer management, allowing the organization to better connect with supporters and care for animals.",
+      "Weblynx Infotech developed a dynamic and compassionate website for Prani Seva Ashram, a non-profit dog NGO. This platform facilitates increased community engagement through features like adoption insights, real-time donation tracking, and efficient volunteer management, allowing the organization to better connect with supporters and care for animals.", // UPDATED
     technologies: [
       "WordPress",
       "Custom Theme",
@@ -41,14 +41,14 @@ const projectsData = [
       "Responsive Design",
     ],
     image:
-      "https://via.placeholder.com/800x500/1abc9c/DDDDDD?text=Prani+Seva+Ashram", // Placeholder image
+      "https://via.placeholder.com/800x500/1abc9c/DDDDDD?text=Prani%20Seva%20Ashram", // Placeholder image
     link: "#",
   },
   {
     id: 3,
     title: "Trishha Mines and Minerals - Mining Website",
     description:
-      "For Trishha Mines and Minerals, Weblynx delivered a modern and robust corporate website that effectively showcases their extensive services, diverse product offerings, and impressive global footprint. The site is designed for corporate professionalism, providing comprehensive information about their operations, safety standards, and commitment to sustainability, while also enhancing their online presence.",
+      "For Trishha Mines and Minerals, Weblynx Infotech delivered a modern and robust corporate website that effectively showcases their extensive services, diverse product offerings, and impressive global footprint. The site is designed for corporate professionalism, providing comprehensive information about their operations, safety standards, and commitment to sustainability, while also enhancing their online presence.", // UPDATED
     technologies: [
       "React",
       "Next.js",
@@ -57,14 +57,14 @@ const projectsData = [
       "Interactive Maps",
     ],
     image:
-      "https://via.placeholder.com/800x500/3498db/DDDDDD?text=Trishha+Mines", // Placeholder image
+      "https://via.placeholder.com/800x500/3498db/DDDDDD?text=Trishha%20Mines", // Placeholder image
     link: "#",
   },
   {
     id: 4,
     title: "Walnut Hotel - Landing Page",
     description:
-      "Weblynx created a sleek, highly responsive, and performant landing page for Walnut Hotel. Developed with pure HTML, CSS, and JavaScript, this page provides an elegant digital storefront that captivates potential guests, highlights key amenities, and drives direct bookings with a user-friendly interface optimized for all devices.",
+      "Weblynx Infotech created a sleek, highly responsive, and performant landing page for Walnut Hotel. Developed with pure HTML, CSS, and JavaScript, this page provides an elegant digital storefront that captivates potential guests, highlights key amenities, and drives direct bookings with a user-friendly interface optimized for all devices.", // UPDATED
     technologies: [
       "HTML5",
       "CSS3",
@@ -73,26 +73,23 @@ const projectsData = [
       "Performance Optimization",
     ],
     image:
-      "https://via.placeholder.com/800x500/e67e22/DDDDDD?text=Walnut+Hotel", // Placeholder image
+      "https://via.placeholder.com/800x500/e67e22/DDDDDD?text=Walnut%20Hotel", // Placeholder image
     link: "#",
   },
-  // Add more projects as needed
 ];
 
 const Portfolio = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null); // Ref for the entire component's root div
+  const sectionRef = useRef(null);
 
-  // Refs for specific groups of elements to animate
   const mainHeadingRef = useRef(null);
   const introTextRef = useRef(null);
-  const projectCards = useRef([]); // Array to store refs for project cards
+  const projectCards = useRef([]);
   const finalCtaHeadingRef = useRef(null);
   const finalCtaTextRef = useRef(null);
   const finalCtaButtonRef = useRef(null);
 
-  // Helper function to add elements to a ref array
   const addToArrayRef = (el, arr) => {
     if (el && !arr.current.includes(el)) {
       arr.current.push(el);
@@ -100,11 +97,9 @@ const Portfolio = () => {
   };
 
   useEffect(() => {
-    // Clear ref arrays on each effect run to prevent duplicates
     projectCards.current = [];
 
     let ctx = gsap.context(() => {
-      // Main Heading Animation
       gsap.from(mainHeadingRef.current, {
         y: -50,
         duration: 1,
@@ -116,7 +111,6 @@ const Portfolio = () => {
         },
       });
 
-      // Intro Text Animation
       gsap.from(introTextRef.current, {
         y: 50,
         duration: 0.8,
@@ -128,7 +122,6 @@ const Portfolio = () => {
         },
       });
 
-      // Project Cards Animation
       gsap.from(projectCards.current, {
         y: 80,
         scale: 0.9,
@@ -136,13 +129,12 @@ const Portfolio = () => {
         duration: 0.8,
         ease: "back.out(1.7)",
         scrollTrigger: {
-          trigger: projectCards.current[0], // Trigger by the first card
+          trigger: projectCards.current[0],
           start: "top 90%",
           toggleActions: "play none none reverse",
         },
       });
 
-      // Final CTA Section Animations
       gsap.from(
         [
           finalCtaHeadingRef.current,
@@ -171,21 +163,21 @@ const Portfolio = () => {
   return (
     <div
       id="portfolio"
-      ref={sectionRef} // Added sectionRef to the main div
+      ref={sectionRef}
       className={`min-h-screen ${
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-500`}
     >
-      {/* SEO for the Portfolio Page */}
+      {/* SEO for the Portfolio Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Weblynx Portfolio - Our Digital Projects & Case Studies"
-        description="Explore recent web development projects by Weblynx, including e-commerce platforms, NGO websites, corporate sites, and landing pages. See our expertise in action."
-        keywords="Weblynx portfolio, web development projects, custom web apps, WordPress sites, e-commerce solutions, NGO website, mining website, hotel landing page, React projects, Node.js projects"
-        ogTitle="Weblynx Portfolio: Real Projects, Real Results"
-        ogDescription="Discover the impact of Weblynx's digital solutions through our diverse portfolio of custom web applications and websites."
-        ogImage="https://www.weblynx.com/social-share-portfolio.jpg" // Replace with a specific image for portfolio sharing
-        ogUrl="https://www.weblynx.com/portfolio" // Replace with your actual domain
-        canonical="https://www.weblynx.com/portfolio" // Replace with your actual domain
+        title="Weblynx Infotech Portfolio - Our Digital Projects & Case Studies" // UPDATED
+        description="Explore recent web development projects by Weblynx Infotech, including e-commerce platforms, NGO websites, corporate sites, and landing pages. See our expertise in action." // UPDATED
+        keywords="Weblynx Infotech portfolio, web development projects, custom web apps, WordPress sites, e-commerce solutions, NGO website, mining website, hotel landing page, React projects, Node.js projects" // UPDATED
+        ogTitle="Weblynx Infotech Portfolio: Real Projects, Real Results" // UPDATED
+        ogDescription="Discover the impact of Weblynx Infotech's digital solutions through our diverse portfolio of custom web applications and websites." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-portfolio.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/portfolio" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/portfolio" // UPDATED: Use your new domain
       />
 
       {/* Hero/Introduction Section for Portfolio */}
@@ -210,8 +202,8 @@ const Portfolio = () => {
             ref={introTextRef}
           >
             Discover the impact of our digital solutions through a curated
-            selection of projects, showcasing our expertise and dedication to
-            client success.
+            selection of projects, showcasing Weblynx Infotech's expertise and
+            dedication to client success. {/* UPDATED: Text mention */}
           </p>
         </div>
       </section>
@@ -220,12 +212,10 @@ const Portfolio = () => {
       <section className="py-16 sm:py-20 px-4">
         <div className="container mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
-            {" "}
-            {/* Adjusted gap for responsiveness */}
             {projectsData.map((project, index) => (
               <motion.div
                 key={project.id}
-                ref={(el) => addToArrayRef(el, projectCards)} // Using helper for array ref
+                ref={(el) => addToArrayRef(el, projectCards)}
                 className={`p-6 rounded-xl shadow-xl flex flex-col
                             ${
                               isDark
@@ -242,18 +232,15 @@ const Portfolio = () => {
               >
                 <img
                   src={project.image}
-                  alt={project.title} // Alt text for SEO
+                  alt={project.title}
                   className="w-full h-48 object-cover rounded-lg mb-6 shadow-md"
                 />
                 <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-blue-600 dark:text-purple-400">
-                  {" "}
-                  {/* Adjusted font size */}
                   {project.title}
                 </h3>
                 <p className="text-base opacity-90 mb-4 flex-grow">
                   {project.description}
-                </p>{" "}
-                {/* Adjusted font size */}
+                </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.technologies.map((tech) => (
                     <span
@@ -274,11 +261,11 @@ const Portfolio = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`inline-flex items-center justify-center w-full px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300
-                              ${
-                                isDark
-                                  ? "bg-purple-700 hover:bg-purple-600 text-white"
-                                  : "bg-blue-600 hover:bg-blue-700 text-white"
-                              }`}
+                                ${
+                                  isDark
+                                    ? "bg-purple-700 hover:bg-purple-600 text-white"
+                                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                                }`}
                 >
                   View Case Study
                   <svg

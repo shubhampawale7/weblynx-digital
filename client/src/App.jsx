@@ -3,15 +3,15 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useTheme } from "./context/ThemeContext.jsx";
 
-// Import your main pages
+// Main Pages
 import Home from "./pages/Home/Home.jsx";
 import About from "./pages/About/About.jsx";
-import Services from "./pages/Services/Services.jsx"; // This is now the Services Index Page
+import Services from "./pages/Services/Services.jsx";
 import Portfolio from "./pages/Portfolio/Portfolio.jsx";
 import Contact from "./pages/Contact/Contact.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 
-// Import ALL detailed service components (they will now be their own routes)
+// Service Detail Pages
 import CustomWebApplications from "./pages/Services/CustomWebApplications.jsx";
 import MobileAppDevelopment from "./pages/Services/MobileAppDevelopment.jsx";
 import WordPressSiteCreation from "./pages/Services/WordPressSiteCreation.jsx";
@@ -20,11 +20,12 @@ import ApiIntegration from "./pages/Services/ApiIntegration.jsx";
 import FullStackDevelopment from "./pages/Services/FullStackDevelopment.jsx";
 import SupportManagementServices from "./pages/Services/SupportManagementServices.jsx";
 
-// Import layout components
+// Layout & Common Components
 import Header from "./components/layout/Header.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import ScrollToTopButton from "./components/common/ScrollToTopButton.jsx";
-import FloatingWhatsAppButton from "./components/common/FloatingWhatsAppButton.jsx"; // Import the new component
+import FloatingWhatsAppButton from "./components/common/FloatingWhatsAppButton.jsx";
+import ScrollToBegin from "./components/common/ScrollToBegin.jsx"; // ✅ Updated import
 
 function App() {
   const { theme } = useTheme();
@@ -32,6 +33,7 @@ function App() {
   return (
     <div className={`app-container flex flex-col min-h-screen ${theme}`}>
       <Router>
+        <ScrollToBegin /> {/* ✅ Auto-scroll to top on route change */}
         <Header />
         <main className="flex-grow">
           <Routes>
@@ -41,7 +43,7 @@ function App() {
             {/* <Route path="/portfolio" element={<Portfolio />} /> */}
             <Route path="/contact" element={<Contact />} />
 
-            {/* ROUTES FOR EACH DETAILED SERVICE PAGE */}
+            {/* Detailed Service Pages */}
             <Route
               path="/services/custom-web-applications"
               element={<CustomWebApplications />}
@@ -76,7 +78,7 @@ function App() {
         </main>
         <Footer />
         <ScrollToTopButton />
-        <FloatingWhatsAppButton /> {/* Add the floating WhatsApp button here */}
+        <FloatingWhatsAppButton />
       </Router>
     </div>
   );

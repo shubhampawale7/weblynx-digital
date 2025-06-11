@@ -3,17 +3,18 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger"; // Ensure ScrollTrigger is imported for context cleanup
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Seo from "../../components/common/Seo.jsx"; // Import Seo component
 
-gsap.registerPlugin(ScrollTrigger); // Register ScrollTrigger
+gsap.registerPlugin(ScrollTrigger);
 
 const NotFound = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const sectionRef = useRef(null); // Ref for the main section to scope GSAP context
   const headingRef = useRef(null);
-  const introTextRef = useRef(null); // Renamed for clarity from textRef
-  const messageTextRef = useRef(null); // New ref for the longer descriptive paragraph
+  const introTextRef = useRef(null);
+  const messageTextRef = useRef(null);
   const buttonRef = useRef(null);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const NotFound = () => {
         scale: 0.8,
         duration: 1,
         ease: "power3.out",
-        delay: 0.2, // Small delay on mount
+        delay: 0.2,
       });
 
       // GSAP animation for the explanatory text ("Oops! Page Not Found")
@@ -40,7 +41,7 @@ const NotFound = () => {
         y: 30,
         duration: 0.8,
         ease: "power2.out",
-        delay: 0.7, // Slightly delayed
+        delay: 0.7,
       });
 
       // GSAP animation for the button
@@ -48,13 +49,13 @@ const NotFound = () => {
         y: 30,
         duration: 0.8,
         ease: "power2.out",
-        delay: 0.9, // Last to animate
+        delay: 0.9,
       });
 
-      ScrollTrigger.refresh(); // Ensure accurate trigger positions if content changes
-    }, sectionRef); // Scope the context to the main section ref
+      ScrollTrigger.refresh();
+    }, sectionRef);
 
-    return () => ctx.revert(); // Cleanup GSAP animations on unmount
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -68,23 +69,34 @@ const NotFound = () => {
                   }
                   transition-colors duration-500`}
     >
+      {/* SEO for the 404 Not Found Page - UPDATED for Weblynx Infotech */}
+      <Seo
+        title="Page Not Found | Weblynx Infotech" // UPDATED
+        description="The page you are looking for on Weblynx Infotech might have been moved, deleted, or never existed. Please return to our homepage." // UPDATED
+        keywords="404 error, page not found, Weblynx Infotech, invalid URL, broken link" // UPDATED
+        ogTitle="Oops! Page Not Found - Weblynx Infotech" // UPDATED
+        ogDescription="We couldn't find the page you were looking for on Weblynx Infotech. Explore our services or contact us." // UPDATED
+        ogUrl="https://www.weblynxinfotech.com/404" // UPDATED: Use your new domain for the 404 URL
+        canonical="https://www.weblynxinfotech.com/404" // UPDATED: Use your new domain
+      />
+
       <h1
         ref={headingRef}
-        className="text-8xl sm:text-9xl md:text-[10rem] font-extrabold mb-4 // Responsive font size for 404
+        className="text-8xl sm:text-9xl md:text-[10rem] font-extrabold mb-4
                    text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-600
                    dark:from-red-400 dark:to-yellow-400"
       >
         404
       </h1>
       <p
-        ref={introTextRef} // Using introTextRef
-        className="text-2xl md:text-3xl font-semibold mb-6 sm:mb-8 opacity-90" // Adjusted margin for responsiveness
+        ref={introTextRef}
+        className="text-2xl md:text-3xl font-semibold mb-6 sm:mb-8 opacity-90"
       >
         Oops! Page Not Found
       </p>
       <p
-        ref={messageTextRef} // Using messageTextRef
-        className="text-base sm:text-lg md:text-xl max-w-xl mx-auto mb-10 sm:mb-12 opacity-80 px-4" // Adjusted font size, margin, and padding
+        ref={messageTextRef}
+        className="text-base sm:text-lg md:text-xl max-w-xl mx-auto mb-10 sm:mb-12 opacity-80 px-4"
       >
         It looks like you've wandered into uncharted digital territory. The page
         you're looking for might have been removed, had its name changed, or is

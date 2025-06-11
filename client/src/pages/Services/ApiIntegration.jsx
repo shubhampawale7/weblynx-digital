@@ -1,42 +1,37 @@
 // client/src/pages/Services/ApiIntegration.jsx
 import React, { useEffect, useRef } from "react";
-import { useTheme } from "../../context/ThemeContext.jsx"; // CORRECTED: Ensures correct path for ThemeContext
+import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "lottie-react";
-import { Link } from "react-router-dom"; // Import Link for CTA
-
-// IMPORTANT: Replace this with the actual path to your downloaded Lottie JSON file!
-// Example: import apiIntegrationAnimationData from '../../assets/lottie-animations/your-api-animation-name.json';
-import apiIntegrationAnimationData from "../../assets/lottie-animations/api-integration-animation.json";
+import { Link } from "react-router-dom";
+import Seo from "../../components/common/Seo.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ApiIntegration = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null); // Ref for the entire component's root div
+  const sectionRef = useRef(null);
 
-  // Refs for specific groups of elements to animate
   const mainHeadingRef = useRef(null);
   const introTextRef = useRef(null);
   const lottieAnimationRef = useRef(null);
   const heroCtaRef = useRef(null);
 
   const whatWeIntegrateHeadingRef = useRef(null);
-  const whatWeIntegrateCards = useRef([]); // Array for "What We Integrate" cards
+  const whatWeIntegrateCards = useRef([]);
 
   const approachHeadingRef = useRef(null);
-  const approachSteps = useRef([]); // Array for "Our API Approach" steps
+  const approachSteps = useRef([]);
 
   const benefitsHeadingRef = useRef(null);
-  const benefitsCards = useRef([]); // Array for "Benefits" cards
+  const benefitsCards = useRef([]);
 
   const finalCtaHeadingRef = useRef(null);
   const finalCtaTextRef = useRef(null);
   const finalCtaButtonRef = useRef(null);
 
-  // Helper function to add elements to a ref array
   const addToArrayRef = (el, arr) => {
     if (el && !arr.current.includes(el)) {
       arr.current.push(el);
@@ -44,13 +39,11 @@ const ApiIntegration = () => {
   };
 
   useEffect(() => {
-    // Clear ref arrays on each effect run to prevent duplicates
     whatWeIntegrateCards.current = [];
     approachSteps.current = [];
     benefitsCards.current = [];
 
     let ctx = gsap.context(() => {
-      // Main Heading Animation
       gsap.from(mainHeadingRef.current, {
         y: -50,
         duration: 1,
@@ -62,7 +55,6 @@ const ApiIntegration = () => {
         },
       });
 
-      // Hero Section Text, Lottie, & CTA
       gsap.from(
         [introTextRef.current, lottieAnimationRef.current, heroCtaRef.current],
         {
@@ -79,7 +71,6 @@ const ApiIntegration = () => {
         }
       );
 
-      // What We Integrate Section Animations
       gsap.from(whatWeIntegrateHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -103,7 +94,6 @@ const ApiIntegration = () => {
         },
       });
 
-      // Our Approach Section Animations
       gsap.from(approachHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -127,7 +117,6 @@ const ApiIntegration = () => {
         },
       });
 
-      // Benefits Section Animations
       gsap.from(benefitsHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -151,7 +140,6 @@ const ApiIntegration = () => {
         },
       });
 
-      // Final CTA Section Animations
       gsap.from(
         [
           finalCtaHeadingRef.current,
@@ -185,6 +173,17 @@ const ApiIntegration = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-500`}
     >
+      {/* SEO for API Integration Page - UPDATED for Weblynx Infotech */}
+      <Seo
+        title="API Integration Services | Weblynx Infotech" // UPDATED
+        description="Weblynx Infotech specializes in seamless API integration, connecting your systems for automated workflows, enhanced data exchange, and improved business efficiency." // UPDATED
+        keywords="API integration, API development, third-party APIs, CRM integration, payment gateways, data synchronization, custom APIs, Weblynx Infotech" // UPDATED
+        ogTitle="Weblynx Infotech API Integration: Connect Your Digital Landscape" // UPDATED
+        ogDescription="Automate workflows and enhance functionality with expert API integration services from Weblynx Infotech." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-api-integration.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/services/api-integration" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/services/api-integration" // UPDATED: Use your new domain
+      />
       {/* Hero/Introduction Section */}
       <section
         className={`py-16 sm:py-20 px-4 ${
@@ -235,7 +234,6 @@ const ApiIntegration = () => {
           </Link>
         </div>
       </section>
-
       {/* What We Integrate Section */}
       <section className="py-16 sm:py-20 px-4">
         <div className="container mx-auto max-w-6xl">
@@ -321,7 +319,6 @@ const ApiIntegration = () => {
           </div>
         </div>
       </section>
-
       {/* Our Approach Section */}
       <section
         className={`py-16 sm:py-20 px-4 ${
@@ -336,13 +333,11 @@ const ApiIntegration = () => {
             Our API Integration Approach
           </h2>
           <div className="relative flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4 lg:space-x-8">
-            {/* Connector Line for desktop, hidden on mobile */}
             <div
               className={`absolute hidden md:block h-1 w-full top-1/2 -translate-y-1/2 rounded-full
                             ${isDark ? "bg-gray-700" : "bg-gray-300"}`}
             ></div>
 
-            {/* Steps */}
             {[
               {
                 num: 1,
@@ -372,15 +367,13 @@ const ApiIntegration = () => {
             ].map((step, index) => (
               <div
                 key={step.num}
-                className={
-                  `relative z-10 flex flex-col items-center text-center p-4 rounded-lg shadow-md w-full md:w-auto md:flex-1
+                className={`relative z-10 flex flex-col items-center text-center p-4 rounded-lg shadow-md w-full md:w-auto md:flex-1
                                            ${
                                              isDark
                                                ? "bg-gray-800 border border-gray-700"
                                                : "bg-white border border-gray-200"
                                            }
-                                           transform transition-transform duration-300 hover:scale-105` /* Removed the extra space here, was a common source of parsing errors */
-                }
+                                           transform transition-transform duration-300 hover:scale-105`}
                 ref={(el) => addToArrayRef(el, approachSteps)}
               >
                 <div
@@ -398,7 +391,6 @@ const ApiIntegration = () => {
           </div>
         </div>
       </section>
-
       {/* Benefits Section */}
       <section className="py-16 sm:py-20 px-4">
         <div className="container mx-auto max-w-6xl text-center">
@@ -460,33 +452,36 @@ const ApiIntegration = () => {
           </div>
         </div>
       </section>
-
-      {/* Call to Action Section for this specific service */}
+            {/* Call to Action Section for this specific service */}     {" "}
       <section
         className={`py-16 px-4 text-center ${
           isDark ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-800"
         } transition-colors duration-300`}
       >
+               {" "}
         <div className="container mx-auto max-w-3xl">
+                   {" "}
           <h2
             className="text-3xl md:text-4xl font-bold mb-6"
             ref={finalCtaHeadingRef}
           >
-            Ready to Connect Your Digital Landscape?
+                        Ready to Connect Your Digital Landscape?          {" "}
           </h2>
+                   {" "}
           <p className="text-lg mb-8 opacity-90" ref={finalCtaTextRef}>
-            Let's discuss how seamless API integrations can transform your
-            business workflows.
+                        Let's discuss how seamless API integrations can
+            transform your             business workflows.          {" "}
           </p>
+                   {" "}
           <Link
             to="/contact"
             ref={finalCtaButtonRef}
             className={`inline-block px-8 py-4 text-lg md:text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300
-                        ${
-                          isDark
-                            ? "bg-cyan-700 text-white hover:bg-cyan-600"
-                            : "bg-green-600 text-white hover:bg-green-700"
-                        }`}
+                        ${
+              isDark
+                ? "bg-cyan-700 text-white hover:bg-cyan-600"
+                : "bg-green-600 text-white hover:bg-green-700"
+            }`}
           >
             Get a Free Consultation
           </Link>

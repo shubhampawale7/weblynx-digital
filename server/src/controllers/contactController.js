@@ -1,12 +1,11 @@
 // server/src/controllers/contactController.js
 import Inquiry from "../models/Inquiry.js";
-import { sendEmail } from "../utils/emailSender.js"; // Import the sendEmail function
+import { sendEmail } from "../utils/emailSender.js";
 
 export const submitContactForm = async (req, res) => {
   try {
     const { name, email, projectType, message } = req.body;
 
-    // Basic validation
     if (!name || !email || !projectType || !message) {
       return res
         .status(400)
@@ -16,13 +15,12 @@ export const submitContactForm = async (req, res) => {
     const newInquiry = new Inquiry({ name, email, projectType, message });
     await newInquiry.save();
 
-    // Send email notification
     await sendEmail({
-      to: process.env.EMAIL_USER, // Your business email (from .env)
-      from: `"${name} (Weblynx Inquiry)" <${email}>`, // Sender displayed name and original email
-      subject: `New Weblynx Inquiry: ${projectType} from ${name}`, // Clear subject
+      to: process.env.EMAIL_USER,
+      from: `"${name} (Weblynx Infotech Inquiry)" <${email}>`, // UPDATED
+      subject: `New Weblynx Infotech Inquiry: ${projectType} from ${name}`, // UPDATED
       text: `
-        New Inquiry from Weblynx Website!
+        New Inquiry from Weblynx Infotech Website! // UPDATED
         ----------------------------------
         Name: ${name}
         Email: ${email}
@@ -32,7 +30,7 @@ export const submitContactForm = async (req, res) => {
         Reply to: ${email}
       `,
       html: `
-        <p><strong>New Inquiry from Weblynx Website!</strong></p>
+        <p><strong>New Inquiry from Weblynx Infotech Website!</strong></p> // UPDATED
         <p>----------------------------------</p>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
@@ -50,8 +48,7 @@ export const submitContactForm = async (req, res) => {
         "Inquiry submitted successfully! You will receive an email confirmation shortly.",
     });
   } catch (error) {
-    console.error("Error submitting contact form or sending email:", error); // Log both
-    // Send a generic error message to the client, but log full error on server
+    console.error("Error submitting contact form or sending email:", error);
     res.status(500).json({
       success: false,
       message: "Server error, please try again later.",

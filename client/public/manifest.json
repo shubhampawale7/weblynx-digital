@@ -1,7 +1,7 @@
 {
-  "name": "Weblynx - Digital Services Agency",
-  "short_name": "Weblynx",
-  "description": "Your partner for custom web applications, mobile apps, SEO, and digital solutions.",
+  "name": "Weblynx Infotech - Digital Services Agency", 
+  "short_name": "Weblynx Infotech", 
+  "description": "Your partner for custom web applications, mobile apps, SEO, and digital solutions.", 
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a2e",

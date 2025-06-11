@@ -8,11 +8,12 @@ const FloatingWhatsAppButton = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const [isVisible, setIsVisible] = useState(false);
-  const [isHovered, setIsHovered] = useState(false); // New state for hover effect
+  const [isHovered, setIsHovered] = useState(false);
 
   const whatsappNumber = "+919518364400";
+  // UPDATED: Pre-loaded WhatsApp message with new business name
   const whatsappMessage = encodeURIComponent(
-    "Hello Weblynx! I'd like to inquire about your services. Can we chat?"
+    "Hello Weblynx Infotech! I'd like to inquire about your services. Can we chat?"
   );
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
@@ -31,9 +32,8 @@ const FloatingWhatsAppButton = () => {
     };
   }, [isVisible]);
 
-  // Framer Motion variants for the text bubble
   const textBubbleVariants = {
-    hidden: { opacity: 0, x: 20 }, // Starts slightly right and transparent
+    hidden: { opacity: 0, x: 20 },
     visible: {
       opacity: 1,
       x: 0,
@@ -51,8 +51,8 @@ const FloatingWhatsAppButton = () => {
           animate={{ y: 0 }}
           exit={{ y: 100 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          onMouseEnter={() => setIsHovered(true)} // Set hovered state
-          onMouseLeave={() => setIsHovered(false)} // Clear hovered state
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           {/* Text Bubble */}
           <AnimatePresence>

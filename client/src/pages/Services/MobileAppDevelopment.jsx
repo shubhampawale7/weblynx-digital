@@ -5,9 +5,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "lottie-react";
 import { Link } from "react-router-dom"; // Import Link for CTA
+import Seo from "../../components/common/Seo.jsx"; // Import Seo component
 
 // IMPORTANT: Replace this with the actual path to your downloaded Lottie JSON file!
-// Example: import mobileAppAnimationData from '../../assets/lottie-animations/your-mobile-app-animation-name.json';
 import mobileAppAnimationData from "../../assets/lottie-animations/mobile-app-development.json";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -185,6 +185,18 @@ const MobileAppDevelopment = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-500`}
     >
+      {/* SEO for Mobile App Development Page - UPDATED for Weblynx Infotech */}
+      <Seo
+        title="Mobile App Development Services | Weblynx Infotech" // UPDATED
+        description="Weblynx Infotech crafts intuitive and high-performance native (iOS/Android) and cross-platform mobile applications to extend your reach and engage users worldwide." // UPDATED
+        keywords="mobile app development, iOS app development, Android app development, cross-platform apps, React Native, Flutter, mobile UI/UX, app store optimization, Weblynx Infotech" // UPDATED
+        ogTitle="Weblynx Infotech: Building Next-Gen Mobile Experiences" // UPDATED
+        ogDescription="Launch powerful mobile apps with Weblynx Infotech, designed for performance, user engagement, and market success." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-mobile-app.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/services/mobile-app-development" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/services/mobile-app-development" // UPDATED: Use your new domain
+      />
+
       {/* Hero/Introduction Section */}
       <section
         className={`py-16 sm:py-20 px-4 ${
@@ -336,13 +348,11 @@ const MobileAppDevelopment = () => {
             Our Mobile App Development Approach
           </h2>
           <div className="relative flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4 lg:space-x-8">
-            {/* Connector Line for desktop, hidden on mobile */}
             <div
               className={`absolute hidden md:block h-1 w-full top-1/2 -translate-y-1/2 rounded-full
                             ${isDark ? "bg-gray-700" : "bg-gray-300"}`}
             ></div>
 
-            {/* Steps */}
             {[
               {
                 num: 1,
@@ -408,7 +418,7 @@ const MobileAppDevelopment = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -420,7 +430,7 @@ const MobileAppDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -432,7 +442,7 @@ const MobileAppDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -444,7 +454,7 @@ const MobileAppDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">

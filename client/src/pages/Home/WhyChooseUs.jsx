@@ -1,14 +1,14 @@
 // client/src/pages/Home/WhyChooseUs.jsx
 import React, { useEffect, useRef } from "react";
 import { useTheme } from "../../context/ThemeContext.jsx";
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
+import Seo from "../../components/common/Seo.jsx"; // Import Seo component
 
 gsap.registerPlugin(ScrollTrigger);
 
 const features = [
-  // ... (same data as before)
   {
     icon: "💡",
     title: "Innovative Solutions",
@@ -50,91 +50,122 @@ const features = [
 const WhyChooseUs = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null);
-  const featureRefs = useRef([]);
+  const sectionRef = useRef(null); // Ref for the whole section to scope GSAP context
+  const headingRef = useRef(null); // Ref for the heading
+  const featureRefs = useRef([]); // Array to store refs for each feature card
+
+  // Helper function to add elements to a ref array
+  const addToArrayRef = (el, arr) => {
+    if (el && !arr.current.includes(el)) {
+      arr.current.push(el);
+    }
+  };
 
   useEffect(() => {
-    // Animation for the section heading (removed opacity: 0)
-    gsap.from(sectionRef.current.querySelector("h2"), {
-      y: -50, // Still slides from above
-      duration: 1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 75%",
-        toggleActions: "play none none reverse",
-      },
-    });
+    // Clear ref array on each effect run to prevent duplicates
+    featureRefs.current = [];
 
-    // Animation for each feature card (removed opacity: 0)
-    featureRefs.current.forEach((feature, index) => {
-      gsap.from(feature, {
+    let ctx = gsap.context(() => {
+      // Animation for the section heading
+      gsap.from(headingRef.current, {
+        y: -50,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Animation for each feature card
+      gsap.from(featureRefs.current, {
         y: 80, // Still slides up
         scale: 0.9, // Still scales in
         duration: 0.7,
         ease: "back.out(1.5)",
+        stagger: 0.1, // Stagger effect
         scrollTrigger: {
-          trigger: feature,
+          trigger: featureRefs.current[0], // Trigger by the first card
           start: "top 90%",
           toggleActions: "play none none reverse",
         },
-        delay: index * 0.1,
       });
-    });
+      ScrollTrigger.refresh();
+    }, sectionRef); // Scope the context to the main section ref
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <section
+      id="why-choose-us" // Added ID for potential internal linking
       ref={sectionRef}
-      className={`py-20 px-4 ${
+      className={`py-16 sm:py-20 px-4 ${
+        // Adjusted padding
         isDark
           ? "bg-gradient-to-br from-gray-950 to-gray-800 text-white"
           : "bg-gradient-to-br from-blue-50 to-white text-gray-800"
       } transition-colors duration-500`}
     >
+      {/* SEO for Why Choose Us Section - UPDATED for Weblynx Infotech */}
+      <Seo
+        title="Why Choose Weblynx Infotech? - Our Unique Advantages" // UPDATED
+        description="Discover why Weblynx Infotech is your ideal digital partner. We offer innovative solutions, a client-centric approach, superior performance, and timely delivery for your web and mobile projects." // UPDATED
+        keywords="Why choose Weblynx Infotech, Weblynx Infotech advantages, digital agency benefits, innovative solutions, client-centric, performance, scalability, pixel-perfect design, security, reliability, timely delivery" // UPDATED
+        ogTitle="Weblynx Infotech: Your Trusted Partner for Digital Success" // UPDATED
+        ogDescription="Learn what sets Weblynx Infotech apart and why we're the right choice for your next digital project." // UPDATED
+        ogUrl="https://www.weblynxinfotech.com/#why-choose-us" // Pointing to homepage section, adjust if it's a dedicated page
+        canonical="https://www.weblynxinfotech.com/#why-choose-us" // UPDATED: Use your new domain
+      />
+
       <div className="container mx-auto">
         <h2
-          className="text-5xl font-bold text-center mb-16
-                       text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-600
-                       dark:from-cyan-400 dark:to-lime-400"
+          ref={headingRef}
+          className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 // Adjusted font sizes
+                         text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-600
+                         dark:from-cyan-400 dark:to-lime-400"
         >
-          Why Choose WEBLYNX?
+          Why Choose Weblynx Infotech? {/* UPDATED: Changed display name */}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+          {" "}
+          {/* Adjusted gap */}
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              ref={(el) => (featureRefs.current[index] = el)}
-              className={`p-8 rounded-xl shadow-lg flex flex-col items-center text-center
-                          ${
-                            isDark
-                              ? "bg-gray-800 border border-gray-700"
-                              : "bg-white border border-gray-200"
-                          }
-                          transform transition-all duration-300 group`}
+              ref={(el) => addToArrayRef(el, featureRefs)}
+              className={`p-6 sm:p-8 rounded-xl shadow-lg flex flex-col items-center text-center
+                            ${
+                              isDark
+                                ? "bg-gray-800 border border-gray-700"
+                                : "bg-white border border-gray-200"
+                            }
+                            transform transition-all duration-300 group`}
               whileHover={{
                 y: -5,
                 boxShadow: isDark
                   ? "0 10px 20px rgba(0, 0, 0, 0.3)"
                   : "0 10px 20px rgba(0, 0, 0, 0.1)",
               }}
-              // Removed initial/animate props as GSAP handles reveal and initial visibility is desired
             >
               <div
-                className={`text-6xl mb-6 p-4 rounded-full inline-block
-                               ${
-                                 isDark
-                                   ? "bg-cyan-600/20 text-cyan-400"
-                                   : "bg-green-600/10 text-green-600"
-                               }`}
+                className={`text-5xl sm:text-6xl mb-4 sm:mb-6 p-3 sm:p-4 rounded-full inline-block
+                                 ${
+                                   isDark
+                                     ? "bg-cyan-600/20 text-cyan-400"
+                                     : "bg-green-600/10 text-green-600"
+                                 }`}
+                role="img"
+                aria-label={`Icon for ${feature.title}`}
               >
                 {feature.icon}
               </div>
-              <h3 className="text-3xl font-semibold mb-4 text-green-600 dark:text-cyan-400">
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-green-600 dark:text-cyan-400">
                 {feature.title}
               </h3>
-              <p className="text-lg opacity-80">{feature.description}</p>
+              <p className="text-base opacity-90">{feature.description}</p>
             </motion.div>
           ))}
         </div>

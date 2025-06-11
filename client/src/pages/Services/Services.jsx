@@ -5,11 +5,11 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Seo from "../../components/common/Seo.jsx"; // Import the Seo component
+import Seo from "../../components/common/Seo.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Data for the overview cards (no changes here)
+// Data for the overview cards
 const serviceOverviewData = [
   {
     id: "custom-web-applications",
@@ -63,7 +63,7 @@ const serviceOverviewData = [
     description:
       "End-to-end web development covering both frontend and backend, providing comprehensive digital solutions.",
     gradient: "from-indigo-500 to-sky-600",
-    darkGradient: "from-purple-400 to-teal-400",
+    darkGradient: "from-purple-400 dark:to-teal-400",
   },
   {
     id: "support-management-services",
@@ -80,11 +80,16 @@ const Services = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const overviewRef = useRef(null);
-  const cardRefs = useRef([]);
+  const cardRefs = useRef([]); // This is the ref that the error claims is "not defined"
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Ensure cardRefs.current is cleared before populating to avoid stale references on re-renders
+    // (though for this component's static content, it might not be strictly necessary, it's good practice)
+    cardRefs.current = [];
+
     let ctx = gsap.context(() => {
+      // Main Heading Animation
       gsap.from(overviewRef.current.querySelector("h1"), {
         y: -50,
         duration: 1,
@@ -96,25 +101,26 @@ const Services = () => {
         },
       });
 
-      cardRefs.current.forEach((card, index) => {
-        gsap.from(card, {
-          y: 80,
-          scale: 0.9,
-          duration: 0.7,
-          ease: "back.out(1.5)",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-          delay: index * 0.1,
-        });
+      // Animation for overview cards
+      // Ensure this runs AFTER all cards are rendered and assigned to refs
+      gsap.from(cardRefs.current, {
+        // Accessing the array of refs
+        y: 80,
+        scale: 0.9,
+        duration: 0.7,
+        ease: "back.out(1.5)",
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: overviewRef.current, // Use the section ref as the main trigger for the whole grid
+          start: "top 70%", // Start animating the grid when the section is 70% from top
+          toggleActions: "play none none reverse",
+        },
       });
-      ScrollTrigger.refresh();
+      ScrollTrigger.refresh(); // Refresh after all animations are set up
     }, overviewRef);
 
-    return () => ctx.revert();
-  }, []);
+    return () => ctx.revert(); // Cleanup
+  }, []); // Empty dependency array means this effect runs only once on mount
 
   const navigateToService = (serviceId) => {
     navigate(`/services/${serviceId}`);
@@ -122,20 +128,20 @@ const Services = () => {
 
   return (
     <div className="min-h-screen">
-      {/* SEO for the Services Index Page */}
+      {/* SEO for the Services Index Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Our Digital Services - Web Development & Optimization"
-        description="Explore Weblynx's comprehensive digital services: custom web applications, mobile app development (iOS/Android), WordPress site creation, SEO optimization, API integration, full stack development, and robust support & management."
-        keywords="weblynx services, custom web apps, mobile app development, WordPress services, SEO agency, API integration, full stack developer, web support, digital solutions"
-        ogTitle="Weblynx Services: Comprehensive Digital Solutions"
-        ogDescription="Find the perfect digital solution for your business, from cutting-edge web development to expert SEO and reliable support."
-        ogUrl="https://www.weblynx.com/services" // Replace with your actual domain
-        canonical="https://www.weblynx.com/services" // Replace with your actual domain
+        title="Our Digital Services | Weblynx Infotech - Web & Mobile Development"
+        description="Explore Weblynx Infotech's comprehensive digital services: custom web applications, mobile app development (iOS/Android), WordPress site creation, SEO optimization, API integration, full stack development, and robust support & management."
+        keywords="Weblynx Infotech services, custom web apps, mobile app development, WordPress services, SEO agency, API integration, full stack developer, web support, digital solutions"
+        ogTitle="Weblynx Infotech Services: Comprehensive Digital Solutions"
+        ogDescription="Find the perfect digital solution for your business with Weblynx Infotech, from cutting-edge web development to expert SEO and reliable support."
+        ogUrl="https://www.weblynxinfotech.com/services"
+        canonical="https://www.weblynxinfotech.com/services"
       />
 
       {/* Services Overview Section - This is the ONLY content on the /services page now */}
       <section
-        ref={overviewRef}
+        ref={overviewRef} // Attach ref to the main section
         className={`py-16 sm:py-20 px-4 ${
           isDark
             ? "bg-gradient-to-br from-gray-950 to-gray-800 text-white"
@@ -152,15 +158,15 @@ const Services = () => {
           </h1>
           <p className="text-lg md:text-2xl mb-12 md:mb-16 opacity-80 max-w-3xl mx-auto px-4">
             From groundbreaking custom applications to seamless digital
-            maintenance, Weblynx delivers comprehensive solutions to elevate
-            your business. Click a service below to learn more.
+            maintenance, Weblynx Infotech delivers comprehensive solutions to
+            elevate your business. Click a service below to learn more.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {serviceOverviewData.map((service, index) => (
               <motion.div
                 key={service.id}
-                ref={(el) => (cardRefs.current[index] = el)}
+                ref={(el) => (cardRefs.current[index] = el)} // This line is correct
                 onClick={() => navigateToService(service.id)}
                 className={`relative p-6 sm:p-8 rounded-xl shadow-lg flex flex-col items-center text-center cursor-pointer
                             ${
@@ -168,7 +174,7 @@ const Services = () => {
                                 ? "bg-gray-800 border border-gray-700"
                                 : "bg-white border border-gray-200"
                             }
-                            transform transition-all duration-300 group hover:scale-[1.02]`}
+                            overflow-hidden group cursor-pointer transition-all duration-300`}
                 whileHover={{
                   boxShadow: isDark
                     ? "0 15px 30px rgba(0, 0, 0, 0.4)"
@@ -199,8 +205,7 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Optional: General CTA at the very end (this section might be removed or moved to each detailed service page) */}
-      {/* For now, keeping it here for continuity on the index page */}
+      {/* Optional: General CTA at the very end */}
       <section className="py-16 sm:py-20 px-4 text-center text-lg sm:text-xl dark:bg-gray-900 bg-gray-50">
         <p className="max-w-2xl mx-auto px-4 opacity-80">
           Ready to start your project?{" "}

@@ -4,39 +4,34 @@ import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "lottie-react";
-import { Link } from "react-router-dom"; // Import Link for CTA
-
-// IMPORTANT: Replace this with the actual path to your downloaded Lottie JSON file!
-// Example: import seoAnimationData from '../../assets/lottie-animations/your-seo-animation-name.json';
-import seoAnimationData from "../../assets/lottie-animations/seo-animation.json";
+import { Link } from "react-router-dom";
+import Seo from "../../components/common/Seo.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const SeoOptimization = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null); // Ref for the entire component's root div
+  const sectionRef = useRef(null);
 
-  // Refs for specific groups of elements to animate
   const mainHeadingRef = useRef(null);
   const introTextRef = useRef(null);
   const lottieAnimationRef = useRef(null);
   const heroCtaRef = useRef(null);
 
   const coreServicesHeadingRef = useRef(null);
-  const coreServicesCards = useRef([]); // Array for "Core SEO Services" cards
+  const coreServicesCards = useRef([]);
 
   const approachHeadingRef = useRef(null);
-  const approachSteps = useRef([]); // Array for "Our Strategic Approach" steps
+  const approachSteps = useRef([]);
 
   const benefitsHeadingRef = useRef(null);
-  const benefitsCards = useRef([]); // Array for "Benefits" cards
+  const benefitsCards = useRef([]);
 
   const finalCtaHeadingRef = useRef(null);
   const finalCtaTextRef = useRef(null);
   const finalCtaButtonRef = useRef(null);
 
-  // Helper function to add elements to a ref array
   const addToArrayRef = (el, arr) => {
     if (el && !arr.current.includes(el)) {
       arr.current.push(el);
@@ -44,13 +39,11 @@ const SeoOptimization = () => {
   };
 
   useEffect(() => {
-    // Clear ref arrays on each effect run to prevent duplicates
     coreServicesCards.current = [];
     approachSteps.current = [];
     benefitsCards.current = [];
 
     let ctx = gsap.context(() => {
-      // Main Heading Animation
       gsap.from(mainHeadingRef.current, {
         y: -50,
         duration: 1,
@@ -62,7 +55,6 @@ const SeoOptimization = () => {
         },
       });
 
-      // Hero Section Text, Lottie, & CTA
       gsap.from(
         [introTextRef.current, lottieAnimationRef.current, heroCtaRef.current],
         {
@@ -79,7 +71,6 @@ const SeoOptimization = () => {
         }
       );
 
-      // Core Services Section Animations
       gsap.from(coreServicesHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -103,7 +94,6 @@ const SeoOptimization = () => {
         },
       });
 
-      // Our Strategic Approach Section Animations
       gsap.from(approachHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -127,7 +117,6 @@ const SeoOptimization = () => {
         },
       });
 
-      // Benefits Section Animations
       gsap.from(benefitsHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -151,7 +140,6 @@ const SeoOptimization = () => {
         },
       });
 
-      // Final CTA Section Animations
       gsap.from(
         [
           finalCtaHeadingRef.current,
@@ -185,6 +173,17 @@ const SeoOptimization = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-500`}
     >
+      {/* SEO for SEO Optimization Page - UPDATED for Weblynx Infotech */}
+      <Seo
+        title="SEO Optimization Services | Weblynx Infotech - Boost Your Rankings" // UPDATED
+        description="Weblynx Infotech offers comprehensive SEO optimization services to increase your online visibility, drive organic traffic, and improve your search engine rankings." // UPDATED
+        keywords="SEO optimization, search engine optimization, keyword research, on-page SEO, technical SEO, content optimization, local SEO, link building, Weblynx Infotech" // UPDATED
+        ogTitle="Weblynx Infotech: Expert SEO Services for Higher Rankings" // UPDATED
+        ogDescription="Elevate your online presence and dominate search results with Weblynx Infotech's strategic SEO optimization." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-seo-optimization.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/services/seo-optimization" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/services/seo-optimization" // UPDATED: Use your new domain
+      />
       {/* Hero/Introduction Section */}
       <section
         className={`py-16 sm:py-20 px-4 ${
@@ -235,7 +234,6 @@ const SeoOptimization = () => {
           </Link>
         </div>
       </section>
-
       {/* Our Core SEO Services Section */}
       <section className="py-16 sm:py-20 px-4">
         <div className="container mx-auto max-w-6xl">
@@ -321,7 +319,6 @@ const SeoOptimization = () => {
           </div>
         </div>
       </section>
-
       {/* Our Strategic Approach Section */}
       <section
         className={`py-16 sm:py-20 px-4 ${
@@ -336,13 +333,11 @@ const SeoOptimization = () => {
             Our Strategic SEO Approach
           </h2>
           <div className="relative flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4 lg:space-x-8">
-            {/* Connector Line for desktop, hidden on mobile */}
             <div
               className={`absolute hidden md:block h-1 w-full top-1/2 -translate-y-1/2 rounded-full
                             ${isDark ? "bg-gray-700" : "bg-gray-300"}`}
             ></div>
 
-            {/* Steps */}
             {[
               {
                 num: 1,
@@ -396,7 +391,6 @@ const SeoOptimization = () => {
           </div>
         </div>
       </section>
-
       {/* Benefits Section */}
       <section className="py-16 sm:py-20 px-4">
         <div className="container mx-auto max-w-6xl text-center">
@@ -408,7 +402,7 @@ const SeoOptimization = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -420,7 +414,7 @@ const SeoOptimization = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -432,7 +426,7 @@ const SeoOptimization = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -444,7 +438,7 @@ const SeoOptimization = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -458,38 +452,44 @@ const SeoOptimization = () => {
           </div>
         </div>
       </section>
-
-      {/* Call to Action Section for this specific service */}
+            {/* Call to Action Section for this specific service */}     {" "}
       <section
         className={`py-16 px-4 text-center ${
           isDark ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-800"
         } transition-colors duration-300`}
       >
+               {" "}
         <div className="container mx-auto max-w-3xl">
+                   {" "}
           <h2
             className="text-3xl md:text-4xl font-bold mb-6"
             ref={finalCtaHeadingRef}
           >
-            Ready to Outrank Your Competition?
+                        Ready to Outrank Your Competition?          {" "}
           </h2>
+                   {" "}
           <p className="text-lg mb-8 opacity-90" ref={finalCtaTextRef}>
-            Let's craft an SEO strategy that puts your business at the top of
-            search engine results.
+                        Let's craft an SEO strategy that puts your business at
+            the top of             search engine results.          {" "}
           </p>
+                   {" "}
           <Link
             to="/contact"
             ref={finalCtaButtonRef}
             className={`inline-block px-8 py-4 text-lg md:text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300
-                        ${
-                          isDark
-                            ? "bg-cyan-700 text-white hover:bg-cyan-600"
-                            : "bg-green-600 text-white hover:bg-green-700"
-                        }`}
+                        ${
+              isDark
+                ? "bg-cyan-700 text-white hover:bg-cyan-600"
+                : "bg-green-600 text-white hover:bg-green-700"
+            }`}
           >
-            Get a Free SEO Audit
+                        Get a Free SEO Audit          {" "}
           </Link>
+                 {" "}
         </div>
+             {" "}
       </section>
+         {" "}
     </div>
   );
 };

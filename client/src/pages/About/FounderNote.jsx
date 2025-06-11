@@ -94,16 +94,16 @@ const FounderNote = () => {
         isDark ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-800"
       } transition-colors duration-300`}
     >
-      {/* SEO for the Founder's Note Section */}
+      {/* SEO for the Founder's Note Section - UPDATED for Weblynx Infotech */}
       <Seo
-        title="A Word from Our Founder - Shubham Pawale | Weblynx"
-        description="Read a personal message from Shubham Pawale, Founder and Lead Developer of Weblynx, sharing his vision, philosophy, and dedication to crafting impactful digital experiences."
-        keywords="Shubham Pawale, Weblynx founder, founder message, lead developer, company vision, digital services philosophy"
-        ogTitle="Message from Shubham Pawale, Founder of Weblynx"
-        ogDescription="Gain insight into the core values driving Weblynx directly from our founder, Shubham Pawale."
-        ogImage="https://www.weblynx.com/founder-avatar.jpg" // UPDATED: Points to your image in public folder
-        ogUrl="https://www.weblynx.com/about#founder-note"
-        canonical="https://www.weblynx.com/about#founder-note"
+        title="A Word from Our Founder - Shubham Pawale | Weblynx Infotech" // UPDATED
+        description="Read a personal message from Shubham Pawale, Founder and Lead Developer of Weblynx Infotech, sharing his vision, philosophy, and dedication to crafting impactful digital experiences." // UPDATED
+        keywords="Shubham Pawale, Weblynx Infotech founder, founder message, lead developer, company vision, digital services philosophy" // UPDATED
+        ogTitle="Message from Shubham Pawale, Founder of Weblynx Infotech" // UPDATED
+        ogDescription="Gain insight into the core values driving Weblynx Infotech directly from our founder, Shubham Pawale." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/founder-avatar.jpg" // UPDATED: Points to your image on your new domain
+        ogUrl="https://www.weblynxinfotech.com/about#founder-note" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/about#founder-note" // UPDATED: Use your new domain
       />
 
       <div className="container mx-auto max-w-5xl">
@@ -120,21 +120,23 @@ const FounderNote = () => {
           <div className="md:w-1/3 flex flex-col items-center">
             <img
               ref={imageRef}
-              src="/founder-avatar.jpg" // FINALIZED: Path to your image in the public folder
-              alt="Shubham Pawale, Founder of Weblynx"
+              src="/founder-avatar.jpg" // Path to your image in the public folder
+              alt="Shubham Pawale, Founder of Weblynx Infotech" // UPDATED: Alt text
               className="w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover border-4 border-blue-500 dark:border-purple-500 shadow-lg transform transition-transform duration-300 hover:scale-105"
             />
             <p className="mt-4 text-lg sm:text-xl font-semibold">
               Shubham Pawale
             </p>
             <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
-              Founder & Lead Developer, Weblynx
+              Founder & Lead Developer, Weblynx Infotech{" "}
+              {/* UPDATED: Text mention */}
             </p>
           </div>
           <div className="md:w-2/3 space-y-4 sm:space-y-6 text-base sm:text-lg opacity-90 text-center md:text-left">
             <div ref={(el) => addToArrayRef(el, contentRefs)}>
               <p>
-                "When I started Weblynx, my core philosophy was simple: to
+                "When I started Weblynx Infotech, my core philosophy was simple:
+                to {/* UPDATED: Text mention */}
                 create digital experiences that truly matter. I believe that
                 technology should be a seamless bridge between a business's
                 vision and its audience, empowering growth and fostering genuine
@@ -144,11 +146,13 @@ const FounderNote = () => {
                 "My journey in web development, starting with a passion for
                 clean code and intuitive design, has led me to appreciate the
                 profound impact a well-crafted digital presence can have. At
-                Weblynx, we don't just build websites; we craft solutions that
+                Weblynx Infotech, we don't just build websites; we craft
+                solutions that {/* UPDATED: Text mention */}
                 solve real problems and open new opportunities for our clients."
               </p>
               <p>
-                "Thank you for considering Weblynx as your digital partner.
+                "Thank you for considering Weblynx Infotech as your digital
+                partner. {/* UPDATED: Text mention */}
                 We're excited about the possibility of building something
                 exceptional together and helping your vision come to life."
               </p>

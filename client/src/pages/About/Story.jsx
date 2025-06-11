@@ -82,16 +82,16 @@ const Story = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-300`}
     >
-      {/* SEO for the Story Page */}
+      {/* SEO for the Story Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Our Story - The Journey of Weblynx"
-        description="Discover the inspiring story behind Weblynx, our passion for digital innovation, and our journey to becoming a leading web development agency focused on client success."
-        keywords="Weblynx history, company story, digital agency journey, web development founding, our beginnings, innovation, collaboration"
-        ogTitle="The Weblynx Story: Passionate About Digital Excellence"
-        ogDescription="Learn about the values and vision that shaped Weblynx into a dedicated agency delivering cutting-edge digital solutions."
-        ogImage="https://www.weblynx.com/about-us-story.jpg" // UPDATED: Your specific image URL
-        ogUrl="https://www.weblynx.com/about" // Canonical URL for the About page
-        canonical="https://www.weblynx.com/about"
+        title="Our Story - The Journey of Weblynx Infotech" // UPDATED
+        description="Discover the inspiring story behind Weblynx Infotech, our passion for digital innovation, and our journey to becoming a leading web development agency focused on client success." // UPDATED
+        keywords="Weblynx Infotech history, company story, digital agency journey, web development founding, our beginnings, innovation, collaboration" // UPDATED
+        ogTitle="The Weblynx Infotech Story: Passionate About Digital Excellence" // UPDATED
+        ogDescription="Learn about the values and vision that shaped Weblynx Infotech into a dedicated agency delivering cutting-edge digital solutions." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/about-us-story.jpg" // UPDATED: Your specific image URL with new domain
+        ogUrl="https://www.weblynxinfotech.com/about" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/about" // UPDATED: Use your new domain
       />
 
       <div className="container mx-auto max-w-5xl">
@@ -108,15 +108,16 @@ const Story = () => {
           <div className="md:w-1/2">
             <img
               ref={imageRef}
-              src="/about-us-story.jpg" // UPDATED: Path to your image in the public folder
-              alt="Weblynx team collaborating on a digital project, representing our company's story and innovation" // Descriptive alt text for SEO
+              src="/about-us-story.jpg" // Path to your image in the public folder
+              alt="Weblynx Infotech team collaborating on a digital project, representing our company's story and innovation" // UPDATED: Alt text
               className="w-full h-auto rounded-lg shadow-xl"
             />
           </div>
           <div className="md:w-1/2 space-y-4 md:space-y-6 text-base md:text-lg opacity-90">
             <p ref={(el) => addToArrayRef(el, textContentRefs)}>
               Founded with a vision to bridge the gap between complex digital
-              needs and seamless user experiences, Weblynx began as a passion
+              needs and seamless user experiences, Weblynx Infotech began as a
+              passion {/* UPDATED: Text mention */}
               project among a group of developers fascinated by the MERN stack
               and the endless possibilities of modern web technologies.
             </p>
@@ -128,7 +129,8 @@ const Story = () => {
               tech landscape, and a relentless pursuit of excellence.
             </p>
             <p ref={(el) => addToArrayRef(el, textContentRefs)}>
-              Today, Weblynx stands as a testament to innovation, collaboration,
+              Today, Weblynx Infotech stands as a testament to innovation,
+              collaboration, {/* UPDATED: Text mention */}
               and a client-first approach. We pride ourselves on crafting
               digital solutions that not only look good but also perform
               exceptionally, helping our clients achieve their strategic goals

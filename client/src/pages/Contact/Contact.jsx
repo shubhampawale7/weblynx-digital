@@ -5,8 +5,8 @@ import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
-import { FaPhoneAlt, FaEnvelope, FaWhatsapp } from "react-icons/fa"; // Import icons
-import { motion } from "framer-motion"; // Import motion for advanced hovers
+import { FaPhoneAlt, FaEnvelope, FaWhatsapp } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 import Seo from "../../components/common/Seo.jsx";
 
@@ -16,19 +16,18 @@ const Contact = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // Refs for animation - ALL DECLARED HERE AT THE TOP
+  // Refs for animation
   const sectionRef = useRef(null);
   const mainHeadingRef = useRef(null);
   const introTextRef = useRef(null);
 
   const formSectionHeadingRef = useRef(null);
   const contactQuoteRef = useRef(null);
-  const formRef = useRef(null); // Ref for the main form element
+  const formRef = useRef(null);
 
   const connectMethodsHeadingRef = useRef(null);
-  const contactCardRefs = useRef([]); // Array for contact method cards
+  const contactCardRefs = useRef([]);
 
-  // These are the refs that were potentially causing the "not defined" error:
   const finalCtaHeadingRef = useRef(null);
   const finalCtaTextRef = useRef(null);
   const finalCtaButtonRef = useRef(null);
@@ -119,7 +118,7 @@ const Contact = () => {
   // WhatsApp Pre-loaded Message and Link
   const whatsappNumber = "+919518364400";
   const whatsappMessage = encodeURIComponent(
-    "Hello Weblynx! I saw your website and I'm interested in discussing a project. Can we chat?"
+    "Hello Weblynx Infotech! I saw your website and I'm interested in discussing a project. Can we chat?" // UPDATED: Text mention
   );
   const whatsappLink = `https://wa.me/<span class="math-inline">\{whatsappNumber\}?text\=</span>{whatsappMessage}`;
 
@@ -137,7 +136,7 @@ const Contact = () => {
       // Hero/Intro section animations
       gsap.from([mainHeadingRef.current, introTextRef.current], {
         y: 50,
-        // opacity: 0, // REMOVED opacity:0 as per user request
+        // opacity: 0, // REMOVED opacity:0
         stagger: 0.2,
         duration: 1,
         ease: "power3.out",
@@ -229,16 +228,16 @@ const Contact = () => {
       } transition-colors duration-300`}
       ref={sectionRef}
     >
-      {/* SEO for the Contact Page */}
+      {/* SEO for the Contact Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Contact Weblynx - Get a Free Consultation"
-        description="Reach out to Weblynx for a free consultation. Contact us for custom web applications, mobile app development, SEO, WordPress, API integration, and full-stack solutions. Let's build your vision!"
-        keywords="contact Weblynx, web development consultation, mobile app consultation, SEO quote, WordPress quote, API integration quote, full stack development quote, contact form, WhatsApp Weblynx, shubhampawale7@gmail.com, Pune, India"
-        ogTitle="Contact Weblynx: Your Partner for Digital Excellence"
-        ogDescription="Connect with Weblynx today to discuss your digital project and receive a free consultation."
-        ogImage="https://www.weblynx.com/social-share-contact.jpg" // Replace with specific image
-        ogUrl="https://www.weblynx.com/contact" // Replace with your actual domain
-        canonical="https://www.weblynx.com/contact" // Replace with your actual domain
+        title="Contact Weblynx Infotech - Get a Free Consultation" // UPDATED
+        description="Reach out to Weblynx Infotech for a free consultation. Contact us for custom web applications, mobile app development, SEO, WordPress, API integration, and full-stack solutions. Let's build your vision!" // UPDATED
+        keywords="contact Weblynx Infotech, web development consultation, mobile app consultation, SEO quote, WordPress quote, API integration quote, full stack development quote, contact form, WhatsApp Weblynx Infotech, shubhampawale7@gmail.com, Pune, India" // UPDATED
+        ogTitle="Contact Weblynx Infotech: Your Partner for Digital Excellence" // UPDATED
+        ogDescription="Connect with Weblynx Infotech today to discuss your digital project and receive a free consultation." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-contact.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/contact" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/contact" // UPDATED: Use your new domain
       />
 
       {/* Hero/Introduction Section for Contact Page */}
@@ -263,8 +262,8 @@ const Contact = () => {
             ref={introTextRef}
           >
             Ready to turn your ideas into a digital reality? We're excited to
-            hear from you and discuss how Weblynx can bring your project to
-            life.
+            hear from you and discuss how Weblynx Infotech can bring your
+            project to life. {/* UPDATED: Text mention */}
           </p>
         </div>
       </section>
@@ -287,7 +286,6 @@ const Contact = () => {
           </blockquote>
 
           <form onSubmit={handleSubmit} className="space-y-6" ref={formRef}>
-            {/* Form Fields - Now in a responsive grid for 2-column layout on desktop */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label
@@ -350,7 +348,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Project Type - Full width */}
             <div>
               <label
                 htmlFor="projectType"
@@ -386,7 +383,6 @@ const Contact = () => {
               )}
             </div>
 
-            {/* Message - Full width */}
             <div>
               <label
                 htmlFor="message"
@@ -577,7 +573,7 @@ const Contact = () => {
             className="text-3xl md:text-4xl font-bold text-center mb-12"
             ref={(el) => addToArrayRef(el, contactCardRefs)}
           >
-            Why Connect with Weblynx?
+            Why Connect with Weblynx Infotech?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div

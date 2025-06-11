@@ -4,11 +4,10 @@ import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "lottie-react";
-import { Link } from "react-router-dom"; // Import Link for CTA
-import Seo from "../../components/common/Seo.jsx"; // Import the Seo component
+import { Link } from "react-router-dom";
+import Seo from "../../components/common/Seo.jsx";
 
 // IMPORTANT: Replace this with the actual path to your downloaded Lottie JSON file!
-// Example: import supportAnimationData from '../../assets/lottie-animations/your-support-animation-name.json';
 import supportAnimationData from "../../assets/lottie-animations/support-management.json";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,28 +15,26 @@ gsap.registerPlugin(ScrollTrigger);
 const SupportManagementServices = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null); // Ref for the entire component's root div
+  const sectionRef = useRef(null);
 
-  // Refs for specific groups of elements to animate
   const mainHeadingRef = useRef(null);
   const introTextRef = useRef(null);
   const lottieAnimationRef = useRef(null);
   const heroCtaRef = useRef(null);
 
   const whatWeCoverHeadingRef = useRef(null);
-  const whatWeCoverCards = useRef([]); // Array for "What We Cover" cards
+  const whatWeCoverCards = useRef([]);
 
   const approachHeadingRef = useRef(null);
-  const approachSteps = useRef([]); // Array for "Our Proactive Approach" steps
+  const approachSteps = useRef([]);
 
   const benefitsHeadingRef = useRef(null);
-  const benefitsCards = useRef([]); // Array for "Benefits" cards
+  const benefitsCards = useRef([]);
 
   const finalCtaHeadingRef = useRef(null);
   const finalCtaTextRef = useRef(null);
   const finalCtaButtonRef = useRef(null);
 
-  // Helper function to add elements to a ref array
   const addToArrayRef = (el, arr) => {
     if (el && !arr.current.includes(el)) {
       arr.current.push(el);
@@ -45,13 +42,11 @@ const SupportManagementServices = () => {
   };
 
   useEffect(() => {
-    // Clear ref arrays on each effect run to prevent duplicates
     whatWeCoverCards.current = [];
     approachSteps.current = [];
     benefitsCards.current = [];
 
     let ctx = gsap.context(() => {
-      // Main Heading Animation
       gsap.from(mainHeadingRef.current, {
         y: -50,
         duration: 1,
@@ -63,7 +58,6 @@ const SupportManagementServices = () => {
         },
       });
 
-      // Hero Section Text, Lottie, & CTA
       gsap.from(
         [introTextRef.current, lottieAnimationRef.current, heroCtaRef.current],
         {
@@ -80,7 +74,6 @@ const SupportManagementServices = () => {
         }
       );
 
-      // What We Cover Section Animations
       gsap.from(whatWeCoverHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -104,7 +97,6 @@ const SupportManagementServices = () => {
         },
       });
 
-      // Our Proactive Approach Section Animations
       gsap.from(approachHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -128,7 +120,6 @@ const SupportManagementServices = () => {
         },
       });
 
-      // Benefits Section Animations
       gsap.from(benefitsHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -152,7 +143,6 @@ const SupportManagementServices = () => {
         },
       });
 
-      // Final CTA Section Animations
       gsap.from(
         [
           finalCtaHeadingRef.current,
@@ -186,16 +176,16 @@ const SupportManagementServices = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-500`}
     >
-      {/* SEO for the Support & Management Services Page */}
+      {/* SEO for the Support & Management Services Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Support & Management Services | Weblynx"
-        description="Weblynx offers comprehensive support and management services for websites and applications, including maintenance, performance optimization, security, and technical assistance."
-        keywords="website support, app maintenance, digital asset management, server management, security audits, performance optimization, technical assistance, weblynx support"
-        ogTitle="Weblynx Support: Proactive Digital Asset Management"
-        ogDescription="Ensure the long-term success and smooth operation of your digital investments with Weblynx's expert support and management services."
-        ogImage="https://www.weblynx.com/social-share-support.jpg" // Replace with a specific image for this service
-        ogUrl="https://www.weblynx.com/services/support-management-services" // Replace with your actual domain
-        canonical="https://www.weblynx.com/services/support-management-services" // Replace with your actual domain
+        title="Support & Management Services | Weblynx Infotech" // UPDATED
+        description="Weblynx Infotech offers comprehensive support and management services for websites and applications, including maintenance, performance optimization, security, and technical assistance." // UPDATED
+        keywords="website support, app maintenance, digital asset management, server management, security audits, performance optimization, technical assistance, weblynx Infotech support" // UPDATED
+        ogTitle="Weblynx Infotech Support: Proactive Digital Asset Management" // UPDATED
+        ogDescription="Ensure the long-term success and smooth operation of your digital investments with Weblynx Infotech's expert support and management services." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-support.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/services/support-management-services" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/services/support-management-services" // UPDATED: Use your new domain
       />
 
       {/* Hero/Introduction Section */}
@@ -349,13 +339,11 @@ const SupportManagementServices = () => {
             Our Proactive Approach
           </h2>
           <div className="relative flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4 lg:space-x-8">
-            {/* Connector Line for desktop, hidden on mobile */}
             <div
               className={`absolute hidden md:block h-1 w-full top-1/2 -translate-y-1/2 rounded-full
                             ${isDark ? "bg-gray-700" : "bg-gray-300"}`}
             ></div>
 
-            {/* Steps */}
             {[
               {
                 num: 1,

@@ -4,6 +4,7 @@ import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
+import Seo from "../../components/common/Seo.jsx"; // Import Seo component
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,10 +72,21 @@ const MissionVision = () => {
       } transition-colors duration-300`}
       ref={sectionRef}
     >
+      {/* SEO for Mission & Vision Page - UPDATED for Weblynx Infotech */}
+      <Seo
+        title="Our Mission & Vision | Weblynx Infotech" // UPDATED
+        description="Discover the core mission and ambitious vision that drive Weblynx Infotech to deliver innovative and impactful digital solutions worldwide." // UPDATED
+        keywords="Weblynx Infotech mission, Weblynx Infotech vision, company values, digital innovation, future of web development, digital solutions goals" // UPDATED
+        ogTitle="Weblynx Infotech: Mission-Driven, Vision-Led Digital Agency" // UPDATED
+        ogDescription="Explore the guiding principles and future aspirations of Weblynx Infotech in crafting digital excellence." // UPDATED
+        ogUrl="https://www.weblynxinfotech.com/about#mission-vision" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/about#mission-vision" // UPDATED: Use your new domain
+      />
+
       <div className="container mx-auto max-w-5xl">
         <h2
           ref={headingRef}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 // Adjusted font sizes
+          className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16
                          text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-600
                          dark:from-cyan-400 dark:to-lime-400"
         >
@@ -82,8 +94,6 @@ const MissionVision = () => {
         </h2>
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-10">
-          {" "}
-          {/* Adjusted gap for responsiveness */}
           {/* Mission Card */}
           <motion.div
             ref={missionCardRef}
@@ -123,6 +133,7 @@ const MissionVision = () => {
               trust and innovation.
             </p>
           </motion.div>
+
           {/* Vision Card */}
           <motion.div
             ref={visionCardRef}

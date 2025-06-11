@@ -4,6 +4,7 @@ import { useTheme } from "../../context/ThemeContext.jsx";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Seo from "../../components/common/Seo.jsx"; // Import Seo component
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,12 +18,9 @@ const techStackData = [
   { name: "GSAP", icon: "🎬" },
   { name: "Framer Motion", icon: "✨" },
   { name: "REST APIs", icon: "🌐" },
-  // For icons that are text, make sure the icon property is just the emoji if possible,
-  // or a very short, clear representation for 'aria-label'.
-  // If "Markup" is meant as the icon itself, it will be text. I'll treat it as text.
-  { name: "HTML5", icon: "📄" }, // Changed to an emoji icon for consistency
-  { name: "CSS3", icon: "🎨" }, // Changed to an emoji icon for consistency
-  { name: "JavaScript", icon: "📜" }, // Changed to an emoji icon for consistency
+  { name: "HTML5", icon: "📄" },
+  { name: "CSS3", icon: "🎨" },
+  { name: "JavaScript", icon: "📜" },
 ];
 
 const TechStack = () => {
@@ -48,7 +46,7 @@ const TechStack = () => {
     let ctx = gsap.context(() => {
       // Heading Animation
       gsap.from(headingRef.current, {
-        y: -50, // Slide from top
+        y: -50,
         duration: 1,
         ease: "power3.out",
         scrollTrigger: {
@@ -60,14 +58,14 @@ const TechStack = () => {
 
       // Animation for tech badges
       gsap.from(techCardsRefs.current, {
-        y: 50, // Slide up
-        scale: 0.8, // Scale in
+        y: 50,
+        scale: 0.8,
         duration: 0.6,
         ease: "back.out(1.2)",
-        stagger: 0.08, // Stagger effect
+        stagger: 0.08,
         scrollTrigger: {
-          trigger: techCardsRefs.current[0], // Trigger by the first badge
-          start: "top 95%", // Staggered entry from bottom
+          trigger: techCardsRefs.current[0],
+          start: "top 95%",
           toggleActions: "play none none reverse",
         },
       });
@@ -87,10 +85,21 @@ const TechStack = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-300`}
     >
+      {/* SEO for Tech Stack Page - UPDATED for Weblynx Infotech */}
+      <Seo
+        title="Our Tech Stack | Weblynx Infotech - Modern Web Technologies" // UPDATED
+        description="Explore the cutting-edge technologies and frameworks Weblynx Infotech specializes in, including React, Node.js, Express.js, MongoDB, WordPress, Tailwind CSS, GSAP, and more." // UPDATED
+        keywords="Weblynx Infotech tech stack, web development technologies, MERN stack, WordPress development, React.js, Node.js, Express.js, MongoDB, Tailwind CSS, GSAP, Framer Motion, frontend, backend, full stack" // UPDATED
+        ogTitle="Weblynx Infotech: Building with Cutting-Edge Technologies" // UPDATED
+        ogDescription="See the powerful tools and frameworks Weblynx Infotech leverages to build high-performance and innovative digital solutions." // UPDATED
+        ogUrl="https://www.weblynxinfotech.com/about#tech-stack" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/about#tech-stack" // UPDATED: Use your new domain
+      />
+
       <div className="container mx-auto max-w-6xl">
         <h2
           ref={headingRef}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 // Adjusted font sizes
+          className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16
                          text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600
                          dark:from-amber-400 dark:to-rose-400"
         >
@@ -98,12 +107,10 @@ const TechStack = () => {
         </h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 justify-items-center">
-          {" "}
-          {/* Adjusted gap for responsiveness */}
           {techStackData.map((tech, index) => (
             <motion.div
               key={tech.name}
-              ref={(el) => addToArrayRef(el, techCardsRefs)} // Using helper function
+              ref={(el) => addToArrayRef(el, techCardsRefs)}
               className={`p-4 sm:p-6 rounded-lg shadow-md flex flex-col items-center justify-center min-h-[100px] sm:min-h-[120px] w-full max-w-[140px] sm:max-w-[160px]
                           ${
                             isDark
@@ -120,18 +127,16 @@ const TechStack = () => {
             >
               <div
                 className={`text-3xl sm:text-4xl mb-2 sm:mb-3 ${
-                  // Adjusted icon size
                   isDark ? "text-gray-200" : "text-gray-700"
                 }`}
-                role="img" // For accessibility
-                aria-label={`${tech.name} icon`} // For accessibility
+                role="img"
+                aria-label={`${tech.name} icon`}
               >
                 {tech.icon}
               </div>
               <p className="text-sm sm:text-lg font-semibold text-center">
                 {tech.name}
-              </p>{" "}
-              {/* Adjusted font size */}
+              </p>
             </motion.div>
           ))}
         </div>

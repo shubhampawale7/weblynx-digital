@@ -34,3 +34,7 @@ body { /* This will be the default if .dark is not present */
 html {
   scroll-behavior: smooth;
 }
+
+html {
+  scroll-behavior: smooth;
+}

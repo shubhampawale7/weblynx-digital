@@ -4,10 +4,10 @@ import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "lottie-react";
-import { Link } from "react-router-dom"; // Import Link for CTA
+import { Link } from "react-router-dom";
+import Seo from "../../components/common/Seo.jsx";
 
 // IMPORTANT: Replace this with the actual path to your downloaded Lottie JSON file!
-// Example: import fullStackAnimationData from '../../assets/lottie-animations/your-fullstack-animation-name.json';
 import fullStackAnimationData from "../../assets/lottie-animations/full-stack-animation.json";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,28 +15,26 @@ gsap.registerPlugin(ScrollTrigger);
 const FullStackDevelopment = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null); // Ref for the entire component's root div
+  const sectionRef = useRef(null);
 
-  // Refs for specific groups of elements to animate
   const mainHeadingRef = useRef(null);
   const introTextRef = useRef(null);
   const lottieAnimationRef = useRef(null);
   const heroCtaRef = useRef(null);
 
   const expertiseHeadingRef = useRef(null);
-  const expertiseCards = useRef([]); // Array for "Our Expertise" cards
+  const expertiseCards = useRef([]);
 
   const approachHeadingRef = useRef(null);
-  const approachSteps = useRef([]); // Array for "Our Process" steps
+  const approachSteps = useRef([]);
 
   const benefitsHeadingRef = useRef(null);
-  const benefitsCards = useRef([]); // Array for "Benefits" cards
+  const benefitsCards = useRef([]);
 
   const finalCtaHeadingRef = useRef(null);
   const finalCtaTextRef = useRef(null);
   const finalCtaButtonRef = useRef(null);
 
-  // Helper function to add elements to a ref array
   const addToArrayRef = (el, arr) => {
     if (el && !arr.current.includes(el)) {
       arr.current.push(el);
@@ -44,13 +42,11 @@ const FullStackDevelopment = () => {
   };
 
   useEffect(() => {
-    // Clear ref arrays on each effect run to prevent duplicates
     expertiseCards.current = [];
     approachSteps.current = [];
     benefitsCards.current = [];
 
     let ctx = gsap.context(() => {
-      // Main Heading Animation
       gsap.from(mainHeadingRef.current, {
         y: -50,
         duration: 1,
@@ -62,7 +58,6 @@ const FullStackDevelopment = () => {
         },
       });
 
-      // Hero Section Text, Lottie, & CTA
       gsap.from(
         [introTextRef.current, lottieAnimationRef.current, heroCtaRef.current],
         {
@@ -79,7 +74,6 @@ const FullStackDevelopment = () => {
         }
       );
 
-      // Our Expertise Section Animations
       gsap.from(expertiseHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -103,7 +97,6 @@ const FullStackDevelopment = () => {
         },
       });
 
-      // Our Approach Section Animations
       gsap.from(approachHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -127,7 +120,6 @@ const FullStackDevelopment = () => {
         },
       });
 
-      // Benefits Section Animations
       gsap.from(benefitsHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -151,7 +143,6 @@ const FullStackDevelopment = () => {
         },
       });
 
-      // Final CTA Section Animations
       gsap.from(
         [
           finalCtaHeadingRef.current,
@@ -185,6 +176,18 @@ const FullStackDevelopment = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-500`}
     >
+      {/* SEO for Full Stack Development Page - UPDATED for Weblynx Infotech */}
+      <Seo
+        title="Full Stack Development Services | Weblynx Infotech" // UPDATED
+        description="Weblynx Infotech provides comprehensive end-to-end full stack development services, managing both frontend and backend to deliver cohesive and high-quality applications." // UPDATED
+        keywords="full stack development, MERN stack, Node.js, React.js, Express.js, MongoDB, web application development, frontend development, backend development, API design, cloud deployment, Weblynx Infotech" // UPDATED
+        ogTitle="Weblynx Infotech: Complete Full Stack Development Solutions" // UPDATED
+        ogDescription="Partner with Weblynx Infotech for holistic full stack development that brings your digital vision to life from concept to deployment." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-full-stack.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/services/full-stack-development" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/services/full-stack-development" // UPDATED: Use your new domain
+      />
+
       {/* Hero/Introduction Section */}
       <section
         className={`py-16 sm:py-20 px-4 ${
@@ -338,7 +341,7 @@ const FullStackDevelopment = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, approachSteps)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -350,7 +353,7 @@ const FullStackDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, approachSteps)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -362,7 +365,7 @@ const FullStackDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, approachSteps)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -374,7 +377,7 @@ const FullStackDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, approachSteps)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -400,7 +403,7 @@ const FullStackDevelopment = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -412,7 +415,7 @@ const FullStackDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -424,7 +427,7 @@ const FullStackDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -436,7 +439,7 @@ const FullStackDevelopment = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">

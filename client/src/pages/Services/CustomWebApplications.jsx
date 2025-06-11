@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "lottie-react";
 import { Link } from "react-router-dom";
-import Seo from "../../components/common/Seo.jsx"; // Import the Seo component
+import Seo from "../../components/common/Seo.jsx";
 
 // IMPORTANT: Replace this with the actual path to your downloaded Lottie JSON file!
 import customWebAppsAnimationData from "../../assets/lottie-animations/custom-web-apps-animation.json";
@@ -17,7 +17,6 @@ const CustomWebApplications = () => {
   const isDark = theme === "dark";
   const sectionRef = useRef(null);
 
-  // Refs for specific groups of elements to animate
   const mainHeadingRef = useRef(null);
   const introTextRef = useRef(null);
   const lottieAnimationRef = useRef(null);
@@ -36,7 +35,6 @@ const CustomWebApplications = () => {
   const finalCtaTextRef = useRef(null);
   const finalCtaButtonRef = useRef(null);
 
-  // Helper function to add elements to a ref array
   const addToArrayRef = (el, arr) => {
     if (el && !arr.current.includes(el)) {
       arr.current.push(el);
@@ -178,18 +176,17 @@ const CustomWebApplications = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-500`}
     >
-      {/* SEO for the Custom Web Applications Page */}
+      {/* SEO for the Custom Web Applications Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Custom Web Applications Development | Weblynx"
-        description="Weblynx specializes in crafting scalable, secure, and intuitive custom web applications tailored to your business needs, from enterprise solutions to e-commerce platforms."
-        keywords="custom web development, web applications, MERN stack, React development, Node.js, enterprise solutions, e-commerce platforms, SaaS development, real-time apps, PWA, Weblynx"
-        ogTitle="Custom Web Applications by Weblynx - Build Your Digital Vision"
-        ogDescription="Elevate your business with bespoke web applications built for performance, scalability, and seamless user experience."
-        ogImage="https://www.weblynx.com/social-share-custom-web-apps.jpg" // Replace with a specific image for this service
-        ogUrl="https://www.weblynx.com/services/custom-web-applications" // Replace with your actual domain
-        canonical="https://www.weblynx.com/services/custom-web-applications" // Replace with your actual domain
+        title="Custom Web Applications Development | Weblynx Infotech" // UPDATED
+        description="Weblynx Infotech specializes in crafting scalable, secure, and intuitive custom web applications tailored to your business needs, from enterprise solutions to e-commerce platforms." // UPDATED
+        keywords="custom web development, web applications, MERN stack, React development, Node.js, enterprise solutions, e-commerce platforms, SaaS development, real-time apps, PWA, Weblynx Infotech" // UPDATED
+        ogTitle="Custom Web Applications by Weblynx Infotech - Build Your Digital Vision" // UPDATED
+        ogDescription="Elevate your business with bespoke web applications built for performance, scalability, and seamless user experience." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-custom-web-apps.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/services/custom-web-applications" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/services/custom-web-applications" // UPDATED: Use your new domain
       />
-
       {/* Hero/Introduction Section */}
       <section
         className={`py-16 sm:py-20 px-4 ${
@@ -241,7 +238,6 @@ const CustomWebApplications = () => {
           </Link>
         </div>
       </section>
-
       {/* What We Build Section */}
       <section className="py-16 sm:py-20 px-4">
         <div className="container mx-auto max-w-6xl">
@@ -327,7 +323,6 @@ const CustomWebApplications = () => {
           </div>
         </div>
       </section>
-
       {/* Our Approach Section */}
       <section
         className={`py-16 sm:py-20 px-4 ${
@@ -342,13 +337,11 @@ const CustomWebApplications = () => {
             Our Development Approach
           </h2>
           <div className="relative flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4 lg:space-x-8">
-            {/* Connector Line for desktop - no direct animation on this line, it's decorative */}
             <div
               className={`absolute hidden md:block h-1 w-full top-1/2 -translate-y-1/2 rounded-full
                             ${isDark ? "bg-gray-700" : "bg-gray-300"}`}
             ></div>
 
-            {/* Steps */}
             {[
               {
                 num: 1,
@@ -402,7 +395,6 @@ const CustomWebApplications = () => {
           </div>
         </div>
       </section>
-
       {/* Benefits Section */}
       <section className="py-16 sm:py-20 px-4">
         <div className="container mx-auto max-w-6xl text-center">
@@ -414,7 +406,7 @@ const CustomWebApplications = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -427,7 +419,7 @@ const CustomWebApplications = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -440,7 +432,7 @@ const CustomWebApplications = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -453,7 +445,7 @@ const CustomWebApplications = () => {
               </p>
             </div>
             <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 text-left"
+              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
               ref={(el) => addToArrayRef(el, benefitsCards)}
             >
               <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
@@ -468,38 +460,44 @@ const CustomWebApplications = () => {
           </div>
         </div>
       </section>
-
-      {/* Call to Action Section for this specific service */}
+            {/* Call to Action Section for this specific service */}     {" "}
       <section
         className={`py-16 px-4 text-center ${
           isDark ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-800"
         } transition-colors duration-300`}
       >
+               {" "}
         <div className="container mx-auto max-w-3xl">
+                   {" "}
           <h2
             className="text-3xl md:text-4xl font-bold mb-6"
             ref={finalCtaHeadingRef}
           >
-            Ready to Build Your Custom Application?
+                        Ready to Build Your Custom Application?          {" "}
           </h2>
+                   {" "}
           <p className="text-lg mb-8 opacity-90" ref={finalCtaTextRef}>
-            Let's discuss your unique idea and how we can turn it into a
-            powerful digital reality.
+                        Let's discuss your unique idea and how we can turn it
+            into a             powerful digital reality.          {" "}
           </p>
+                   {" "}
           <Link
             to="/contact"
             ref={finalCtaButtonRef}
             className={`inline-block px-10 py-4 text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300
-                        ${
-                          isDark
-                            ? "bg-cyan-700 text-white hover:bg-cyan-600"
-                            : "bg-green-600 text-white hover:bg-green-700"
-                        }`}
+                        ${
+              isDark
+                ? "bg-cyan-700 text-white hover:bg-cyan-600"
+                : "bg-green-600 text-white hover:bg-green-700"
+            }`}
           >
-            Get a Free Consultation
+                        Get a Free Consultation          {" "}
           </Link>
+                 {" "}
         </div>
+             {" "}
       </section>
+         {" "}
     </div>
   );
 };

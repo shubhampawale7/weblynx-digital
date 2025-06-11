@@ -5,9 +5,11 @@ import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 import { MotionConfig, motion } from "framer-motion";
 import Lottie from "lottie-react"; // Import Lottie component
+import { NavLink, Link } from "react-router-dom";
+import Seo from "../../components/common/Seo.jsx"; // Import the Seo component
 
-// Import your Lottie animation JSON file
-// IMPORTANT: Make sure the path matches where you saved your .json file!
+// IMPORTANT: Make sure this path matches where you saved your .json file!
+// This import line is crucial for heroAnimationData to be defined.
 import heroAnimationData from "../../assets/lottie-animations/hero-animation.json";
 
 gsap.registerPlugin(TextPlugin);
@@ -18,48 +20,67 @@ const HeroSection = () => {
 
   const taglineRef = useRef(null);
   const ctaButtonRef = useRef(null);
-  // animationContainerRef is no longer strictly needed if using Lottie component directly
-  // but can be kept for other purposes or if you manually load Lottie.
+  const mainHeadingRef = useRef(null); // Ref for the main heading
 
   const taglines = [
-    "Engineering Digital Excellence.",
+    "Engineering Digital Excellence with Weblynx Infotech.",
     "Connecting Your Business to Tomorrow's Digital Landscape.",
     "Building the Future of Your Online Presence.",
     "Crafting the Next Evolution of Web Experiences.",
   ];
 
   useEffect(() => {
-    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+    // Wrap all GSAP animations in a context for proper cleanup
+    let ctx = gsap.context(() => {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
 
-    taglines.forEach((tagline, index) => {
-      tl.to(taglineRef.current, {
-        duration: 1.5,
-        text: tagline,
-        ease: "power1.inOut",
-        delay: index === 0 ? 0 : 0.5,
-      }).to(taglineRef.current, {
-        duration: 0.8,
-        text: "",
-        ease: "power1.inOut",
-        delay: 2,
+      if (taglineRef.current) {
+        // Ensure ref is not null before animating
+        taglines.forEach((tagline, index) => {
+          tl.to(taglineRef.current, {
+            duration: 1.5,
+            text: tagline,
+            ease: "power1.inOut",
+            delay: index === 0 ? 0 : 0.5,
+          }).to(taglineRef.current, {
+            duration: 0.8,
+            text: "",
+            ease: "power1.inOut",
+            delay: 2,
+          });
+        });
+      }
+
+      if (ctaButtonRef.current) {
+        // Ensure ref is not null
+        gsap.from(ctaButtonRef.current, {
+          y: 50,
+          duration: 1,
+          delay: 2,
+          ease: "power3.out",
+        });
+      }
+
+      // Main Heading Animation - Add conditional check
+      if (mainHeadingRef.current) {
+        gsap.from(mainHeadingRef.current, {
+          y: -50,
+          duration: 1,
+          ease: "power3.out",
+        });
+      }
+
+      gsap.to(".hero-bg-gradient", {
+        backgroundPosition: "200% 0%",
+        duration: 30,
+        ease: "none",
+        repeat: -1,
+        yoyo: true,
       });
     });
 
-    gsap.from(ctaButtonRef.current, {
-      y: 50,
-      duration: 1,
-      delay: 2,
-      ease: "power3.out",
-    });
-
-    gsap.to(".hero-bg-gradient", {
-      backgroundPosition: "200% 0%",
-      duration: 30,
-      ease: "none",
-      repeat: -1,
-      yoyo: true,
-    });
-  }, [taglines]);
+    return () => ctx.revert(); // Cleanup all GSAP animations
+  }, [taglines]); // Re-run if taglines change (unlikely)
 
   return (
     <section
@@ -71,11 +92,22 @@ const HeroSection = () => {
                         }
                         transition-colors duration-500 ease-in-out`}
     >
+      <Seo
+        title="Weblynx Infotech - Your Digital Services Partner"
+        description="Weblynx Infotech offers expert MERN stack development, WordPress solutions, SEO optimization, mobile app development, and full-stack services to transform your online presence. Crafting the next evolution of web experiences."
+        keywords="digital services, web development, MERN stack, WordPress development, SEO optimization, API integration, full stack development, mobile app development, custom web applications, Weblynx Infotech, Pune, India"
+        ogTitle="Weblynx Infotech - Your Digital Services Partner"
+        ogDescription="Elevate your business with custom web and mobile applications, robust SEO, and comprehensive digital solutions from Weblynx Infotech."
+        ogImage="https://www.weblynxinfotech.com/social-share-home.jpg"
+        ogUrl="https://www.weblynxinfotech.com/"
+        canonical="https://www.weblynxinfotech.com/"
+      />
+
       <div
         className="hero-bg-gradient absolute inset-0 opacity-20"
         style={{
           background: `linear-gradient(90deg, ${
-            isDark ? "#0a0a0a, #2c004c, #0a0a0a, #1a1a1a" : "transparent"
+            isDark ? "#0a0a0a, #2c004c, #0a0a0a, 1a1a1a" : "transparent"
           })`,
           backgroundSize: "200% 100%",
           filter: isDark ? "blur(80px)" : "none",
@@ -89,10 +121,11 @@ const HeroSection = () => {
           animate={{ y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           className="text-6xl md:text-7xl font-extrabold mb-6 drop-shadow-lg
-                     text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600
-                     dark:from-purple-400 dark:to-cyan-400"
+                         text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600
+                         dark:from-purple-400 dark:to-cyan-400"
+          ref={mainHeadingRef}
         >
-          WEBLYNX
+          WEBLYNX INFOTECH
         </motion.h1>
 
         <h2
@@ -102,45 +135,38 @@ const HeroSection = () => {
           Building the Future of Your Online Presence.
         </h2>
 
-        {/* Lottie Animation Integration */}
+        {/* Lottie Animation Integration - Uses heroAnimationData */}
         <div className="w-64 h-64 md:w-80 md:h-80 mx-auto mb-8">
           <Lottie
-            animationData={heroAnimationData}
-            loop={true} // Loop the animation
-            autoplay={true} // Play automatically
-            // You can add style or className here if needed
+            animationData={heroAnimationData} // This is the variable in question
+            loop={true}
+            autoplay={true}
           />
         </div>
 
         <MotionConfig transition={{ duration: 0.3, ease: "easeInOut" }}>
-          {/* <motion.button
+          {/* <Link
+            to="/contact"
             ref={ctaButtonRef}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: isDark
-                ? "0 0 30px rgba(168, 85, 247, 0.6)"
-                : "0 0 30px rgba(37, 99, 235, 0.6)",
-            }}
-            whileTap={{ scale: 0.95 }}
-            className={`px-10 py-4 text-xl font-bold rounded-full shadow-lg transform active:scale-95 transition-all duration-300
-                        ${
-                          isDark
-                            ? "bg-purple-700 text-white hover:bg-purple-600"
-                            : "bg-blue-600 text-white hover:bg-blue-700"
-                        }
-                        relative overflow-hidden group`}
+            className={`inline-block px-10 py-4 text-xl font-bold rounded-full shadow-lg transform active:scale-95 transition-all duration-300
+                                ${
+                                  isDark
+                                    ? "bg-purple-700 text-white hover:bg-purple-600"
+                                    : "bg-blue-600 text-white hover:bg-blue-700"
+                                }
+                                relative overflow-hidden group`}
           >
             <span className="relative z-10">Let’s Build Your Vision</span>
             <span
               className={`absolute inset-0 rounded-full border-2
-                              ${
-                                isDark
-                                  ? "border-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                  : "border-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                              }`}
+                                    ${
+                                      isDark
+                                        ? "border-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                        : "border-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    }`}
               aria-hidden="true"
             ></span>
-          </motion.button> */}
+          </Link> */}
         </MotionConfig>
       </div>
     </section>

@@ -4,11 +4,10 @@ import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "lottie-react";
-import { Link } from "react-router-dom"; // Import Link for CTA
-import Seo from "../../components/common/Seo.jsx"; // Import the Seo component
+import { Link } from "react-router-dom";
+import Seo from "../../components/common/Seo.jsx";
 
 // IMPORTANT: Replace this with the actual path to your downloaded Lottie JSON file!
-// Example: import wordpressAnimationData from '../../assets/lottie-animations/your-wordpress-animation-name.json';
 import wordpressAnimationData from "../../assets/lottie-animations/wordpress-animation.json";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,28 +15,26 @@ gsap.registerPlugin(ScrollTrigger);
 const WordPressSiteCreation = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null); // Ref for the entire component's root div
+  const sectionRef = useRef(null);
 
-  // Refs for specific groups of elements to animate
   const mainHeadingRef = useRef(null);
   const introTextRef = useRef(null);
   const lottieAnimationRef = useRef(null);
   const heroCtaRef = useRef(null);
 
   const whatWeOfferHeadingRef = useRef(null);
-  const whatWeOfferCards = useRef([]); // Array for "What We Offer" cards
+  const whatWeOfferCards = useRef([]);
 
   const approachHeadingRef = useRef(null);
-  const approachSteps = useRef([]); // Array for "Our Approach to WordPress" steps
+  const approachSteps = useRef([]);
 
   const benefitsHeadingRef = useRef(null);
-  const benefitsCards = useRef([]); // Array for "Benefits" cards
+  const benefitsCards = useRef([]);
 
   const finalCtaHeadingRef = useRef(null);
   const finalCtaTextRef = useRef(null);
   const finalCtaButtonRef = useRef(null);
 
-  // Helper function to add elements to a ref array
   const addToArrayRef = (el, arr) => {
     if (el && !arr.current.includes(el)) {
       arr.current.push(el);
@@ -45,13 +42,11 @@ const WordPressSiteCreation = () => {
   };
 
   useEffect(() => {
-    // Clear ref arrays on each effect run to prevent duplicates
     whatWeOfferCards.current = [];
     approachSteps.current = [];
     benefitsCards.current = [];
 
     let ctx = gsap.context(() => {
-      // Main Heading Animation
       gsap.from(mainHeadingRef.current, {
         y: -50,
         duration: 1,
@@ -63,7 +58,6 @@ const WordPressSiteCreation = () => {
         },
       });
 
-      // Hero Section Text, Lottie, & CTA
       gsap.from(
         [introTextRef.current, lottieAnimationRef.current, heroCtaRef.current],
         {
@@ -80,7 +74,6 @@ const WordPressSiteCreation = () => {
         }
       );
 
-      // What We Offer Section Animations
       gsap.from(whatWeOfferHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -104,7 +97,6 @@ const WordPressSiteCreation = () => {
         },
       });
 
-      // Our Approach Section Animations
       gsap.from(approachHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -128,7 +120,6 @@ const WordPressSiteCreation = () => {
         },
       });
 
-      // Benefits Section Animations
       gsap.from(benefitsHeadingRef.current, {
         y: 50,
         duration: 0.8,
@@ -152,7 +143,6 @@ const WordPressSiteCreation = () => {
         },
       });
 
-      // Final CTA Section Animations
       gsap.from(
         [
           finalCtaHeadingRef.current,
@@ -186,16 +176,16 @@ const WordPressSiteCreation = () => {
         isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
       } transition-colors duration-500`}
     >
-      {/* SEO for the WordPress Site Creation Page */}
+      {/* SEO for the WordPress Site Creation Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="WordPress Website Creation Services | Weblynx"
-        description="Weblynx specializes in creating custom, high-performance, and secure WordPress websites. From custom themes to e-commerce solutions and ongoing support, we build powerful online presences."
-        keywords="WordPress development, custom WordPress themes, WordPress e-commerce, WooCommerce, WordPress plugins, website migration, WordPress SEO, Weblynx"
-        ogTitle="Weblynx WordPress: Custom, Powerful, & User-Friendly Websites"
-        ogDescription="Unlock the full potential of WordPress with Weblynx's expert site creation and customization services."
-        ogImage="https://www.weblynx.com/social-share-wordpress.jpg" // Replace with a specific image for this service
-        ogUrl="https://www.weblynx.com/services/wordpress-site-creation" // Replace with your actual domain
-        canonical="https://www.weblynx.com/services/wordpress-site-creation" // Replace with your actual domain
+        title="WordPress Website Creation Services | Weblynx Infotech" // UPDATED
+        description="Weblynx Infotech specializes in creating custom, high-performance, and secure WordPress websites. From custom themes to e-commerce solutions and ongoing support, we build powerful online presences." // UPDATED
+        keywords="WordPress development, custom WordPress themes, WordPress e-commerce, WooCommerce, WordPress plugins, website migration, WordPress SEO, Weblynx Infotech" // UPDATED
+        ogTitle="Weblynx Infotech WordPress: Custom, Powerful, & User-Friendly Websites" // UPDATED
+        ogDescription="Unlock the full potential of WordPress with Weblynx Infotech's expert site creation and customization services." // UPDATED
+        ogImage="https://www.weblynxinfotech.com/social-share-wordpress.jpg" // UPDATED: Use your new domain
+        ogUrl="https://www.weblynxinfotech.com/services/wordpress-site-creation" // UPDATED: Use your new domain
+        canonical="https://www.weblynxinfotech.com/services/wordpress-site-creation" // UPDATED: Use your new domain
       />
 
       {/* Hero/Introduction Section */}
@@ -349,13 +339,11 @@ const WordPressSiteCreation = () => {
             Our Approach to WordPress Development
           </h2>
           <div className="relative flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4 lg:space-x-8">
-            {/* Connector Line for desktop, hidden on mobile */}
             <div
               className={`absolute hidden md:block h-1 w-full top-1/2 -translate-y-1/2 rounded-full
                             ${isDark ? "bg-gray-700" : "bg-gray-300"}`}
             ></div>
 
-            {/* Steps */}
             {[
               {
                 num: 1,
@@ -476,7 +464,7 @@ const WordPressSiteCreation = () => {
       <section
         className={`py-16 px-4 text-center ${
           isDark ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-800"
-        } transition-colors duration-300`}
+        }`}
       >
         <div className="container mx-auto max-w-3xl">
           <h2
