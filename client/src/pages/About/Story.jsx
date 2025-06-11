@@ -101,7 +101,7 @@ const Story = () => {
                          text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600
                          dark:from-purple-400 dark:to-cyan-400"
         >
-          Our Story
+          OUR STORY
         </h2>
 
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">

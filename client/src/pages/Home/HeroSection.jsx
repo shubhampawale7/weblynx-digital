@@ -92,7 +92,7 @@ const HeroSection = () => {
                      text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600
                      dark:from-purple-400 dark:to-cyan-400"
         >
-          Weblynx
+          WEBLYNX
         </motion.h1>
 
         <h2

@@ -81,7 +81,7 @@ const Testimonials = () => {
                        text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600
                        dark:from-pink-400 dark:to-orange-400"
         >
-          What Our Clients Say
+          WHAT OUR CLIENTS SAY
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

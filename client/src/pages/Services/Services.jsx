@@ -148,7 +148,7 @@ const Services = () => {
                          text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600
                          dark:from-purple-400 dark:to-cyan-400"
           >
-            Our Digital Services
+            OUR DIGITAL SERVICES
           </h1>
           <p className="text-lg md:text-2xl mb-12 md:mb-16 opacity-80 max-w-3xl mx-auto px-4">
             From groundbreaking custom applications to seamless digital

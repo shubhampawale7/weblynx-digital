@@ -24,7 +24,7 @@ const Home = () => {
       <HeroSection />
       <ServicesPreview />
       <WhyChooseUs />
-      <Testimonials />
+      {/* <Testimonials /> */}
       {/*
         Optional: You could add a final CTA section here if desired,
         or the general CTA at the bottom of the App.jsx will suffice.

@@ -98,7 +98,7 @@ const WhyChooseUs = () => {
                        text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-600
                        dark:from-cyan-400 dark:to-lime-400"
         >
-          Why Choose Weblynx?
+          Why Choose WEBLYNX?
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

@@ -95,7 +95,7 @@ const ServicesPreview = () => {
                        text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600
                        dark:from-purple-400 dark:to-cyan-400"
         >
-          Our Core Digital Services
+          OUR CORE DIGITAL SERVICES
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
