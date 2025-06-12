@@ -521,11 +521,11 @@ const Contact = () => {
                 Send us your detailed inquiries anytime.
               </p>
               <a
-                href="mailto:shubhampawale7@gmail.com"
+                href="mailto:weblynxinfotech@gmail.com"
                 className="text-blue-500 dark:text-purple-400 hover:underline text-lg font-medium"
-                aria-label="Email Shubham Pawale at shubhampawale7@gmail.com"
+                aria-label="Email Weblynx Infotech at weblynxinfotech@gmail.com"
               >
-                shubhampawale7@gmail.com
+                weblynxinfotech@gmail.com
               </a>
             </motion.div>
 

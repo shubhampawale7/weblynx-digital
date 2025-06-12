@@ -13,23 +13,23 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(express.json()); // Body parser for JSON requests
+app.use(express.json());
 
-// CORS Configuration - IMPORTANT: Only allow your deployed frontend URL
+// CORS Configuration - Allow both local and deployed frontend origins
 const corsOptions = {
-  origin: "https://weblynx-digital.vercel.app", // <--- Your Vercel frontend URL
+  origin: ["http://localhost:5173", "https://weblynx-digital.vercel.app"], // ADDED LOCALHOST ORIGIN
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // Allow cookies to be sent (if you ever add authentication)
-  optionsSuccessStatus: 204, // For preflight requests
+  credentials: true,
+  optionsSuccessStatus: 204,
 };
-app.use(cors(corsOptions)); // Use the configured CORS options
+app.use(cors(corsOptions));
 
 // Routes
-app.use("/api/contact", contactRoutes); // All contact form related routes will be under /api/contact
+app.use("/api/contact", contactRoutes);
 
 // Simple root route for testing
 app.get("/", (req, res) => {
-  res.send("Weblynx Backend API is running!");
+  res.send("Weblynx Infotech Backend API is running!");
 });
 
 // Start the server
