@@ -68,7 +68,7 @@ const Footer = () => {
             <FaGithub />
           </a>
           <a
-            href="https://www.instagram.com/__shubh999__/?igsh=cXoybGo5M3J4a2E5#"
+            href="https://www.instagram.com/weblynxinfotech/?utm_source=ig_web_button_share_sheet"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-pink-600 dark:hover:text-pink-400 transition-colors duration-200"
