@@ -30,7 +30,7 @@ export const submitContactForm = async (req, res) => {
         Reply to: ${email}
       `,
       html: `
-        <p><strong>New Inquiry from Weblynx Infotech Website!</strong></p> // UPDATED
+        <p><strong>New Inquiry from Weblynx Infotech Website!</strong></p> 
         <p>----------------------------------</p>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
