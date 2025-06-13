@@ -20,7 +20,7 @@ export const submitContactForm = async (req, res) => {
       from: `"${name} (Weblynx Infotech Inquiry)" <${email}>`, // UPDATED
       subject: `New Weblynx Infotech Inquiry: ${projectType} from ${name}`, // UPDATED
       text: `
-        New Inquiry from Weblynx Infotech Website! // UPDATED
+        New Inquiry from Weblynx Infotech Website! 
         ----------------------------------
         Name: ${name}
         Email: ${email}
