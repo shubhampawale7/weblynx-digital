@@ -1,144 +1,197 @@
-// client/src/pages/About/TechStack.jsx
 import React, { useEffect, useRef } from "react";
 import { useTheme } from "../../context/ThemeContext.jsx";
-import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Seo from "../../components/common/Seo.jsx"; // Import Seo component
+import Seo from "../../components/common/Seo.jsx";
 
-gsap.registerPlugin(ScrollTrigger);
+// Import specific icons from react-icons
+import {
+  SiReact,
+  SiNodedotjs,
+  SiExpress,
+  SiMongodb,
+  SiWordpress,
+  SiTailwindcss,
+  SiGreensock,
+  SiFramer,
+  SiHtml5,
+  SiCss3,
+  SiJavascript,
+} from "react-icons/si";
+import { FaGlobe } from "react-icons/fa"; // For REST APIs
 
-const techStackData = [
-  { name: "React", icon: "⚛️" },
-  { name: "Node.js", icon: "🟢" },
-  { name: "Express.js", icon: "⚡" },
-  { name: "MongoDB", icon: "🍃" },
-  { name: "WordPress", icon: "🔵" },
-  { name: "Tailwind CSS", icon: "💨" },
-  { name: "GSAP", icon: "🎬" },
-  { name: "Framer Motion", icon: "✨" },
-  { name: "REST APIs", icon: "🌐" },
-  { name: "HTML5", icon: "📄" },
-  { name: "CSS3", icon: "🎨" },
-  { name: "JavaScript", icon: "📜" },
-];
+// --- UPDATED Tech Stack Data ---
+// Using actual react-icon components for a professional look.
+// Divided into two rings for the orbital design.
+const techStackData = {
+  outerRing: [
+    { name: "React", Icon: SiReact, color: "#61DAFB" },
+    { name: "Node.js", Icon: SiNodedotjs, color: "#339933" },
+    { name: "MongoDB", Icon: SiMongodb, color: "#47A248" },
+    { name: "WordPress", Icon: SiWordpress, color: "#21759B" },
+    { name: "Tailwind CSS", Icon: SiTailwindcss, color: "#06B6D4" },
+    { name: "HTML5", Icon: SiHtml5, color: "#E34F26" },
+  ],
+  innerRing: [
+    { name: "Express.js", Icon: SiExpress, color: "#FFFFFF" },
+    { name: "JavaScript", Icon: SiJavascript, color: "#F7DF1E" },
+    { name: "GSAP", Icon: SiGreensock, color: "#88CE02" },
+    { name: "Framer Motion", Icon: SiFramer, color: "#0055FF" },
+    { name: "CSS3", Icon: SiCss3, color: "#1572B6" },
+    { name: "REST APIs", Icon: FaGlobe, color: "#808080" },
+  ],
+};
 
 const TechStack = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null); // Ref for the main section to scope GSAP context
-
-  // Refs for specific elements to animate
-  const headingRef = useRef(null);
-  const techCardsRefs = useRef([]); // Array for tech badges
-
-  // Helper function to add elements to a ref array
-  const addToArrayRef = (el, arr) => {
-    if (el && !arr.current.includes(el)) {
-      arr.current.push(el);
-    }
-  };
+  const sectionRef = useRef(null);
+  const outerRingRef = useRef(null);
+  const innerRingRef = useRef(null);
 
   useEffect(() => {
-    // Clear ref array on each effect run to prevent duplicates
-    techCardsRefs.current = [];
-
-    let ctx = gsap.context(() => {
-      // Heading Animation
-      gsap.from(headingRef.current, {
+    const ctx = gsap.context(() => {
+      // Animate the main heading
+      gsap.from(".tech-heading", {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          toggleActions: "play none none reverse",
+        },
+        opacity: 0,
         y: -50,
         duration: 1,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
-        },
       });
 
-      // Animation for tech badges
-      gsap.from(techCardsRefs.current, {
-        y: 50,
-        scale: 0.8,
-        duration: 0.6,
-        ease: "back.out(1.2)",
-        stagger: 0.08,
-        scrollTrigger: {
-          trigger: techCardsRefs.current[0],
-          start: "top 95%",
-          toggleActions: "play none none reverse",
-        },
+      // Perpetual rotation for the rings
+      gsap.to(outerRingRef.current, {
+        rotation: 360,
+        duration: 90,
+        repeat: -1,
+        ease: "none",
+      });
+      gsap.to(innerRingRef.current, {
+        rotation: -360,
+        duration: 60,
+        repeat: -1,
+        ease: "none",
       });
 
-      ScrollTrigger.refresh();
-    }, sectionRef); // Scope the context to the main section ref
+      // Animate the icons into view
+      gsap.from(".tech-icon-wrapper", {
+        scrollTrigger: {
+          trigger: ".tech-cosmos",
+          start: "top 60%",
+          toggleActions: "play none none reverse",
+        },
+        scale: 0,
+        opacity: 0,
+        duration: 1,
+        ease: "back.out(1.7)",
+        stagger: 0.07,
+      });
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  return (
-    <section
-      id="tech-stack" // Added ID for potential internal linking
-      ref={sectionRef}
-      className={`py-16 sm:py-20 px-4 ${
-        // Adjusted padding for responsiveness
-        isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
-      } transition-colors duration-300`}
-    >
-      {/* SEO for Tech Stack Page - UPDATED for Weblynx Infotech */}
-      <Seo
-        title="Our Tech Stack | Weblynx Infotech - Modern Web Technologies" // UPDATED
-        description="Explore the cutting-edge technologies and frameworks Weblynx Infotech specializes in, including React, Node.js, Express.js, MongoDB, WordPress, Tailwind CSS, GSAP, and more." // UPDATED
-        keywords="Weblynx Infotech tech stack, web development technologies, MERN stack, WordPress development, React.js, Node.js, Express.js, MongoDB, Tailwind CSS, GSAP, Framer Motion, frontend, backend, full stack" // UPDATED
-        ogTitle="Weblynx Infotech: Building with Cutting-Edge Technologies" // UPDATED
-        ogDescription="See the powerful tools and frameworks Weblynx Infotech leverages to build high-performance and innovative digital solutions." // UPDATED
-        ogUrl="https://www.weblynxinfotech.com/about#tech-stack" // UPDATED: Use your new domain
-        canonical="https://www.weblynxinfotech.com/about#tech-stack" // UPDATED: Use your new domain
-      />
+  // Function to render a ring of tech icons
+  const renderRing = (technologies, radius, ringRef, initialRotation = 0) => {
+    const angleStep = (2 * Math.PI) / technologies.length;
+    return (
+      <div
+        ref={ringRef}
+        className="absolute inset-0 flex items-center justify-center"
+      >
+        {technologies.map(({ name, Icon, color }, index) => {
+          const angle = index * angleStep;
+          const x = radius * Math.cos(angle);
+          const y = radius * Math.sin(angle);
+          const rotation = (angle * 180) / Math.PI + 90; // Align icon to the tangent
 
-      <div className="container mx-auto max-w-6xl">
-        <h2
-          ref={headingRef}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16
-                         text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600
-                         dark:from-amber-400 dark:to-rose-400"
-        >
-          Our Tech Stack
-        </h2>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 justify-items-center">
-          {techStackData.map((tech, index) => (
-            <motion.div
-              key={tech.name}
-              ref={(el) => addToArrayRef(el, techCardsRefs)}
-              className={`p-4 sm:p-6 rounded-lg shadow-md flex flex-col items-center justify-center min-h-[100px] sm:min-h-[120px] w-full max-w-[140px] sm:max-w-[160px]
-                          ${
-                            isDark
-                              ? "bg-gray-800 border border-gray-700"
-                              : "bg-gray-100 border border-gray-200"
-                          }
-                          transform transition-all duration-300 group`}
-              whileHover={{
-                y: -5,
-                boxShadow: isDark
-                  ? "0 10px 20px rgba(0, 0, 0, 0.3)"
-                  : "0 10px 20px rgba(0, 0, 0, 0.1)",
+          return (
+            <div
+              key={name}
+              className="tech-icon-wrapper group absolute"
+              style={{
+                transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
               }}
             >
-              <div
-                className={`text-3xl sm:text-4xl mb-2 sm:mb-3 ${
-                  isDark ? "text-gray-200" : "text-gray-700"
-                }`}
-                role="img"
-                aria-label={`${tech.name} icon`}
-              >
-                {tech.icon}
+              <div className="relative flex flex-col items-center">
+                <Icon
+                  style={{ color: color }}
+                  className="text-4xl md:text-5xl transition-all duration-300 ease-in-out 
+                             group-hover:scale-125 group-hover:drop-shadow-[0_0_15px_var(--glow-color)]"
+                />
+                <span
+                  className="absolute top-full mt-3 px-3 py-1 rounded-md text-sm font-bold 
+                             bg-gray-800 text-white dark:bg-white dark:text-gray-900 
+                             opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                >
+                  {name}
+                </span>
               </div>
-              <p className="text-sm sm:text-lg font-semibold text-center">
-                {tech.name}
-              </p>
-            </motion.div>
-          ))}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  return (
+    <section
+      id="tech-stack"
+      ref={sectionRef}
+      className={`py-20 sm:py-28 overflow-hidden ${
+        isDark ? "bg-gray-950 text-white" : "bg-black text-white"
+      } transition-colors duration-300`}
+    >
+      <Seo
+        title="Our Tech Stack | Weblynx Infotech - Modern Web Technologies"
+        description="Explore the cutting-edge technologies and frameworks Weblynx Infotech specializes in, including React, Node.js, Express.js, MongoDB, WordPress, Tailwind CSS, GSAP, and more."
+        keywords="Weblynx Infotech tech stack, web development technologies, MERN stack, WordPress development, React.js, Node.js, Express.js, MongoDB, Tailwind CSS, GSAP, Framer Motion, frontend, backend, full stack"
+        ogTitle="Weblynx Infotech: Building with Cutting-Edge Technologies"
+        ogDescription="See the powerful tools and frameworks Weblynx Infotech leverages to build high-performance and innovative digital solutions."
+        ogUrl="https://www.weblynxinfotech.com/about#tech-stack"
+        canonical="https://www.weblynxinfotech.com/about#tech-stack"
+      />
+
+      <div className="container mx-auto max-w-6xl px-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h2
+            className="tech-heading text-4xl md:text-5xl font-bold
+                       text-transparent bg-clip-text bg-gradient-to-r 
+                       from-orange-500 to-red-600
+                       dark:from-amber-400 dark:to-rose-400"
+          >
+            Our Tech Cosmos
+          </h2>
+          <p className="tech-heading mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+            A curated ecosystem of modern technologies we use to build
+            high-performance applications.
+          </p>
+        </div>
+
+        <div className="tech-cosmos relative w-full max-w-xl md:max-w-3xl mx-auto aspect-square">
+          {/* --- Central Core --- */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div
+              className={`w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center text-center
+                                 font-bold text-lg transition-all duration-300
+                                 ${
+                                   isDark
+                                     ? "bg-gray-900 text-gray-300 shadow-[0_0_30px_rgba(139,92,246,0.3)]"
+                                     : "bg-gray-200 text-gray-700 shadow-[0_0_30px_rgba(0,0,0,0.1)]"
+                                 }`}
+            >
+              Core Stack
+            </div>
+          </div>
+
+          {/* --- Rings --- */}
+          {renderRing(techStackData.outerRing, 280, outerRingRef)}
+          {renderRing(techStackData.innerRing, 180, innerRingRef)}
+          {/* Note: The radius (e.g., 280, 180) might need tweaking on smaller screens or different aspect ratios */}
         </div>
       </div>
     </section>

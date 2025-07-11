@@ -1,134 +1,143 @@
-// client/src/pages/Services/Services.jsx
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Seo from "../../components/common/Seo.jsx";
+import {
+  FiCode,
+  FiSmartphone,
+  FiPenTool,
+  FiTrendingUp,
+  FiLink,
+  FiLayers,
+  FiSettings,
+} from "react-icons/fi";
 
-gsap.registerPlugin(ScrollTrigger);
-
-// Data for the overview cards
+// --- UPDATED Service Data with Professional Icons & Colors ---
 const serviceOverviewData = [
   {
     id: "custom-web-applications",
     title: "Custom Web Applications",
-    icon: "💻",
+    Icon: FiCode,
     description:
-      "Bespoke web solutions tailored to your unique business needs, built for scalability and performance.",
-    gradient: "from-blue-500 to-purple-600",
-    darkGradient: "from-purple-400 to-cyan-400",
+      "Bespoke web solutions tailored to your unique business needs, built with the MERN stack for scalability and high performance.",
+    color: "#3b82f6", // Blue
   },
   {
     id: "mobile-app-development",
     title: "Mobile App Development",
-    icon: "📱",
+    Icon: FiSmartphone,
     description:
-      "Crafting intuitive and high-performance native or cross-platform mobile applications for iOS & Android.",
-    gradient: "from-orange-500 to-red-600",
-    darkGradient: "from-amber-400 to-rose-400",
+      "Crafting intuitive and high-performance native or cross-platform mobile applications for both iOS & Android ecosystems.",
+    color: "#f97316", // Orange
   },
   {
     id: "wordpress-site-creation",
-    title: "WordPress Site Creation",
-    icon: "🌐",
+    title: "WordPress Development",
+    Icon: FiPenTool,
     description:
-      "Flexible, secure, and user-friendly WordPress websites, from custom themes to e-commerce solutions.",
-    gradient: "from-green-500 to-blue-600",
-    darkGradient: "from-lime-400 to-cyan-400",
+      "Flexible, secure, and user-friendly WordPress websites, from custom theme development to robust e-commerce solutions.",
+    color: "#0ea5e9", // Sky Blue
   },
   {
     id: "seo-optimization",
-    title: "SEO Optimization",
-    icon: "📈",
+    title: "SEO & Digital Marketing",
+    Icon: FiTrendingUp,
     description:
-      "Boost your online visibility and organic traffic with expert search engine optimization strategies.",
-    gradient: "from-teal-500 to-emerald-600",
-    darkGradient: "from-cyan-400 dark:to-lime-400",
+      "Boost your online visibility and organic traffic with data-driven search engine optimization and marketing strategies.",
+    color: "#22c55e", // Green
   },
   {
     id: "api-integration",
     title: "API Integration",
-    icon: "🔗",
+    Icon: FiLink,
     description:
-      "Seamlessly connect your applications with third-party services, enhancing functionality and automation.",
-    gradient: "from-purple-500 to-pink-600",
-    darkGradient: "from-pink-400 to-orange-400",
+      "Seamlessly connect your applications with third-party services, enhancing functionality and automating critical workflows.",
+    color: "#ec4899", // Pink
   },
   {
     id: "full-stack-development",
     title: "Full Stack Development",
-    icon: "🛠️",
+    Icon: FiLayers,
     description:
-      "End-to-end web development covering both frontend and backend, providing comprehensive digital solutions.",
-    gradient: "from-indigo-500 to-sky-600",
-    darkGradient: "from-purple-400 dark:to-teal-400",
+      "End-to-end web development covering both frontend and backend, providing comprehensive and cohesive digital solutions.",
+    color: "#8b5cf6", // Purple
   },
   {
     id: "support-management-services",
-    title: "Support & Management Services",
-    icon: "⚙️",
+    title: "Support & Management",
+    Icon: FiSettings,
     description:
-      "Proactive maintenance, security, and performance optimization to ensure your digital assets run smoothly.",
-    gradient: "from-gray-500 to-gray-700",
-    darkGradient: "from-gray-400 to-gray-600",
+      "Proactive maintenance, security audits, and performance optimization to ensure your digital assets run smoothly and securely.",
+    color: "#64748b", // Slate
   },
 ];
 
 const Services = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const overviewRef = useRef(null);
-  const cardRefs = useRef([]); // This is the ref that the error claims is "not defined"
+  const sectionRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const contentRef = useRef(null);
+  const backgroundRef = useRef(null);
   const navigate = useNavigate();
 
+  // Animate content and background on activeIndex change
   useEffect(() => {
-    // Ensure cardRefs.current is cleared before populating to avoid stale references on re-renders
-    // (though for this component's static content, it might not be strictly necessary, it's good practice)
-    cardRefs.current = [];
+    if (!contentRef.current || !backgroundRef.current) return;
 
-    let ctx = gsap.context(() => {
-      // Main Heading Animation
-      gsap.from(overviewRef.current.querySelector("h1"), {
-        y: -50,
+    const activeService = serviceOverviewData[activeIndex];
+    const contentElements = contentRef.current.children;
+
+    // Animate background color
+    gsap.to(backgroundRef.current, {
+      backgroundColor: activeService.color,
+      duration: 1,
+      ease: "power3.inOut",
+    });
+
+    // Animate content with a cascade
+    gsap
+      .timeline()
+      .fromTo(
+        contentElements,
+        { autoAlpha: 0, y: 40 },
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.1 }
+      );
+  }, [activeIndex]);
+
+  // Initial page load animation
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".main-heading, .main-subheading", {
+        opacity: 0,
+        y: -30,
+        stagger: 0.15,
         duration: 1,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: overviewRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
-        },
       });
-
-      // Animation for overview cards
-      // Ensure this runs AFTER all cards are rendered and assigned to refs
-      gsap.from(cardRefs.current, {
-        // Accessing the array of refs
-        y: 80,
-        scale: 0.9,
-        duration: 0.7,
-        ease: "back.out(1.5)",
+      gsap.from(".service-list-item", {
+        opacity: 0,
+        x: -30,
         stagger: 0.1,
-        scrollTrigger: {
-          trigger: overviewRef.current, // Use the section ref as the main trigger for the whole grid
-          start: "top 70%", // Start animating the grid when the section is 70% from top
-          toggleActions: "play none none reverse",
-        },
+        duration: 0.8,
+        ease: "power2.out",
+        delay: 0.3,
       });
-      ScrollTrigger.refresh(); // Refresh after all animations are set up
-    }, overviewRef);
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
-    return () => ctx.revert(); // Cleanup
-  }, []); // Empty dependency array means this effect runs only once on mount
-
-  const navigateToService = (serviceId) => {
-    navigate(`/services/${serviceId}`);
-  };
+  const activeService = serviceOverviewData[activeIndex];
+  const ActiveIcon = activeService.Icon;
 
   return (
-    <div className="min-h-screen">
-      {/* SEO for the Services Index Page - UPDATED for Weblynx Infotech */}
+    <div
+      ref={sectionRef}
+      className={`min-h-screen transition-colors duration-500 ${
+        isDark ? "bg-black text-white" : "bg-white text-gray-900"
+      }`}
+    >
       <Seo
         title="Our Digital Services | Weblynx Infotech - Web & Mobile Development"
         description="Explore Weblynx Infotech's comprehensive digital services: custom web applications, mobile app development (iOS/Android), WordPress site creation, SEO optimization, API integration, full stack development, and robust support & management."
@@ -139,84 +148,94 @@ const Services = () => {
         canonical="https://www.weblynxinfotech.com/services"
       />
 
-      {/* Services Overview Section - This is the ONLY content on the /services page now */}
-      <section
-        ref={overviewRef} // Attach ref to the main section
-        className={`py-16 sm:py-20 px-4 ${
-          isDark
-            ? "bg-gradient-to-br from-gray-950 to-gray-800 text-white"
-            : "bg-gradient-to-br from-blue-50 to-white text-gray-800"
-        } transition-colors duration-500`}
-      >
-        <div className="container mx-auto max-w-7xl text-center">
+      <header className="py-16 sm:py-20 text-center">
+        <div className="container mx-auto px-4">
           <h1
-            className="text-5xl md:text-7xl font-extrabold mb-6
-                         text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600
-                         dark:from-purple-400 dark:to-cyan-400"
+            className="main-heading text-5xl md:text-6xl font-extrabold
+                             text-transparent bg-clip-text bg-gradient-to-r 
+                             from-blue-400 to-purple-600 dark:from-purple-400 dark:to-cyan-400"
           >
-            OUR DIGITAL SERVICES
+            Our Digital Services
           </h1>
-          <p className="text-lg md:text-2xl mb-12 md:mb-16 opacity-80 max-w-3xl mx-auto px-4">
-            From groundbreaking custom applications to seamless digital
-            maintenance, Weblynx Infotech delivers comprehensive solutions to
-            elevate your business. Click a service below to learn more.
+          <p className="main-subheading text-lg md:text-xl mt-4 max-w-3xl mx-auto text-gray-600 dark:text-gray-400">
+            A full spectrum of solutions, meticulously crafted to bring your
+            vision to life.
           </p>
+        </div>
+      </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <main className="container mx-auto px-4 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+          {/* Left Column: Service List */}
+          <div className="lg:col-span-1 flex flex-col gap-1">
             {serviceOverviewData.map((service, index) => (
-              <motion.div
+              <div
                 key={service.id}
-                ref={(el) => (cardRefs.current[index] = el)} // This line is correct
-                onClick={() => navigateToService(service.id)}
-                className={`relative p-6 sm:p-8 rounded-xl shadow-lg flex flex-col items-center text-center cursor-pointer
-                            ${
-                              isDark
-                                ? "bg-gray-800 border border-gray-700"
-                                : "bg-white border border-gray-200"
-                            }
-                            overflow-hidden group cursor-pointer transition-all duration-300`}
-                whileHover={{
-                  boxShadow: isDark
-                    ? "0 15px 30px rgba(0, 0, 0, 0.4)"
-                    : "0 15px 30px rgba(0, 0, 0, 0.15)",
-                }}
+                onMouseEnter={() => setActiveIndex(index)}
+                className="service-list-item p-4 rounded-lg cursor-pointer relative"
               >
                 <div
-                  className={`text-5xl sm:text-6xl mb-4 sm:mb-6 p-3 sm:p-4 rounded-full inline-block
-                                 ${
-                                   isDark
-                                     ? `bg-gradient-to-br from-purple-600/20 to-cyan-600/20 text-white`
-                                     : `bg-gradient-to-br from-blue-600/10 to-green-600/10 text-gray-800`
-                                 }`}
-                  role="img"
-                  aria-label={`Icon for ${service.title}`}
-                >
-                  {service.icon}
+                  className={`absolute inset-0 rounded-lg transition-all duration-300 ${
+                    activeIndex === index
+                      ? "bg-gray-200/50 dark:bg-gray-800/50"
+                      : "opacity-0"
+                  }`}
+                ></div>
+                <div className="relative flex items-center gap-4">
+                  <div
+                    className="w-1 h-8 rounded-full transition-all duration-300"
+                    style={{
+                      backgroundColor:
+                        activeIndex === index ? service.color : "transparent",
+                    }}
+                  ></div>
+                  <h3
+                    className={`text-lg font-bold transition-colors duration-300 ${
+                      activeIndex === index
+                        ? "text-gray-900 dark:text-white"
+                        : "text-gray-500 dark:text-gray-400"
+                    }`}
+                  >
+                    {service.title}
+                  </h3>
                 </div>
-                <h3 className="text-xl sm:text-3xl font-semibold mb-3 sm:mb-4 text-blue-600 dark:text-purple-400">
-                  {service.title}
-                </h3>
-                <p className="text-base sm:text-lg opacity-80">
-                  {service.description}
-                </p>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Optional: General CTA at the very end */}
-      <section className="py-16 sm:py-20 px-4 text-center text-lg sm:text-xl dark:bg-gray-900 bg-gray-50">
-        <p className="max-w-2xl mx-auto px-4 opacity-80">
-          Ready to start your project?{" "}
-          <a
-            href="/contact"
-            className="text-blue-600 dark:text-purple-400 font-semibold hover:underline"
+          {/* Right Column: Display Panel */}
+          <div
+            className="lg:col-span-3 rounded-2xl min-h-[500px] flex 
+                          relative overflow-hidden"
           >
-            Contact us today!
-          </a>
-        </p>
-      </section>
+            <div
+              ref={backgroundRef}
+              className="absolute inset-0 w-full h-full transition-colors duration-1000"
+            ></div>
+
+            <div className="relative w-full p-8 md:p-12 flex flex-col justify-center text-white">
+              <div ref={contentRef} className="max-w-xl">
+                <ActiveIcon className="w-24 h-24 mb-6 text-white/80" />
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
+                  {activeService.title}
+                </h2>
+                <p className="text-lg md:text-xl text-white/80 mb-8">
+                  {activeService.description}
+                </p>
+                <button
+                  onClick={() => navigate(`/services/${activeService.id}`)}
+                  className="px-8 py-3 rounded-full font-bold text-lg
+                                   bg-white/20 hover:bg-white/30
+                                   backdrop-blur-sm
+                                   transform transition-all duration-300 hover:scale-105"
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

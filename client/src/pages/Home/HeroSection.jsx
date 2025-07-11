@@ -1,15 +1,10 @@
-// client/src/pages/Home/HeroSection.jsx
 import React, { useEffect, useRef } from "react";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
-import { MotionConfig, motion } from "framer-motion";
-import Lottie from "lottie-react"; // Import Lottie component
-import { NavLink, Link } from "react-router-dom";
-import Seo from "../../components/common/Seo.jsx"; // Import the Seo component
-
-// IMPORTANT: Make sure this path matches where you saved your .json file!
-// This import line is crucial for heroAnimationData to be defined.
+import Lottie from "lottie-react";
+import { Link } from "react-router-dom";
+import Seo from "../../components/common/Seo.jsx";
 import heroAnimationData from "../../assets/lottie-animations/hero-animation.json";
 
 gsap.registerPlugin(TextPlugin);
@@ -17,84 +12,128 @@ gsap.registerPlugin(TextPlugin);
 const HeroSection = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-
+  const sectionRef = useRef(null);
   const taglineRef = useRef(null);
-  const ctaButtonRef = useRef(null);
-  const mainHeadingRef = useRef(null); // Ref for the main heading
+  const mouseGlowRef = useRef(null);
 
   const taglines = [
-    "Engineering Digital Excellence with Weblynx Infotech.",
-    "Connecting Your Business to Tomorrow's Digital Landscape.",
-    "Building the Future of Your Online Presence.",
-    "Crafting the Next Evolution of Web Experiences.",
+    "Engineering Digital Excellence.",
+    "Building Tomorrow's Digital Landscape.",
+    "The Future of Your Online Presence.",
+    "Crafting the Next Web Evolution.",
   ];
 
   useEffect(() => {
-    // Wrap all GSAP animations in a context for proper cleanup
+    // GSAP context for cleanup
     let ctx = gsap.context(() => {
-      const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+      // --- Mouse Follow Glow Effect ---
+      const handleMouseMove = (e) => {
+        gsap.to(mouseGlowRef.current, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 1.5,
+          ease: "power3.out",
+        });
+      };
+      window.addEventListener("mousemove", handleMouseMove);
 
-      if (taglineRef.current) {
-        // Ensure ref is not null before animating
-        taglines.forEach((tagline, index) => {
-          tl.to(taglineRef.current, {
-            duration: 1.5,
+      // --- Entrance Animation Timeline ---
+      const tl = gsap.timeline({ delay: 0.5 });
+      tl.from(".char", {
+        opacity: 0,
+        y: 50,
+        skewX: -20,
+        duration: 1,
+        stagger: 0.03,
+        ease: "power3.out",
+      })
+        .from(
+          ".lottie-container",
+          {
+            opacity: 0,
+            scale: 0.8,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.8"
+        )
+        .from(
+          ".tagline-wrapper",
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          "-=0.5"
+        )
+        // --- NEW: Animating the intro paragraph ---
+        .from(
+          ".intro-paragraph",
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          "-=0.6"
+        )
+        .from(
+          ".cta-button-group > *",
+          {
+            // Animating both buttons together
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power2.out",
+          },
+          "<"
+        );
+
+      // --- Tagline Typing Animation ---
+      const typingTl = gsap.timeline({
+        repeat: -1,
+        repeatDelay: 1.5,
+        delay: 4,
+      }); // Increased delay
+      taglines.forEach((tagline) => {
+        typingTl
+          .to(taglineRef.current, {
+            duration: 1.2,
             text: tagline,
             ease: "power1.inOut",
-            delay: index === 0 ? 0 : 0.5,
-          }).to(taglineRef.current, {
-            duration: 0.8,
+          })
+          .to(taglineRef.current, {
+            duration: 1,
             text: "",
-            ease: "power1.inOut",
-            delay: 2,
+            ease: "power1.in",
+            delay: 1.5,
           });
-        });
-      }
-
-      if (ctaButtonRef.current) {
-        // Ensure ref is not null
-        gsap.from(ctaButtonRef.current, {
-          y: 50,
-          duration: 1,
-          delay: 2,
-          ease: "power3.out",
-        });
-      }
-
-      // Main Heading Animation - Add conditional check
-      if (mainHeadingRef.current) {
-        gsap.from(mainHeadingRef.current, {
-          y: -50,
-          duration: 1,
-          ease: "power3.out",
-        });
-      }
-
-      gsap.to(".hero-bg-gradient", {
-        backgroundPosition: "200% 0%",
-        duration: 30,
-        ease: "none",
-        repeat: -1,
-        yoyo: true,
       });
-    });
 
-    return () => ctx.revert(); // Cleanup all GSAP animations
-  }, [taglines]); // Re-run if taglines change (unlikely)
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [isDark]);
+
+  const headingText = "WEBLYNX INFOTECH";
 
   return (
     <section
-      className={`relative min-h-[calc(100vh-80px)] flex items-center justify-center text-center overflow-hidden
-                        ${
-                          isDark
-                            ? "bg-gradient-to-br from-gray-950 to-gray-800 text-white"
-                            : "bg-gradient-to-br from-blue-50 to-white text-gray-900"
-                        }
-                        transition-colors duration-500 ease-in-out`}
+      ref={sectionRef}
+      className={`relative min-h-screen flex items-center justify-center overflow-hidden
+                  ${
+                    isDark ? "bg-gray-950 text-white" : "bg-white text-gray-900"
+                  }
+                  transition-colors duration-500 ease-in-out`}
     >
       <Seo
         title="Weblynx Infotech - Your Digital Services Partner"
-        description="Weblynx Infotech offers expert MERN stack development, WordPress solutions, SEO optimization, mobile app development, and full-stack services to transform your online presence. Crafting the next evolution of web experiences."
+        description="Weblynx Infotech offers expert MERN stack development, WordPress solutions, SEO optimization, mobile app development, and full-stack services to transform your online presence."
         keywords="digital services, web development, MERN stack, WordPress development, SEO optimization, API integration, full stack development, mobile app development, custom web applications, Weblynx Infotech, Pune, India"
         ogTitle="Weblynx Infotech - Your Digital Services Partner"
         ogDescription="Elevate your business with custom web and mobile applications, robust SEO, and comprehensive digital solutions from Weblynx Infotech."
@@ -104,70 +143,88 @@ const HeroSection = () => {
       />
 
       <div
-        className="hero-bg-gradient absolute inset-0 opacity-20"
+        ref={mouseGlowRef}
+        className="pointer-events-none absolute -inset-40 z-20 rounded-full opacity-30 blur-3xl"
         style={{
-          background: `linear-gradient(90deg, ${
-            isDark ? "#0a0a0a, #2c004c, #0a0a0a, 1a1a1a" : "transparent"
-          })`,
-          backgroundSize: "200% 100%",
-          filter: isDark ? "blur(80px)" : "none",
-          pointerEvents: "none",
+          background: `radial-gradient(circle at center, ${
+            isDark ? "rgba(192, 132, 252, 0.4)" : "rgba(129, 140, 248, 0.5)"
+          }, transparent 80%)`,
         }}
       ></div>
 
-      <div className="relative z-10 p-8 max-w-4xl mx-auto">
-        <motion.h1
-          initial={{ y: 0 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="text-6xl md:text-7xl font-extrabold mb-6 drop-shadow-lg
-                         text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600
-                         dark:from-purple-400 dark:to-cyan-400"
-          ref={mainHeadingRef}
-        >
-          WEBLYNX INFOTECH
-        </motion.h1>
+      <div
+        className="absolute inset-0 z-0 opacity-20"
+        style={{
+          backgroundImage: `radial-gradient(${
+            isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.2)"
+          } 1px, transparent 1px)`,
+          backgroundSize: "30px 30px",
+        }}
+      ></div>
 
-        <h2
-          ref={taglineRef}
-          className="text-3xl md:text-4xl font-semibold mb-8 min-h-[4rem] flex justify-center items-center opacity-90"
-        >
-          Building the Future of Your Online Presence.
-        </h2>
+      <div className="relative z-10 container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          {/* Left Column: Text Content */}
+          <div className="text-center md:text-left">
+            <h1 className="text-5xl lg:text-7xl font-extrabold mb-4 tracking-tighter">
+              {headingText.split("").map((char, index) => (
+                <span
+                  key={index}
+                  className="char inline-block text-transparent bg-clip-text bg-gradient-to-r 
+                             from-blue-500 to-purple-600 dark:from-purple-400 dark:to-cyan-400"
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+            </h1>
+            <div className="tagline-wrapper text-xl md:text-2xl font-medium mb-6 min-h-[3rem] opacity-80">
+              <span ref={taglineRef}></span>
+              <span className="inline-block opacity-70 animate-pulse">|</span>
+            </div>
 
-        {/* Lottie Animation Integration - Uses heroAnimationData */}
-        <div className="w-64 h-64 md:w-80 md:h-80 mx-auto mb-8">
-          <Lottie
-            animationData={heroAnimationData} // This is the variable in question
-            loop={true}
-            autoplay={true}
-          />
+            {/* --- NEW: Intro Paragraph --- */}
+            <p className="intro-paragraph text-base md:text-lg max-w-lg mx-auto md:mx-0 mb-8 text-gray-700 dark:text-gray-300">
+              We are a full-service digital agency based in Pune, specializing
+              in crafting high-performance web applications. From the MERN stack
+              to WordPress, we transform your vision into a digital reality that
+              drives growth.
+            </p>
+
+            {/* --- NEW: CTA Group --- */}
+            <div className="cta-button-group flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+              <Link to="/services">
+                <button
+                  className="px-8 py-3 w-full sm:w-auto rounded-full font-bold text-lg
+                               text-white bg-purple-600 dark:bg-purple-500
+                               hover:bg-purple-700 dark:hover:bg-purple-600
+                               transform transition-all duration-300 hover:scale-105 shadow-lg"
+                >
+                  Explore Our Services
+                </button>
+              </Link>
+              <Link
+                to="/about"
+                className="group text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-300"
+              >
+                <span className="font-semibold text-lg">
+                  Our Story{" "}
+                  <span className="inline-block transform transition-transform duration-300 group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Right Column: Lottie Animation */}
+          <div className="lottie-container w-full max-w-md mx-auto md:max-w-none">
+            <Lottie
+              animationData={heroAnimationData}
+              loop={true}
+              autoplay={true}
+            />
+          </div>
         </div>
-
-        <MotionConfig transition={{ duration: 0.3, ease: "easeInOut" }}>
-          {/* <Link
-            to="/contact"
-            ref={ctaButtonRef}
-            className={`inline-block px-10 py-4 text-xl font-bold rounded-full shadow-lg transform active:scale-95 transition-all duration-300
-                                ${
-                                  isDark
-                                    ? "bg-purple-700 text-white hover:bg-purple-600"
-                                    : "bg-blue-600 text-white hover:bg-blue-700"
-                                }
-                                relative overflow-hidden group`}
-          >
-            <span className="relative z-10">Let’s Build Your Vision</span>
-            <span
-              className={`absolute inset-0 rounded-full border-2
-                                    ${
-                                      isDark
-                                        ? "border-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                        : "border-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                    }`}
-              aria-hidden="true"
-            ></span>
-          </Link> */}
-        </MotionConfig>
       </div>
     </section>
   );

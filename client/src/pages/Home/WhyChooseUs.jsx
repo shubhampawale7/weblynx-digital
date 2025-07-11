@@ -1,172 +1,162 @@
-// client/src/pages/Home/WhyChooseUs.jsx
 import React, { useEffect, useRef } from "react";
 import { useTheme } from "../../context/ThemeContext.jsx";
-import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Seo from "../../components/common/Seo.jsx"; // Import Seo component
+import Seo from "../../components/common/Seo.jsx";
+import {
+  FiZap,
+  FiUsers,
+  FiBarChart2,
+  FiLayers,
+  FiShield,
+  FiClock,
+} from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   {
-    icon: "💡",
+    Icon: FiZap,
     title: "Innovative Solutions",
     description:
       "We bring fresh perspectives and cutting-edge technologies to solve your unique challenges and drive innovation.",
+    color: "text-purple-500 dark:text-purple-400",
   },
   {
-    icon: "🤝",
+    Icon: FiUsers,
     title: "Client-Centric Approach",
     description:
       "Your vision is our priority. We collaborate closely to ensure your digital product truly reflects your business goals.",
+    color: "text-blue-500 dark:text-blue-400",
   },
   {
-    icon: "🚀",
+    Icon: FiBarChart2,
     title: "Performance & Scalability",
     description:
       "We build fast, robust, and scalable solutions designed to grow with your business and handle future demands.",
+    color: "text-green-500 dark:text-green-400",
   },
   {
-    icon: "✨",
+    Icon: FiLayers,
     title: "Pixel-Perfect Design",
     description:
-      "Attention to detail matters. We craft stunning, intuitive user interfaces that engage your audience.",
+      "Attention to detail matters. We craft stunning, intuitive user interfaces that captivate and engage your audience.",
+    color: "text-pink-500 dark:text-pink-400",
   },
   {
-    icon: "🔒",
+    Icon: FiShield,
     title: "Security & Reliability",
     description:
       "Your data and applications are safe with us. We adhere to best practices for secure and reliable development.",
+    color: "text-slate-500 dark:text-slate-400",
   },
   {
-    icon: "⏱️",
+    Icon: FiClock,
     title: "Timely Delivery",
     description:
       "We respect deadlines and deliver high-quality projects on time, every time, without compromising on quality.",
+    color: "text-amber-500 dark:text-amber-400",
   },
 ];
 
 const WhyChooseUs = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null); // Ref for the whole section to scope GSAP context
-  const headingRef = useRef(null); // Ref for the heading
-  const featureRefs = useRef([]); // Array to store refs for each feature card
-
-  // Helper function to add elements to a ref array
-  const addToArrayRef = (el, arr) => {
-    if (el && !arr.current.includes(el)) {
-      arr.current.push(el);
-    }
-  };
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    // Clear ref array on each effect run to prevent duplicates
-    featureRefs.current = [];
-
-    let ctx = gsap.context(() => {
-      // Animation for the section heading
-      gsap.from(headingRef.current, {
-        y: -50,
-        duration: 1,
-        ease: "power3.out",
+    const ctx = gsap.context(() => {
+      // Animate the main heading
+      gsap.from(".section-heading", {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 80%",
           toggleActions: "play none none reverse",
         },
+        opacity: 0,
+        y: -40,
+        duration: 1,
+        ease: "power3.out",
       });
 
-      // Animation for each feature card
-      gsap.from(featureRefs.current, {
-        y: 80, // Still slides up
-        scale: 0.9, // Still scales in
-        duration: 0.7,
-        ease: "back.out(1.5)",
-        stagger: 0.1, // Stagger effect
-        scrollTrigger: {
-          trigger: featureRefs.current[0], // Trigger by the first card
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-      });
-      ScrollTrigger.refresh();
-    }, sectionRef); // Scope the context to the main section ref
+      // Staggered animation for each feature item
+      const featureItems = gsap.utils.toArray(".feature-item");
+      featureItems.forEach((item) => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
 
+        tl.from(item.querySelector(".feature-icon"), {
+          scale: 0,
+          autoAlpha: 0,
+          ease: "back.out(1.7)",
+          duration: 0.6,
+        }).from(
+          item.querySelectorAll(".feature-title, .feature-description"),
+          {
+            autoAlpha: 0,
+            x: -30,
+            stagger: 0.15,
+            ease: "power2.out",
+            duration: 0.8,
+          },
+          "-=0.4"
+        );
+      });
+    }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
     <section
-      id="why-choose-us" // Added ID for potential internal linking
       ref={sectionRef}
-      className={`py-16 sm:py-20 px-4 ${
-        // Adjusted padding
-        isDark
-          ? "bg-gradient-to-br from-gray-950 to-gray-800 text-white"
-          : "bg-gradient-to-br from-blue-50 to-white text-gray-800"
-      } transition-colors duration-500`}
+      className={`py-20 sm:py-28 overflow-hidden ${
+        isDark ? "bg-black text-white" : "bg-gray-50 text-gray-900"
+      } transition-colors duration-300`}
     >
-      {/* SEO for Why Choose Us Section - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Why Choose Weblynx Infotech? - Our Unique Advantages" // UPDATED
-        description="Discover why Weblynx Infotech is your ideal digital partner. We offer innovative solutions, a client-centric approach, superior performance, and timely delivery for your web and mobile projects." // UPDATED
-        keywords="Why choose Weblynx Infotech, Weblynx Infotech advantages, digital agency benefits, innovative solutions, client-centric, performance, scalability, pixel-perfect design, security, reliability, timely delivery" // UPDATED
-        ogTitle="Weblynx Infotech: Your Trusted Partner for Digital Success" // UPDATED
-        ogDescription="Learn what sets Weblynx Infotech apart and why we're the right choice for your next digital project." // UPDATED
-        ogUrl="https://www.weblynxinfotech.com/#why-choose-us" // Pointing to homepage section, adjust if it's a dedicated page
-        canonical="https://www.weblynxinfotech.com/#why-choose-us" // UPDATED: Use your new domain
+        title="Why Choose Weblynx Infotech? - Our Unique Advantages"
+        description="Discover why Weblynx Infotech is your ideal digital partner. We offer innovative solutions, a client-centric approach, superior performance, and timely delivery."
+        keywords="Why choose Weblynx Infotech, digital agency benefits, innovative solutions, client-centric, performance, scalability, pixel-perfect design, security, reliability, timely delivery"
+        ogTitle="Weblynx Infotech: Your Trusted Partner for Digital Success"
+        ogDescription="Learn what sets Weblynx Infotech apart and why we're the right choice for your next digital project."
+        ogUrl="https://www.weblynxinfotech.com/#why-choose-us"
+        canonical="https://www.weblynxinfotech.com/#why-choose-us"
       />
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2
+            className="section-heading text-4xl md:text-5xl font-bold
+                       text-transparent bg-clip-text bg-gradient-to-r 
+                       from-green-500 to-teal-600
+                       dark:from-cyan-400 dark:to-lime-400"
+          >
+            The Weblynx Advantage
+          </h2>
+        </div>
 
-      <div className="container mx-auto">
-        <h2
-          ref={headingRef}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 // Adjusted font sizes
-                         text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-600
-                         dark:from-cyan-400 dark:to-lime-400"
-        >
-          Why Choose Weblynx Infotech? {/* UPDATED: Changed display name */}
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
-          {" "}
-          {/* Adjusted gap */}
-          {features.map((feature, index) => (
-            <motion.div
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-14">
+          {features.map((feature) => (
+            <div
               key={feature.title}
-              ref={(el) => addToArrayRef(el, featureRefs)}
-              className={`p-6 sm:p-8 rounded-xl shadow-lg flex flex-col items-center text-center
-                            ${
-                              isDark
-                                ? "bg-gray-800 border border-gray-700"
-                                : "bg-white border border-gray-200"
-                            }
-                            transform transition-all duration-300 group`}
-              whileHover={{
-                y: -5,
-                boxShadow: isDark
-                  ? "0 10px 20px rgba(0, 0, 0, 0.3)"
-                  : "0 10px 20px rgba(0, 0, 0, 0.1)",
-              }}
+              className="feature-item flex items-start gap-6"
             >
-              <div
-                className={`text-5xl sm:text-6xl mb-4 sm:mb-6 p-3 sm:p-4 rounded-full inline-block
-                                 ${
-                                   isDark
-                                     ? "bg-cyan-600/20 text-cyan-400"
-                                     : "bg-green-600/10 text-green-600"
-                                 }`}
-                role="img"
-                aria-label={`Icon for ${feature.title}`}
-              >
-                {feature.icon}
+              <div className="feature-icon mt-1">
+                <feature.Icon className={`w-10 h-10 ${feature.color}`} />
               </div>
-              <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-green-600 dark:text-cyan-400">
-                {feature.title}
-              </h3>
-              <p className="text-base opacity-90">{feature.description}</p>
-            </motion.div>
+              <div>
+                <h3 className="feature-title text-2xl font-bold mb-2">
+                  {feature.title}
+                </h3>
+                <p className="feature-description text-base md:text-lg text-gray-600 dark:text-gray-400">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
