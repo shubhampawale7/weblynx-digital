@@ -7,17 +7,9 @@ import { FiSun, FiMoon } from "react-icons/fi";
 
 // --- Reusable Motion Variants ---
 const mobileMenuVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  exit: {
-    opacity: 0,
-    scale: 0.95,
-    transition: { duration: 0.15, ease: "easeIn" },
-  },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
 const navItemsContainerVariants = {
@@ -31,8 +23,9 @@ const navItemsContainerVariants = {
   },
 };
 
+// UPDATED: Changed y-translate for a "subtle slide up" effect
 const navItemVariants = {
-  hidden: { opacity: 0, y: -20 },
+  hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { ease: "easeOut" } },
 };
 
@@ -65,7 +58,6 @@ const Header = () => {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  // --- UPDATED: Added "Blog" link ---
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
@@ -80,42 +72,42 @@ const Header = () => {
       className={`fixed top-0 z-50 w-full transition-all duration-300
         ${
           hasScrolled
-            ? "py-3 shadow-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg"
-            : "py-4 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md"
+            ? "py-3 shadow-sm bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800"
+            : "py-4 bg-white/0 dark:bg-black/0"
         }
       `}
     >
       <nav className="container mx-auto flex justify-between items-center px-4">
         <Link
           to="/"
-          className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white"
+          className="text-xl font-bold flex items-center gap-2 text-gray-900 dark:text-white"
         >
           <img
-            src="/weblynx-logo.png"
+            src="/weblynxinfo.png"
             alt="Weblynx Infotech Logo"
-            className="h-8"
+            className="h-8 rounded-md"
           />
           Weblynx Infotech
         </Link>
 
         {/* --- Desktop Navigation --- */}
-        <ul className="hidden md:flex items-center gap-1">
+        <ul className="hidden md:flex items-center gap-2">
           {navLinks.map((link) => (
             <li key={link.to}>
               <NavLink
                 to={link.to}
-                className="relative px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-purple-400 transition-colors"
+                className="relative px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
               >
                 {({ isActive }) => (
                   <>
                     <span className="relative z-10">{link.label}</span>
                     {isActive && (
                       <motion.div
-                        layoutId="active-nav-pill"
-                        className="absolute inset-0 rounded-full bg-gray-100 dark:bg-gray-800"
+                        layoutId="active-nav-underline"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-600 dark:bg-purple-400"
                         transition={{
                           type: "spring",
-                          stiffness: 300,
+                          stiffness: 350,
                           damping: 30,
                         }}
                       />
@@ -146,13 +138,13 @@ const Header = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="md:hidden fixed inset-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl"
+            className="md:hidden fixed inset-0 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-xl"
           >
             <motion.ul
               variants={navItemsContainerVariants}
-              initial="hidden" // Add initial and animate here for the stagger effect to work on mount
+              initial="hidden"
               animate="visible"
-              exit="hidden" // Add exit for unmounting animation
+              exit="hidden"
               className="flex flex-col items-center justify-center h-full gap-8"
             >
               {navLinks.map((link) => (
@@ -178,7 +170,7 @@ const Header = () => {
 const ThemeToggle = ({ isDark, toggleTheme }) => (
   <motion.button
     onClick={toggleTheme}
-    className="ml-4 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 focus:ring-blue-500 dark:focus:ring-purple-400"
+    className="ml-4 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-950 focus:ring-purple-500"
     aria-label="Toggle theme"
     whileTap={{ scale: 0.9, rotate: -15 }}
   >

@@ -57,7 +57,7 @@ const Footer = () => {
               className="text-2xl font-bold flex items-center gap-2 text-white mb-4"
             >
               <img
-                src="/weblynx-logo.png"
+                src="/weblynxinfo.png"
                 alt="Weblynx Infotech Logo"
                 className="h-8 bg-gray-200 rounded-md p-1"
               />

@@ -5,6 +5,11 @@ import ServicesPreview from "./ServicesPreview.jsx";
 import WhyChooseUs from "./WhyChooseUs.jsx";
 import Testimonials from "./Testimonials.jsx"; // Ensure this is imported
 import Seo from "../../components/common/Seo.jsx";
+import ImpactNumbers from "./ImpactNumbers.jsx";
+import FeaturedProjects from "./FeaturedProjects.jsx";
+import IndustriesWeServe from "./IndustriesWeServe.jsx";
+import ProjectPlannerCta from "./ProjectPlannerCta.jsx";
+import Faq from "./Faq.jsx";
 
 const Home = () => {
   return (
@@ -21,9 +26,14 @@ const Home = () => {
         canonical="https://www.weblynxinfotech.com/" // UPDATED: Use your new domain
       />
       <HeroSection />
+      <ImpactNumbers />
       <ServicesPreview />
+      <FeaturedProjects />
       <WhyChooseUs />
+      <IndustriesWeServe />
+      <ProjectPlannerCta />
       <Testimonials />
+      <Faq />
       {/*
         Optional: You could add a final CTA section here if desired,
         or the general CTA at the bottom of the App.jsx will suffice.
