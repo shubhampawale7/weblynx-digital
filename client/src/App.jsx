@@ -1,5 +1,5 @@
 // client/src/App.jsx
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useTheme } from "./context/ThemeContext.jsx";
 
@@ -25,7 +25,13 @@ import Header from "./components/layout/Header.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import ScrollToTopButton from "./components/common/ScrollToTopButton.jsx";
 import FloatingWhatsAppButton from "./components/common/FloatingWhatsAppButton.jsx";
-import ScrollToBegin from "./components/common/ScrollToBegin.jsx"; // ✅ Updated import
+import ScrollToBegin from "./components/common/ScrollToBegin.jsx";
+
+// --- PERFORMANCE: Import blog pages dynamically with React.lazy ---
+const BlogListingPage = React.lazy(() =>
+  import("./pages/Blog/BlogListingPage.jsx")
+);
+const BlogPostPage = React.lazy(() => import("./pages/Blog/BlogPostPage.jsx"));
 
 function App() {
   const { theme } = useTheme();
@@ -33,48 +39,61 @@ function App() {
   return (
     <div className={`app-container flex flex-col min-h-screen ${theme}`}>
       <Router>
-        <ScrollToBegin /> {/* ✅ Auto-scroll to top on route change */}
+        <ScrollToBegin />
         <Header />
         <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            {/* <Route path="/portfolio" element={<Portfolio />} /> */}
-            <Route path="/contact" element={<Contact />} />
+          {/* --- PERFORMANCE: Suspense wraps Routes for code splitting --- */}
+          <Suspense
+            fallback={
+              <div className="flex h-screen w-full items-center justify-center">
+                <div>Loading...</div>
+              </div>
+            }
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/contact" element={<Contact />} />
 
-            {/* Detailed Service Pages */}
-            <Route
-              path="/services/custom-web-applications"
-              element={<CustomWebApplications />}
-            />
-            <Route
-              path="/services/mobile-app-development"
-              element={<MobileAppDevelopment />}
-            />
-            <Route
-              path="/services/wordpress-site-creation"
-              element={<WordPressSiteCreation />}
-            />
-            <Route
-              path="/services/seo-optimization"
-              element={<SeoOptimization />}
-            />
-            <Route
-              path="/services/api-integration"
-              element={<ApiIntegration />}
-            />
-            <Route
-              path="/services/full-stack-development"
-              element={<FullStackDevelopment />}
-            />
-            <Route
-              path="/services/support-management-services"
-              element={<SupportManagementServices />}
-            />
+              {/* Blog Routes */}
+              <Route path="/blog" element={<BlogListingPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              {/* Detailed Service Pages */}
+              <Route
+                path="/services/custom-web-applications"
+                element={<CustomWebApplications />}
+              />
+              <Route
+                path="/services/mobile-app-development"
+                element={<MobileAppDevelopment />}
+              />
+              <Route
+                path="/services/wordpress-site-creation"
+                element={<WordPressSiteCreation />}
+              />
+              <Route
+                path="/services/seo-optimization"
+                element={<SeoOptimization />}
+              />
+              <Route
+                path="/services/api-integration"
+                element={<ApiIntegration />}
+              />
+              <Route
+                path="/services/full-stack-development"
+                element={<FullStackDevelopment />}
+              />
+              <Route
+                path="/services/support-management-services"
+                element={<SupportManagementServices />}
+              />
+
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
         <ScrollToTopButton />

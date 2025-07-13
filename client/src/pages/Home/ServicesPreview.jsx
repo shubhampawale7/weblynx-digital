@@ -156,7 +156,7 @@ const ServicesPreview = () => {
                          text-transparent bg-clip-text bg-gradient-to-r 
                          from-blue-500 to-purple-600 dark:from-purple-400 dark:to-cyan-400"
           >
-            Our Digital Capabilities
+            OUR DIGITAL CAPABILITIES
           </h2>
           <p className="section-subheading mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             We architect and build robust digital solutions that drive results.

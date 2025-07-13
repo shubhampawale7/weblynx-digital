@@ -1,45 +1,46 @@
 // client/src/pages/Contact/Contact.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useTheme } from "../../context/ThemeContext.jsx";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 import { FaPhoneAlt, FaEnvelope, FaWhatsapp } from "react-icons/fa";
-import { motion } from "framer-motion";
-
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiArrowRight,
+  FiCheckCircle,
+  FiAlertTriangle,
+  FiLoader,
+} from "react-icons/fi";
 import Seo from "../../components/common/Seo.jsx";
 
-gsap.registerPlugin(ScrollTrigger);
+// --- Framer Motion Variants ---
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
 
 const Contact = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // Refs for animation
-  const sectionRef = useRef(null);
-  const mainHeadingRef = useRef(null);
-  const introTextRef = useRef(null);
-
-  const formSectionHeadingRef = useRef(null);
-  const contactQuoteRef = useRef(null);
-  const formRef = useRef(null);
-
-  const connectMethodsHeadingRef = useRef(null);
-  const contactCardRefs = useRef([]);
-
-  const finalCtaHeadingRef = useRef(null);
-  const finalCtaTextRef = useRef(null);
-  const finalCtaButtonRef = useRef(null);
-
-  // Form State
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     projectType: "",
     message: "",
   });
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState("idle"); // 'idle', 'submitting', 'success', 'error'
   const [errors, setErrors] = useState({});
 
   const projectTypes = [
@@ -115,539 +116,326 @@ const Contact = () => {
     }
   };
 
-  // WhatsApp Pre-loaded Message and Link
   const whatsappNumber = "+919518364400";
   const whatsappMessage = encodeURIComponent(
-    "Hello Weblynx Infotech! I saw your website and I'm interested in discussing a project. Can we chat?" // UPDATED: Text mention
+    "Hello Weblynx Infotech! I saw your website and I'm interested in discussing a project."
   );
-  const whatsappLink = `https://wa.me/<span class="math-inline">\{whatsappNumber\}?text\=</span>{whatsappMessage}`;
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
-  // Helper function for refs
-  const addToArrayRef = (el, arr) => {
-    if (el && !arr.current.includes(el)) {
-      arr.current.push(el);
-    }
-  };
-
-  useEffect(() => {
-    contactCardRefs.current = []; // Clear array refs on effect run
-
-    let ctx = gsap.context(() => {
-      // Hero/Intro section animations
-      gsap.from([mainHeadingRef.current, introTextRef.current], {
-        y: 50,
-        // opacity: 0, // REMOVED opacity:0
-        stagger: 0.2,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      // Form section animations
-      gsap.from(
-        [
-          formSectionHeadingRef.current,
-          contactQuoteRef.current,
-          formRef.current,
-        ],
-        {
-          y: 50,
-          // opacity: 0, // REMOVED opacity:0
-          stagger: 0.15,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: formSectionHeadingRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Connect Methods section animations
-      gsap.from(connectMethodsHeadingRef.current, {
-        y: 50,
-        // opacity: 0, // REMOVED opacity:0
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: connectMethodsHeadingRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-      });
-      gsap.from(contactCardRefs.current, {
-        y: 80,
-        scale: 0.9,
-        stagger: 0.15,
-        duration: 0.7,
-        ease: "back.out(1.5)",
-        scrollTrigger: {
-          trigger: contactCardRefs.current[0],
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      // Final CTA Section Animations
-      gsap.from(
-        [
-          finalCtaHeadingRef.current,
-          finalCtaTextRef.current,
-          finalCtaButtonRef.current,
-        ],
-        {
-          y: 50,
-          // opacity: 0, // REMOVED opacity:0
-          stagger: 0.1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: finalCtaHeadingRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      ScrollTrigger.refresh();
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  const contactMethods = [
+    {
+      Icon: FaPhoneAlt,
+      title: "Call Us",
+      content: "+91 95183 64400",
+      href: "tel:+919518364400",
+      aria: "Call Weblynx Infotech",
+    },
+    {
+      Icon: FaEnvelope,
+      title: "Email Us",
+      content: "weblynxinfotech@gmail.com",
+      href: "mailto:weblynxinfotech@gmail.com",
+      aria: "Email Weblynx Infotech",
+    },
+    {
+      Icon: FaWhatsapp,
+      title: "WhatsApp Us",
+      content: "+91 95183 64400",
+      href: whatsappLink,
+      aria: "WhatsApp Weblynx Infotech",
+    },
+  ];
 
   return (
-    <section
-      id="contact-page" // Added ID for potential internal linking
+    <div
       className={`min-h-screen ${
-        isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-800"
+        isDark ? "bg-gray-950 text-white" : "bg-slate-50 text-gray-800"
       } transition-colors duration-300`}
-      ref={sectionRef}
     >
-      {/* SEO for the Contact Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Contact Weblynx Infotech - Get a Free Consultation" // UPDATED
-        description="Reach out to Weblynx Infotech for a free consultation. Contact us for custom web applications, mobile app development, SEO, WordPress, API integration, and full-stack solutions. Let's build your vision!" // UPDATED
-        keywords="contact Weblynx Infotech, web development consultation, mobile app consultation, SEO quote, WordPress quote, API integration quote, full stack development quote, contact form, WhatsApp Weblynx Infotech, shubhampawale7@gmail.com, Pune, India" // UPDATED
-        ogTitle="Contact Weblynx Infotech: Your Partner for Digital Excellence" // UPDATED
-        ogDescription="Connect with Weblynx Infotech today to discuss your digital project and receive a free consultation." // UPDATED
-        ogImage="https://www.weblynxinfotech.com/social-share-contact.jpg" // UPDATED: Use your new domain
-        ogUrl="https://www.weblynxinfotech.com/contact" // UPDATED: Use your new domain
-        canonical="https://www.weblynxinfotech.com/contact" // UPDATED: Use your new domain
+        title="Contact Weblynx Infotech - Get a Free Consultation"
+        description="Reach out to Weblynx Infotech for a free consultation. Contact us for custom web applications, mobile app development, SEO, WordPress, API integration, and full-stack solutions. Let's build your vision!"
+        keywords="contact Weblynx Infotech, web development consultation, mobile app consultation, SEO quote, WordPress quote, API integration quote, full stack development quote, contact form, WhatsApp Weblynx Infotech, Pune, India"
+        ogTitle="Contact Weblynx Infotech: Your Partner for Digital Excellence"
+        ogDescription="Connect with Weblynx Infotech today to discuss your digital project and receive a free consultation."
+        ogUrl="https://www.weblynxinfotech.com/contact"
+        canonical="https://www.weblynxinfotech.com/contact"
       />
 
-      {/* Hero/Introduction Section for Contact Page */}
-      <section
-        className={`py-16 sm:py-20 px-4 ${
-          isDark
-            ? "bg-gradient-to-br from-gray-950 to-gray-800 text-white"
-            : "bg-gradient-to-br from-blue-50 to-white text-gray-800"
-        } transition-colors duration-500`}
-      >
-        <div className="container mx-auto max-w-6xl text-center">
-          <h1
-            className="text-5xl md:text-7xl font-extrabold mb-6
-                         text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600
-                         dark:from-purple-400 dark:to-cyan-400"
-            ref={mainHeadingRef}
+      {/* Hero Section */}
+      <section className="relative py-20 sm:py-24 px-4 overflow-hidden">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-slate-50 dark:bg-gray-950 dark:bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem]">
+          {/* Original Color */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#cce3ff,transparent)] dark:bg-[radial-gradient(circle_500px_at_50%_200px,#3b82f622,transparent)]"></div>
+        </div>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          className="container mx-auto max-w-4xl text-center"
+        >
+          {/* Original Color */}
+          <motion.h1
+            variants={staggerItem}
+            className="text-5xl md:text-7xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 dark:from-purple-400 dark:to-cyan-400"
           >
             Let's Build Your Vision
-          </h1>
-          <p
-            className="text-lg md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto px-4"
-            ref={introTextRef}
+          </motion.h1>
+          <motion.p
+            variants={staggerItem}
+            className="text-lg md:text-xl opacity-80 max-w-3xl mx-auto"
           >
-            Ready to turn your ideas into a digital reality? We're excited to
-            hear from you and discuss how Weblynx Infotech can bring your
-            project to life. {/* UPDATED: Text mention */}
-          </p>
-        </div>
+            Ready to turn your ideas into reality? We're excited to hear from
+            you. Fill out the form below or connect with us directly.
+          </motion.p>
+        </motion.div>
       </section>
 
-      {/* Main Contact Form Section */}
-      <section className="py-16 sm:py-20 px-4">
-        <div className="container mx-auto max-w-4xl bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 sm:p-8">
-          <h2
-            className="text-3xl md:text-4xl font-bold text-center mb-8 text-blue-600 dark:text-purple-400"
-            ref={formSectionHeadingRef}
+      {/* Main Content: Form + Contact Info */}
+      <section className="py-10 sm:py-16 px-4">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-5 gap-12"
+        >
+          {/* Left Side: Form */}
+          <motion.div
+            variants={staggerItem}
+            className="lg:col-span-3 bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8"
           >
-            Get a Free Consultation
-          </h2>
-          <blockquote
-            className="text-center text-xl md:text-2xl italic opacity-90 mb-10 text-gray-700 dark:text-gray-300"
-            ref={contactQuoteRef}
-          >
-            "Every great digital journey begins with a conversation. Let's start
-            yours."
-          </blockquote>
+            {/* Original Color */}
+            <h2 className="text-3xl md:text-4xl font-bold mb-2 text-blue-600 dark:text-purple-400">
+              Get a Free Consultation
+            </h2>
+            <p className="text-base mb-8 opacity-70">
+              Fill out the form and we'll get back to you within 24 hours.
+            </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6" ref={formRef}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm md:text-base font-medium mb-2"
-                >
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`w-full p-2.5 md:p-3 border rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500
-                                    ${
-                                      isDark
-                                        ? "bg-gray-700 border-gray-600 text-white"
-                                        : "bg-gray-100 border-gray-300 text-gray-900"
-                                    }
-                                    ${errors.name ? "border-red-500" : ""}`}
-                  placeholder="John Doe"
-                  aria-label="Your Name"
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-xs md:text-sm mt-1">
-                    {errors.name}
-                  </p>
-                )}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="block text-sm font-medium">
+                    Your Name
+                  </label>
+                  {/* Original Color */}
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={`w-full p-3 border rounded-lg focus:ring-2 ${
+                      isDark
+                        ? "bg-gray-800 border-gray-700"
+                        : "bg-gray-50 border-gray-300"
+                    } ${
+                      errors.name
+                        ? "border-red-500 ring-red-500"
+                        : "focus:ring-blue-500 dark:focus:ring-purple-500"
+                    }`}
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-sm font-medium">
+                    Your Email
+                  </label>
+                  {/* Original Color */}
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full p-3 border rounded-lg focus:ring-2 ${
+                      isDark
+                        ? "bg-gray-800 border-gray-700"
+                        : "bg-gray-50 border-gray-300"
+                    } ${
+                      errors.email
+                        ? "border-red-500 ring-red-500"
+                        : "focus:ring-blue-500 dark:focus:ring-purple-500"
+                    }`}
+                    placeholder="john.doe@example.com"
+                  />
+                </div>
               </div>
 
-              <div>
+              <div className="space-y-2">
                 <label
-                  htmlFor="email"
-                  className="block text-sm md:text-base font-medium mb-2"
+                  htmlFor="projectType"
+                  className="block text-sm font-medium"
                 >
-                  Your Email
+                  Type of Project
                 </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
+                {/* Original Color */}
+                <select
+                  id="projectType"
+                  name="projectType"
+                  value={formData.projectType}
                   onChange={handleChange}
-                  className={`w-full p-2.5 md:p-3 border rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500
-                                    ${
-                                      isDark
-                                        ? "bg-gray-700 border-gray-600 text-white"
-                                        : "bg-gray-100 border-gray-300 text-gray-900"
-                                    }
-                                    ${errors.email ? "border-red-500" : ""}`}
-                  placeholder="john.doe@example.com"
-                  aria-label="Your Email"
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-xs md:text-sm mt-1">
-                    {errors.email}
-                  </p>
-                )}
+                  className={`w-full p-3 border rounded-lg appearance-none focus:ring-2 ${
+                    isDark
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-gray-50 border-gray-300"
+                  } ${
+                    errors.projectType
+                      ? "border-red-500 ring-red-500"
+                      : "focus:ring-blue-500 dark:focus:ring-purple-500"
+                  }`}
+                >
+                  <option value="">Select a service...</option>
+                  {projectTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
+              <div className="space-y-2">
+                <label htmlFor="message" className="block text-sm font-medium">
+                  Your Message
+                </label>
+                {/* Original Color */}
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  value={formData.message}
+                  onChange={handleChange}
+                  className={`w-full p-3 border rounded-lg focus:ring-2 ${
+                    isDark
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-gray-50 border-gray-300"
+                  } ${
+                    errors.message
+                      ? "border-red-500 ring-red-500"
+                      : "focus:ring-blue-500 dark:focus:ring-purple-500"
+                  }`}
+                  placeholder="Tell us about your project..."
+                ></textarea>
+              </div>
 
-            <div>
-              <label
-                htmlFor="projectType"
-                className="block text-sm md:text-base font-medium mb-2"
+              <div className="h-6">
+                <AnimatePresence>
+                  {status === "success" && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="text-center text-green-600 dark:text-green-400 font-semibold flex items-center justify-center gap-2"
+                    >
+                      <FiCheckCircle /> Message sent successfully!
+                    </motion.p>
+                  )}
+                  {status === "error" && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="text-center text-red-500 dark:text-red-400 font-semibold flex items-center justify-center gap-2"
+                    >
+                      <FiAlertTriangle />{" "}
+                      {Object.values(errors).find((e) => e) ||
+                        "An error occurred. Please try again."}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Original Color */}
+              <motion.button
+                type="submit"
+                disabled={status === "submitting"}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full py-3 rounded-lg text-lg font-semibold transition-all duration-300 ${
+                  isDark
+                    ? "bg-purple-600 hover:bg-purple-700"
+                    : "bg-blue-600 hover:bg-blue-700"
+                } text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
               >
-                Type of Project
-              </label>
-              <select
-                id="projectType"
-                name="projectType"
-                value={formData.projectType}
-                onChange={handleChange}
-                className={`w-full p-2.5 md:p-3 border rounded-md appearance-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500
-                                ${
-                                  isDark
-                                    ? "bg-gray-700 border-gray-600 text-white"
-                                    : "bg-gray-100 border-gray-300 text-gray-900"
-                                }
-                                ${errors.projectType ? "border-red-500" : ""}`}
-                aria-label="Select Project Type"
-              >
-                <option value="">Select a service...</option>
-                {projectTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-              {errors.projectType && (
-                <p className="text-red-500 text-xs md:text-sm mt-1">
-                  {errors.projectType}
-                </p>
-              )}
-            </div>
+                {status === "submitting" ? (
+                  <>
+                    <FiLoader className="animate-spin" /> Sending...
+                  </>
+                ) : (
+                  "Send Inquiry"
+                )}
+              </motion.button>
+            </form>
+          </motion.div>
 
-            <div>
-              <label
-                htmlFor="message"
-                className="block text-sm md:text-base font-medium mb-2"
-              >
-                Your Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows="5"
-                value={formData.message}
-                onChange={handleChange}
-                className={`w-full p-2.5 md:p-3 border rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500
-                                ${
-                                  isDark
-                                    ? "bg-gray-700 border-gray-600 text-white"
-                                    : "bg-gray-100 border-gray-300 text-gray-900"
-                                }
-                                ${errors.message ? "border-red-500" : ""}`}
-                placeholder="Tell us about your project..."
-                aria-label="Your Message"
-              ></textarea>
-              {errors.message && (
-                <p className="text-red-500 text-xs md:text-sm mt-1">
-                  {errors.message}
-                </p>
-              )}
-            </div>
-
-            {status === "submitting" && (
-              <p className="text-center text-blue-500 dark:text-purple-300 text-sm md:text-base">
-                Submitting...
-              </p>
-            )}
-            {status === "success" && (
-              <p className="text-center text-green-600 dark:text-green-400 font-semibold text-sm md:text-base">
-                Inquiry submitted successfully! We'll contact you soon.
-              </p>
-            )}
-            {status === "error" && errors.form && (
-              <p className="text-center text-red-600 dark:text-red-400 font-semibold text-sm md:text-base">
-                {errors.form}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={status === "submitting"}
-              className={`w-full py-2.5 md:py-3 rounded-md text-base md:text-lg font-semibold transition-all duration-300 transform hover:-translate-y-0.5
-                          ${
-                            isDark
-                              ? "bg-purple-600 hover:bg-purple-700"
-                              : "bg-blue-600 hover:bg-blue-700"
-                          } text-white
-                          disabled:opacity-50 disabled:cursor-not-allowed`}
-            >
-              {status === "submitting" ? "Sending..." : "Send Inquiry"}
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* Connect Directly / Other Contact Methods Section */}
-      <section
-        className={`py-16 sm:py-20 px-4 ${
-          isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-800"
-        } transition-colors duration-300`}
-      >
-        <div className="container mx-auto max-w-6xl text-center">
-          <h2
-            className="text-3xl md:text-4xl font-bold text-center mb-12"
-            ref={connectMethodsHeadingRef}
+          {/* Right Side: Contact Info */}
+          <motion.div
+            variants={staggerItem}
+            className="lg:col-span-2 space-y-8"
           >
-            Or Connect Directly
-          </h2>
-          <p className="text-base md:text-lg opacity-90 max-w-3xl mx-auto mb-12 px-4">
-            Prefer a direct conversation? Reach out to us through the channels
-            below. We're here to answer your questions and provide quick
-            support.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-            {/* Phone Card */}
-            <motion.div
-              className={`p-6 sm:p-8 rounded-lg shadow-md flex flex-col items-center text-center w-full max-w-sm
-                            ${
-                              isDark
-                                ? "bg-gray-800 border border-gray-700"
-                                : "bg-white border border-gray-200"
-                            }`}
-              ref={(el) => addToArrayRef(el, contactCardRefs)}
-              whileHover={{
-                y: -5,
-                boxShadow: isDark
-                  ? "0 10px 20px rgba(0, 0, 0, 0.3)"
-                  : "0 10px 20px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <FaPhoneAlt className="text-5xl text-blue-600 dark:text-purple-400 mb-4" />
-              <h3 className="text-xl md:text-2xl font-semibold mb-2">
-                Call Us
-              </h3>
-              <p className="text-base mb-4 opacity-90">
-                Get instant answers to your queries.
-              </p>
-              <a
-                href="tel:+919518364400"
-                className="text-blue-500 dark:text-purple-400 hover:underline text-lg font-medium"
-                aria-label="Call Shubham Pawale on 9518364400"
-              >
-                +91 95183 64400
-              </a>
-            </motion.div>
-
-            {/* Email Card */}
-            <motion.div
-              className={`p-6 sm:p-8 rounded-lg shadow-md flex flex-col items-center text-center w-full max-w-sm
-                            ${
-                              isDark
-                                ? "bg-gray-800 border border-gray-700"
-                                : "bg-white border border-gray-200"
-                            }`}
-              ref={(el) => addToArrayRef(el, contactCardRefs)}
-              whileHover={{
-                y: -5,
-                boxShadow: isDark
-                  ? "0 10px 20px rgba(0, 0, 0, 0.3)"
-                  : "0 10px 20px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <FaEnvelope className="text-5xl text-blue-600 dark:text-purple-400 mb-4" />
-              <h3 className="text-xl md:text-2xl font-semibold mb-2">
-                Email Us
-              </h3>
-              <p className="text-base mb-4 opacity-90">
-                Send us your detailed inquiries anytime.
-              </p>
-              <a
-                href="mailto:weblynxinfotech@gmail.com"
-                className="text-blue-500 dark:text-purple-400 hover:underline text-lg font-medium"
-                aria-label="Email Weblynx Infotech at weblynxinfotech@gmail.com"
-              >
-                weblynxinfotech@gmail.com
-              </a>
-            </motion.div>
-
-            {/* WhatsApp Card */}
-            <motion.div
-              className={`p-6 sm:p-8 rounded-lg shadow-md flex flex-col items-center text-center w-full max-w-sm
-                            ${
-                              isDark
-                                ? "bg-gray-800 border border-gray-700"
-                                : "bg-white border border-gray-200"
-                            }`}
-              ref={(el) => addToArrayRef(el, contactCardRefs)}
-              whileHover={{
-                y: -5,
-                boxShadow: isDark
-                  ? "0 10px 20px rgba(0, 0, 0, 0.3)"
-                  : "0 10px 20px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <FaWhatsapp className="text-5xl text-green-500 mb-4" />
-              <h3 className="text-xl md:text-2xl font-semibold mb-2">
-                WhatsApp Us
-              </h3>
-              <p className="text-base mb-4 opacity-90">
-                For quick questions and instant support.
-              </p>
-              <a
-                href={whatsappLink}
-                target="_blank"
+            <h3 className="text-2xl font-bold">Or Connect Directly</h3>
+            {contactMethods.map((method) => (
+              <motion.a
+                key={method.title}
+                href={method.href}
+                target={method.href.startsWith("http") ? "_blank" : "_self"}
                 rel="noopener noreferrer"
-                className="text-blue-500 dark:text-purple-400 hover:underline text-lg font-medium"
-                aria-label="WhatsApp Shubham Pawale on 9518364400"
+                whileHover={{ scale: 1.03 }}
+                // HOVER FIX: Changed hover background for light mode
+                className={`p-6 rounded-2xl flex items-center gap-6 group transition-all duration-300 ${
+                  isDark
+                    ? "bg-gray-900 hover:bg-gray-800"
+                    : "bg-white hover:bg-blue-600 shadow-lg"
+                }`}
               >
-                +91 95183 64400
-              </a>
-            </motion.div>
-          </div>
-        </div>
+                {/* HOVER FIX: Icon wrapper is now transparent on hover, and icon itself turns white */}
+                <div
+                  className={`p-4 rounded-lg transition-colors duration-300 ${
+                    isDark
+                      ? "bg-gray-800 group-hover:bg-purple-500 text-purple-400"
+                      : "bg-blue-100 text-blue-600 group-hover:bg-transparent"
+                  }`}
+                >
+                  <method.Icon
+                    className={`w-6 h-6 transition-colors duration-300 ${
+                      isDark
+                        ? "group-hover:text-white"
+                        : "group-hover:text-white"
+                    }`}
+                  />
+                </div>
+                <div>
+                  {/* HOVER FIX: Added group-hover text color change for light mode */}
+                  <h4
+                    className={`font-bold text-lg transition-colors duration-300 ${
+                      isDark ? "" : "text-gray-800 group-hover:text-white"
+                    }`}
+                  >
+                    {method.title}
+                  </h4>
+                  {/* HOVER FIX: Added group-hover text color change for light mode */}
+                  <p
+                    className={`opacity-70 transition-colors duration-300 ${
+                      isDark ? "" : "text-gray-600 group-hover:text-blue-100"
+                    }`}
+                  >
+                    {method.content}
+                  </p>
+                </div>
+                {/* HOVER FIX: Added group-hover text color change for light mode */}
+                <FiArrowRight
+                  className={`ml-auto w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                    isDark
+                      ? "text-gray-600"
+                      : "text-gray-400 group-hover:text-white"
+                  }`}
+                />
+              </motion.a>
+            ))}
+          </motion.div>
+        </motion.div>
       </section>
-
-      {/* Why Contact Us Section (New Content) */}
-      <section className="py-16 sm:py-20 px-4">
-        <div className="container mx-auto max-w-6xl text-center">
-          <h2
-            className="text-3xl md:text-4xl font-bold text-center mb-12"
-            ref={(el) => addToArrayRef(el, contactCardRefs)}
-          >
-            Why Connect with Weblynx Infotech?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
-              ref={(el) => addToArrayRef(el, contactCardRefs)}
-            >
-              <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
-                Expert Guidance
-              </h3>
-              <p className="opacity-90 text-base">
-                Receive insights and recommendations from seasoned digital
-                professionals to guide your project.
-              </p>
-            </div>
-            <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
-              ref={(el) => addToArrayRef(el, contactCardRefs)}
-            >
-              <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
-                Tailored Solutions
-              </h3>
-              <p className="opacity-90 text-base">
-                We listen to your unique needs to propose strategies and
-                solutions that truly fit your business.
-              </p>
-            </div>
-            <div
-              className="p-6 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
-              ref={(el) => addToArrayRef(el, contactCardRefs)}
-            >
-              <h3 className="text-xl md:text-2xl font-semibold mb-3 text-blue-600 dark:text-purple-400">
-                No-Obligation Consultation
-              </h3>
-              <p className="opacity-90 text-base">
-                Your initial discussion with us is completely free, with no
-                commitment required.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Final Call to Action Section (Moved from previous location in file) */}
-      <section
-        className={`py-16 px-4 text-center ${
-          isDark ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-800"
-        } transition-colors duration-300`}
-      >
-        <div className="container mx-auto max-w-3xl">
-          <h2
-            className="text-3xl md:text-4xl font-bold mb-6"
-            ref={finalCtaHeadingRef}
-          >
-            Ready to Transform Your Digital Presence?
-          </h2>
-          <p className="text-lg mb-8 opacity-90" ref={finalCtaTextRef}>
-            We're eager to partner with you and bring your ambitious projects to
-            life. Let's start the conversation.
-          </p>
-          {/* <Link
-            to="/contact" // Can also be '#' if this section is purely illustrative
-            ref={finalCtaButtonRef}
-            className={`inline-block px-8 py-4 text-lg md:text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300
-                        ${
-                          isDark
-                            ? "bg-cyan-700 text-white hover:bg-cyan-600"
-                            : "bg-green-600 text-white hover:bg-green-700"
-                        }`}
-          >
-            Schedule a Meeting
-          </Link> */}
-        </div>
-      </section>
-    </section>
+    </div>
   );
 };
 

@@ -1,326 +1,368 @@
 // client/src/pages/Portfolio/Portfolio.jsx
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useTheme } from "../../context/ThemeContext.jsx";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // Import Link for CTA
-import Seo from "../../components/common/Seo.jsx"; // Import the Seo component
+import { motion, useTransform, useScroll, useMotionValue } from "framer-motion";
+import { Link } from "react-router-dom";
+import Seo from "../../components/common/Seo.jsx";
+import { FiGithub, FiExternalLink, FiArrowDown } from "react-icons/fi";
 
-gsap.registerPlugin(ScrollTrigger);
-
+// --- UPDATED: Project descriptions are now short taglines ---
 const projectsData = [
   {
     id: 1,
-    title: "Ninad's Pottery - E-commerce Platform",
-    description:
-      "For Ninad's Pottery, Weblynx Infotech crafted a visually captivating and fully functional e-commerce platform, enabling seamless online sales of handcrafted pottery. The solution features robust user authentication, secure payment gateway integration, intuitive product Browse, and a streamlined checkout process, significantly enhancing their digital retail presence and customer reach.", // UPDATED
-    technologies: [
-      "React",
-      "Node.js",
-      "Express.js",
-      "MongoDB",
-      "Stripe Integration",
-      "Tailwind CSS",
-      "Cloudinary",
-    ],
-    image:
-      "https://via.placeholder.com/800x500/2c3e50/DDDDDD?text=Ninad%27s+Pottery", // Placeholder image
-    link: "#", // Replace with actual project link if available
+    title: "Ninad's Pottery",
+    description: "A bespoke e-commerce platform for artisans.",
+    image: "/projects/project1.png",
+    tags: ["React", "Node.js", "MongoDB", "Stripe"],
+    demoUrl: "https://ninad-s-pottery.vercel.app/",
+    githubUrl: "https://github.com/shubhampawale7/Ninad-s-Pottery",
   },
   {
     id: 2,
-    title: "Prani Seva Ashram - Dog NGO Website",
-    description:
-      "Weblynx Infotech developed a dynamic and compassionate website for Prani Seva Ashram, a non-profit dog NGO. This platform facilitates increased community engagement through features like adoption insights, real-time donation tracking, and efficient volunteer management, allowing the organization to better connect with supporters and care for animals.", // UPDATED
-    technologies: [
-      "WordPress",
-      "Custom Theme",
-      "Donation System",
-      "Volunteer Management",
-      "Responsive Design",
-    ],
-    image:
-      "https://via.placeholder.com/800x500/1abc9c/DDDDDD?text=Prani%20Seva%20Ashram", // Placeholder image
-    link: "#",
+    title: "Prani Seva Ashram",
+    description: "A digital hub for a compassionate non-profit.",
+    image: "/projects/project2.png",
+    tags: ["React.js", "Node.js", "Express.js"],
+    demoUrl: "https://prani-seva-ashram-2-0.onrender.com/",
+    githubUrl: "https://github.com/shubhampawale7/Prani-Seva-Ashram-2.0",
+  },
+  {
+    id: 6,
+    title: "BRB Art Fusion",
+    description: "Full-stack e-commerce with a powerful admin panel.",
+    image: "/projects/project6.png",
+    tags: ["React", "Node.js", "Fullstack"],
+    demoUrl: "https://brb-art-fusion-mern.vercel.app/",
+    githubUrl: "https://github.com/shubhampawale7/brb-art-fusion-MERN",
   },
   {
     id: 3,
-    title: "Trishha Mines and Minerals - Mining Website",
-    description:
-      "For Trishha Mines and Minerals, Weblynx Infotech delivered a modern and robust corporate website that effectively showcases their extensive services, diverse product offerings, and impressive global footprint. The site is designed for corporate professionalism, providing comprehensive information about their operations, safety standards, and commitment to sustainability, while also enhancing their online presence.", // UPDATED
-    technologies: [
-      "React",
-      "Next.js",
-      "Tailwind CSS",
-      "SEO Optimization",
-      "Interactive Maps",
-    ],
-    image:
-      "https://via.placeholder.com/800x500/3498db/DDDDDD?text=Trishha%20Mines", // Placeholder image
-    link: "#",
+    title: "Trishha Mines",
+    description: "A modern corporate identity for an industry leader.",
+    image: "/projects/project3.png",
+    tags: ["React.js", "Node.js", "Corporate"],
+    demoUrl: "https://www.trishhaminesandminerals.com/",
+    githubUrl: "https://github.com/shubhampawale7",
   },
   {
     id: 4,
-    title: "Walnut Hotel - Landing Page",
-    description:
-      "Weblynx Infotech created a sleek, highly responsive, and performant landing page for Walnut Hotel. Developed with pure HTML, CSS, and JavaScript, this page provides an elegant digital storefront that captivates potential guests, highlights key amenities, and drives direct bookings with a user-friendly interface optimized for all devices.", // UPDATED
-    technologies: [
-      "HTML5",
-      "CSS3",
-      "JavaScript (Vanilla)",
-      "Responsive Design",
-      "Performance Optimization",
-    ],
-    image:
-      "https://via.placeholder.com/800x500/e67e22/DDDDDD?text=Walnut%20Hotel", // Placeholder image
-    link: "#",
+    title: "Walnut Hotel",
+    description: "A sleek, high-performance landing page.",
+    image: "/projects/project4.png",
+    tags: ["HTML", "CSS", "JavaScript"],
+    demoUrl: "https://walnut-hotel.vercel.app/",
+    githubUrl: "https://github.com/shubhampawale7",
+  },
+  {
+    id: 5,
+    title: "FlowBit",
+    description: "A full-featured SaaS subscription manager.",
+    image: "/projects/flowbit_cover.png",
+    tags: ["React", "Node.js", "SaaS"],
+    demoUrl: "https://flow-bit-fcnw.vercel.app/",
+    githubUrl: "https://github.com/shubhampawale7/FlowBit",
   },
 ];
 
 const Portfolio = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null);
-
-  const mainHeadingRef = useRef(null);
-  const introTextRef = useRef(null);
-  const projectCards = useRef([]);
-  const finalCtaHeadingRef = useRef(null);
-  const finalCtaTextRef = useRef(null);
-  const finalCtaButtonRef = useRef(null);
-
-  const addToArrayRef = (el, arr) => {
-    if (el && !arr.current.includes(el)) {
-      arr.current.push(el);
-    }
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: targetRef });
+  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-80%"]);
+  const heroText = "Digital Craftsmanship.";
+  const textVariants = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.03, delayChildren: i * 0.04 },
+    }),
   };
-
-  useEffect(() => {
-    projectCards.current = [];
-
-    let ctx = gsap.context(() => {
-      gsap.from(mainHeadingRef.current, {
-        y: -50,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(introTextRef.current, {
-        y: 50,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: introTextRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(projectCards.current, {
-        y: 80,
-        scale: 0.9,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: projectCards.current[0],
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(
-        [
-          finalCtaHeadingRef.current,
-          finalCtaTextRef.current,
-          finalCtaButtonRef.current,
-        ],
-        {
-          y: 50,
-          stagger: 0.1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: finalCtaHeadingRef.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      ScrollTrigger.refresh();
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  const letterVariants = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", damping: 12, stiffness: 100 },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+      transition: { type: "spring", damping: 12, stiffness: 100 },
+    },
+  };
+  const contentStagger = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  };
+  const contentRise = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
 
   return (
     <div
-      id="portfolio"
-      ref={sectionRef}
       className={`min-h-screen ${
-        isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
+        isDark ? "bg-black text-white" : "bg-gray-100 text-gray-900"
       } transition-colors duration-500`}
     >
-      {/* SEO for the Portfolio Page - UPDATED for Weblynx Infotech */}
       <Seo
-        title="Weblynx Infotech Portfolio - Our Digital Projects & Case Studies" // UPDATED
-        description="Explore recent web development projects by Weblynx Infotech, including e-commerce platforms, NGO websites, corporate sites, and landing pages. See our expertise in action." // UPDATED
-        keywords="Weblynx Infotech portfolio, web development projects, custom web apps, WordPress sites, e-commerce solutions, NGO website, mining website, hotel landing page, React projects, Node.js projects" // UPDATED
-        ogTitle="Weblynx Infotech Portfolio: Real Projects, Real Results" // UPDATED
-        ogDescription="Discover the impact of Weblynx Infotech's digital solutions through our diverse portfolio of custom web applications and websites." // UPDATED
-        ogImage="https://www.weblynxinfotech.com/social-share-portfolio.jpg" // UPDATED: Use your new domain
-        ogUrl="https://www.weblynxinfotech.com/portfolio" // UPDATED: Use your new domain
-        canonical="https://www.weblynxinfotech.com/portfolio" // UPDATED: Use your new domain
+        title="Weblynx Infotech Portfolio - Our Creative Work"
+        description="Explore a gallery of creative and impactful web development projects by Weblynx Infotech. See our expertise in creating unique digital experiences."
+        keywords="creative portfolio, web development projects, web design gallery, horizontal scroll portfolio, framer motion portfolio, React projects"
+        ogTitle="The Creative Portfolio of Weblynx Infotech"
+        ogDescription="Discover our work in a unique, interactive gallery showcasing the best of our e-commerce, corporate, and SaaS projects."
+        ogUrl="https://www.weblynxinfotech.com/portfolio"
+        canonical="https://www.weblynxinfotech.com/portfolio"
       />
-
-      {/* Hero/Introduction Section for Portfolio */}
-      <section
-        className={`py-16 sm:py-20 px-4 ${
-          isDark
-            ? "bg-gradient-to-br from-gray-950 to-gray-800 text-white"
-            : "bg-gradient-to-br from-blue-50 to-white text-gray-800"
-        } transition-colors duration-500`}
-      >
-        <div className="container mx-auto max-w-7xl text-center">
-          <h1
-            className="main-heading text-5xl md:text-7xl font-extrabold mb-6
-                         text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-600
-                         dark:from-purple-400 dark:to-cyan-400"
-            ref={mainHeadingRef}
-          >
-            Our Agency Projects & Case Studies
-          </h1>
-          <p
-            className="text-lg md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto px-4"
-            ref={introTextRef}
-          >
-            Discover the impact of our digital solutions through a curated
-            selection of projects, showcasing Weblynx Infotech's expertise and
-            dedication to client success. {/* UPDATED: Text mention */}
-          </p>
+      <CursorGlow isDark={isDark} />
+      <section className="relative py-28 sm:py-32 px-4 text-center">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-gray-100 dark:bg-black dark:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:2rem_2rem]">
+          <motion.div
+            animate={{
+              background: [
+                "rgba(212, 212, 212, 0.3)",
+                "rgba(212, 212, 212, 0)",
+                "rgba(212, 212, 212, 0.3)",
+              ],
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_200px,#d4d4d4,transparent)] dark:bg-[radial-gradient(circle_800px_at_50%_200px,#ffffff11,transparent)]"
+          />
         </div>
-      </section>
-
-      {/* Projects Grid Section */}
-      <section className="py-16 sm:py-20 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
-            {projectsData.map((project, index) => (
-              <motion.div
-                key={project.id}
-                ref={(el) => addToArrayRef(el, projectCards)}
-                className={`p-6 rounded-xl shadow-xl flex flex-col
-                            ${
-                              isDark
-                                ? "bg-gray-800 border border-gray-700"
-                                : "bg-white border border-gray-200"
-                            }
-                            transform transition-all duration-300 group`}
-                whileHover={{
-                  y: -8,
-                  boxShadow: isDark
-                    ? "0 18px 36px rgba(0, 0, 0, 0.4)"
-                    : "0 18px 36px rgba(0, 0, 0, 0.18)",
-                }}
-              >
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-48 object-cover rounded-lg mb-6 shadow-md"
-                />
-                <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-blue-600 dark:text-purple-400">
-                  {project.title}
-                </h3>
-                <p className="text-base opacity-90 mb-4 flex-grow">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className={`px-3 py-1 rounded-full text-sm font-medium
-                                  ${
-                                    isDark
-                                      ? "bg-gray-700 text-gray-300"
-                                      : "bg-gray-200 text-gray-700"
-                                  }`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-flex items-center justify-center w-full px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300
-                                ${
-                                  isDark
-                                    ? "bg-purple-700 hover:bg-purple-600 text-white"
-                                    : "bg-blue-600 hover:bg-blue-700 text-white"
-                                }`}
-                >
-                  View Case Study
-                  <svg
-                    className="ml-2 w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4m-4-7h4m0 0v4m0-4L10 14"
-                    ></path>
-                  </svg>
-                </a>
-              </motion.div>
+        <div className="container mx-auto max-w-4xl">
+          <motion.h1
+            variants={textVariants}
+            initial="hidden"
+            animate="visible"
+            className="text-5xl md:text-8xl font-black mb-6 text-gray-900 dark:text-white tracking-tighter"
+          >
+            {heroText.split("").map((char, i) => (
+              <motion.span key={i} variants={letterVariants}>
+                {char}
+              </motion.span>
             ))}
-          </div>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+            className="text-lg md:text-xl opacity-70 max-w-2xl mx-auto"
+          >
+            We don't just build websites; we create digital experiences that
+            resonate. Scroll to explore a curated selection of our work.
+          </motion.p>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1,
+            }}
+            className="mt-12 text-gray-500 dark:text-gray-400 flex flex-col items-center justify-center gap-2"
+          >
+            <span className="text-sm">Scroll to explore</span>
+            <FiArrowDown />
+          </motion.div>
         </div>
       </section>
 
-      {/* Call to Action Section for Portfolio */}
-      <section
-        className={`py-16 px-4 text-center ${
-          isDark ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-800"
-        } transition-colors duration-300`}
-      >
-        <div className="container mx-auto max-w-3xl">
-          <h2
-            className="text-3xl md:text-4xl font-bold mb-6"
-            ref={finalCtaHeadingRef}
+      {/* Horizontal Scroll Projects Section */}
+      <section ref={targetRef} className="relative h-[600vh]">
+        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+          <motion.div style={{ x }} className="flex gap-12 pl-12">
+            {projectsData.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* --- NEW: Overall Write-up Section --- */}
+      <section className="py-28 sm:py-32 px-4">
+        <motion.div
+          variants={contentStagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          className="container mx-auto max-w-3xl text-center"
+        >
+          <motion.h2
+            variants={contentRise}
+            className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500 dark:from-purple-400 dark:to-cyan-400"
           >
-            Ready to add your project to our success stories?
+            Your Vision, Realized Through Technology.
+          </motion.h2>
+          <motion.div
+            variants={contentRise}
+            className="mt-8 text-lg md:text-xl text-gray-700 dark:text-gray-300 space-y-6 font-serif leading-relaxed"
+          >
+            <p>
+              You've seen our work, but each project is more than just a
+              collection of code and pixels—it's a story of a partnership. It's
+              a business challenge accepted and a digital solution delivered
+              with precision and passion.
+            </p>
+            <p>
+              Our approach combines strategic thinking with technical
+              excellence. We build scalable, high-performance applications
+              designed not just to function, but to drive growth and deliver
+              tangible results. The next success story we want to tell is yours.
+            </p>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-28 sm:py-32 px-4 text-center bg-gray-200 dark:bg-gray-900">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="container mx-auto max-w-3xl"
+        >
+          <h2 className="text-4xl md:text-6xl font-bold mb-6">
+            Have a Project in Mind?
           </h2>
-          <p className="text-lg mb-8 opacity-90" ref={finalCtaTextRef}>
-            Let's collaborate and create the next impactful digital solution
-            together.
+          <p className="text-lg mb-8 opacity-70">
+            Let's collaborate and turn your idea into our next success story.
           </p>
           <Link
             to="/contact"
-            ref={finalCtaButtonRef}
-            className={`inline-block px-10 py-4 text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300
-                        ${
-                          isDark
-                            ? "bg-cyan-700 text-white hover:bg-cyan-600"
-                            : "bg-green-600 text-white hover:bg-green-700"
-                        }`}
+            className={`inline-block px-10 py-5 text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 ${
+              isDark
+                ? "bg-white text-black hover:bg-gray-200"
+                : "bg-gray-900 text-white hover:bg-black"
+            }`}
           >
-            Get Started with Your Project
+            Let's Talk
           </Link>
-        </div>
+        </motion.div>
       </section>
     </div>
+  );
+};
+
+const useMousePosition = () => {
+  const [isHovering, setIsHovering] = useState(false);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  useEffect(() => {
+    const updateMouse = (e) => {
+      x.set(e.clientX);
+      y.set(e.clientY);
+    };
+    const showCursor = () => setIsHovering(true);
+    const hideCursor = () => setIsHovering(false);
+    window.addEventListener("mousemove", updateMouse);
+    document.body.addEventListener("mouseenter", showCursor);
+    document.body.addEventListener("mouseleave", hideCursor);
+    return () => {
+      window.removeEventListener("mousemove", updateMouse);
+      document.body.removeEventListener("mouseenter", showCursor);
+      document.body.removeEventListener("mouseleave", hideCursor);
+    };
+  }, [x, y]);
+  return { x, y, isHovering };
+};
+
+const CursorGlow = ({ isDark }) => {
+  const { x, y, isHovering } = useMousePosition();
+  const size = 300;
+  return (
+    <motion.div
+      className={`fixed top-0 left-0 pointer-events-none z-50 rounded-full mix-blend-soft-light ${
+        isDark ? "bg-white" : "bg-black"
+      }`}
+      style={{ x: x, y: y }}
+      animate={{
+        width: size,
+        height: size,
+        x: x - size / 2,
+        y: y - size / 2,
+        opacity: isHovering ? 0.1 : 0,
+      }}
+      transition={{ type: "tween", ease: "backOut", duration: 0.5 }}
+    />
+  );
+};
+
+const ProjectCard = ({ project }) => {
+  const cardRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    container: cardRef,
+    offset: ["start end", "end start"],
+  });
+  const contentY = useTransform(
+    scrollYProgress,
+    [0, 0.3, 0.7, 1],
+    [50, 0, 0, 50]
+  );
+  const contentOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.3, 0.7, 1],
+    [0, 1, 1, 0]
+  );
+  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [15, 0, -15]);
+
+  return (
+    <motion.div
+      style={{ rotateY, transformStyle: "preserve-3d" }}
+      className="group relative h-[300px] w-[400px] md:h-[450px] md:w-[600px] overflow-hidden bg-gray-900 rounded-2xl shadow-2xl flex-shrink-0"
+    >
+      <div
+        ref={cardRef}
+        className="absolute inset-0 z-0 transition-transform duration-500 ease-in-out group-hover:scale-105"
+      >
+        <img
+          src={project.image}
+          alt={project.title}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+      </div>
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="absolute inset-0 z-10 flex flex-col justify-end p-8 text-white"
+      >
+        {/* Adjusted layout for shorter descriptions */}
+        <h3 className="text-4xl font-bold mb-3">{project.title}</h3>
+        <p className="text-xl opacity-80 mb-6">{project.description}</p>
+        <div className="flex flex-wrap gap-2 mb-8">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-white/10 text-white backdrop-blur-sm"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <div className="flex items-center gap-4">
+          <a
+            href={project.demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full text-base font-semibold transition-all duration-300 bg-white text-black hover:bg-gray-200 scale-100 hover:scale-105"
+          >
+            <FiExternalLink /> Live Demo
+          </a>
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full text-base font-semibold transition-all duration-300 bg-white/20 hover:bg-white/30 text-white scale-100 hover:scale-105"
+          >
+            <FiGithub /> GitHub
+          </a>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

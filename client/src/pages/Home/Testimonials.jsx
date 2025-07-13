@@ -1,16 +1,17 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+// client/src/pages/Testimonials/Testimonials.jsx
+import React, { useState, useEffect, useCallback } from "react";
 import { useTheme } from "../../context/ThemeContext.jsx";
-import { gsap } from "gsap";
 import Seo from "../../components/common/Seo.jsx";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaQuoteLeft } from "react-icons/fa";
 
-// --- UPDATED Testimonials Data with Indian Names ---
+// --- Testimonials Data (No Images) ---
 const testimonialsData = [
   {
     name: "Priya Sharma",
     company: "Aakash Textiles",
     quote:
-      "Working with Weblynx Infotech was a game-changer. Their team in Pune understood our vision perfectly and delivered a web application that has streamlined our entire operation.",
+      "Working with Weblynx Infotech was a game-changer. Their team understood our vision perfectly and delivered a web application that has streamlined our entire operation.",
   },
   {
     name: "Vikram Singh",
@@ -32,146 +33,117 @@ const testimonialsData = [
   },
 ];
 
+// --- Framer Motion Variants for the text ticker effect ---
+const tickerVariants = {
+  initial: { y: 20, opacity: 0 },
+  animate: { y: 0, opacity: 1, transition: { ease: "easeOut", duration: 0.5 } },
+  exit: { y: -20, opacity: 0, transition: { ease: "easeIn", duration: 0.3 } },
+};
+
 const Testimonials = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const autoplayTimeline = useRef(null);
-  const contentRef = useRef(null);
-
-  const allQuotes = testimonialsData.map((t) => t.quote).join(" ");
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleNext = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % testimonialsData.length);
   }, []);
 
-  const handlePrev = () => {
-    setActiveIndex(
-      (prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length
-    );
+  const handleDotClick = (index) => {
+    setActiveIndex(index);
   };
 
-  // Main transition animation
   useEffect(() => {
-    if (!contentRef.current) return;
-    const contentElements = contentRef.current.children;
-    gsap
-      .timeline()
-      .fromTo(
-        contentElements,
-        { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.1 }
-      );
-  }, [activeIndex]);
+    if (isHovering) return;
 
-  // Autoplay and marquee animations
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Background marquee animation
-      gsap.to(".marquee-column", {
-        yPercent: -50,
-        duration: 200,
-        repeat: -1,
-        ease: "none",
-      });
+    const autoplay = setInterval(() => {
+      handleNext();
+    }, 5000); // Change testimonial every 5 seconds
 
-      // Autoplay timeline
-      const startAutoplay = () => {
-        autoplayTimeline.current = gsap
-          .timeline({ onComplete: startAutoplay })
-          .to(`.progress-bar-fill`, {
-            width: "100%",
-            duration: 8,
-            ease: "linear",
-          })
-          .call(handleNext);
-      };
-      startAutoplay();
-    }, sectionRef);
-    return () => {
-      ctx.revert();
-      if (autoplayTimeline.current) autoplayTimeline.current.kill();
-    };
-  }, [activeIndex, handleNext]);
-
-  const pauseAutoplay = () => autoplayTimeline.current?.pause();
-  const resumeAutoplay = () => autoplayTimeline.current?.resume();
+    return () => clearInterval(autoplay);
+  }, [activeIndex, isHovering, handleNext]);
 
   return (
     <section
-      ref={sectionRef}
-      className={`relative py-20 sm:py-28 overflow-hidden transition-colors duration-300
-                  ${
-                    isDark ? "bg-black text-white" : "bg-gray-50 text-gray-900"
-                  }`}
-      onMouseEnter={pauseAutoplay}
-      onMouseLeave={resumeAutoplay}
+      className={`py-24 sm:py-24 transition-colors duration-300 ${
+        isDark ? "bg-black text-white" : "bg-slate-50 text-gray-900"
+      }`}
     >
-      {/* --- The Scrolling Wall of Words (Background) --- */}
-      <div className="absolute inset-0 flex gap-8 opacity-10 dark:opacity-[0.03] blur-sm">
-        {Array(4)
-          .fill(0)
-          .map((_, i) => (
-            <div
-              key={i}
-              className="marquee-column w-1/4 h-full text-4xl leading-relaxed text-justify [transform:translateY(-25%)]"
-            >
-              <p>
-                {allQuotes} {allQuotes}
-              </p>
-            </div>
-          ))}
-      </div>
+      <Seo
+        title="Testimonials | Weblynx Infotech"
+        description="See what our clients in Pune and beyond are saying about our web development, SEO, and digital marketing services. Real feedback from real partners."
+        keywords="client testimonials, Weblynx Infotech reviews, web development feedback, client success stories, Pune web agency"
+        ogTitle="Client Success Stories | Weblynx Infotech"
+        ogDescription="Hear directly from our partners about their experience working with Weblynx Infotech to achieve their digital goals."
+        ogUrl="https://www.weblynxinfotech.com/testimonials"
+        canonical="https://www.weblynxinfotech.com/testimonials"
+      />
 
-      <div className="relative z-10 container mx-auto px-4 flex flex-col items-center">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600 dark:from-pink-400 dark:to-orange-400">
-            A Word from Our Partners
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="container mx-auto px-4 flex flex-col items-center"
+      >
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold">
+            What Our Partners Say
           </h2>
+          <p className="text-base text-gray-600 dark:text-gray-400 mt-2">
+            Real feedback from businesses we've helped build.
+          </p>
         </div>
 
-        <div className="relative w-full max-w-3xl text-center">
-          {/* The content will be swapped here */}
-          <div ref={contentRef} className="min-h-[250px]">
-            <p className="text-6xl md:text-8xl font-black text-purple-200 dark:text-purple-900/80">
-              “
-            </p>
-            <blockquote className="text-2xl md:text-3xl font-medium italic my-4">
-              {testimonialsData[activeIndex].quote}
-            </blockquote>
-            <div>
-              <h3 className="text-xl font-bold">
-                {testimonialsData[activeIndex].name}
-              </h3>
-              <p className="text-md text-gray-500 dark:text-gray-400">
-                {testimonialsData[activeIndex].company}
-              </p>
-            </div>
-          </div>
+        <div
+          className="relative w-full max-w-3xl text-center p-8 sm:p-12 rounded-2xl border min-h-[320px] flex flex-col justify-center
+                     border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          <FaQuoteLeft className="absolute top-8 left-8 text-4xl text-gray-200 dark:text-gray-700 -z-0" />
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              variants={tickerVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="relative z-10"
+            >
+              <blockquote className="text-lg md:text-xl font-medium leading-relaxed">
+                {testimonialsData[activeIndex].quote}
+              </blockquote>
+              <div className="mt-6">
+                <h3 className="text-base font-bold text-purple-600 dark:text-purple-400">
+                  {testimonialsData[activeIndex].name}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {testimonialsData[activeIndex].company}
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* --- Custom Navigation --- */}
-        <div className="flex items-center justify-center gap-6 mt-12">
-          <button
-            onClick={handlePrev}
-            aria-label="Previous testimonial"
-            className="p-3 rounded-full bg-gray-200/50 dark:bg-gray-800/50 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300 backdrop-blur-sm"
-          >
-            <FaChevronLeft />
-          </button>
-          <div className="w-48 h-1 bg-gray-200/50 dark:bg-gray-800/50 rounded-full overflow-hidden">
-            <div className="progress-bar-fill h-full bg-purple-500"></div>
-          </div>
-          <button
-            onClick={handleNext}
-            aria-label="Next testimonial"
-            className="p-3 rounded-full bg-gray-200/50 dark:bg-gray-800/50 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-300 backdrop-blur-sm"
-          >
-            <FaChevronRight />
-          </button>
+        {/* Dot Navigation */}
+        <div className="flex justify-center gap-3 mt-8">
+          {testimonialsData.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => handleDotClick(i)}
+              aria-label={`Go to testimonial ${i + 1}`}
+              className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-300 ${
+                i === activeIndex
+                  ? "bg-purple-500 scale-125"
+                  : "bg-gray-300 dark:bg-gray-700 hover:bg-gray-400"
+              }`}
+            />
+          ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
