@@ -144,7 +144,7 @@ const MobileView = ({ isDark }) => (
               <LazyLoadImage
                 src={project.image}
                 alt={project.title}
-                className="w-full h-56 object-cover object-top"
+                className="w-full h-56 object-contain object-top"
                 effect="blur"
               />
             </div>
@@ -409,7 +409,7 @@ const ProjectCard = ({ project }) => {
         <img
           src={project.image}
           alt={project.title}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-fill"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       </div>
