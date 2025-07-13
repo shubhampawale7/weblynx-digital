@@ -5,8 +5,9 @@ import { motion, useTransform, useScroll, useMotionValue } from "framer-motion";
 import { Link } from "react-router-dom";
 import Seo from "../../components/common/Seo.jsx";
 import { FiGithub, FiExternalLink, FiArrowDown } from "react-icons/fi";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
-// --- UPDATED: Project descriptions are now short taglines ---
 const projectsData = [
   {
     id: 1,
@@ -64,9 +65,161 @@ const projectsData = [
   },
 ];
 
+// Custom hook to check window size
+const useWindowSize = () => {
+  const [size, setSize] = useState([0, 0]);
+  useEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+  return size;
+};
+
 const Portfolio = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [width] = useWindowSize();
+  const isMobile = width < 1024; // lg breakpoint
+
+  return (
+    <div
+      className={`min-h-screen ${
+        isDark ? "bg-black text-white" : "bg-gray-100 text-gray-900"
+      } transition-colors duration-500`}
+    >
+      <Seo
+        title="Weblynx Infotech Portfolio - Our Creative Work"
+        description="Explore a gallery of creative and impactful web development projects by Weblynx Infotech. See our expertise in creating unique digital experiences."
+      />
+
+      {/* The CursorGlow will only be rendered on desktop */}
+      {!isMobile && <CursorGlow isDark={isDark} />}
+
+      {isMobile ? (
+        <MobileView isDark={isDark} />
+      ) : (
+        <DesktopView isDark={isDark} />
+      )}
+    </div>
+  );
+};
+
+// --- MOBILE VIEW ---
+const MobileView = ({ isDark }) => (
+  <>
+    <section className="relative py-20 px-4 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="container mx-auto max-w-4xl"
+      >
+        <h1 className="text-5xl font-black mb-6 text-gray-900 dark:text-white tracking-tighter">
+          Digital Craftsmanship.
+        </h1>
+        <p className="text-lg opacity-70 max-w-2xl mx-auto">
+          We create digital experiences that resonate. Explore a curated
+          selection of our work.
+        </p>
+      </motion.div>
+    </section>
+    <section className="px-4 pb-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {projectsData.map((project, index) => (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className={`rounded-2xl flex flex-col group ${
+              isDark ? "bg-gray-900" : "bg-white shadow-lg"
+            }`}
+          >
+            <div className="overflow-hidden rounded-t-2xl border-b-2 dark:border-gray-800 border-gray-100">
+              <LazyLoadImage
+                src={project.image}
+                alt={project.title}
+                className="w-full h-56 object-cover object-top"
+                effect="blur"
+              />
+            </div>
+            <div className="p-6 flex flex-col flex-grow">
+              <h3 className="text-2xl font-bold mb-2 text-purple-600 dark:text-purple-400">
+                {project.title}
+              </h3>
+              <p className="text-base opacity-80 mb-4 flex-grow">
+                {project.description}
+              </p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${
+                      isDark
+                        ? "bg-gray-800 text-cyan-400"
+                        : "bg-blue-100 text-blue-800"
+                    }`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-auto flex items-center gap-4">
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center justify-center gap-2 w-full px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
+                    isDark
+                      ? "bg-purple-600 hover:bg-purple-700 text-white"
+                      : "bg-blue-600 hover:bg-blue-700 text-white"
+                  }`}
+                >
+                  <FiExternalLink /> Live Demo
+                </a>
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center justify-center gap-2 w-full px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
+                    isDark
+                      ? "bg-gray-700 hover:bg-gray-600 text-white"
+                      : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+                  }`}
+                >
+                  <FiGithub /> GitHub
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+    <section className="py-20 px-4 text-center bg-gray-200 dark:bg-gray-900">
+      <div className="container mx-auto max-w-3xl">
+        <h2 className="text-4xl font-bold mb-6">Have a Project in Mind?</h2>
+        <Link
+          to="/contact"
+          className={`inline-block px-8 py-4 text-lg font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 ${
+            isDark
+              ? "bg-white text-black hover:bg-gray-200"
+              : "bg-gray-900 text-white hover:bg-black"
+          }`}
+        >
+          Let's Talk
+        </Link>
+      </div>
+    </section>
+  </>
+);
+
+// --- DESKTOP VIEW ---
+const DesktopView = ({ isDark }) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: targetRef });
   const x = useTransform(scrollYProgress, [0, 1], ["1%", "-80%"]);
@@ -90,36 +243,10 @@ const Portfolio = () => {
       transition: { type: "spring", damping: 12, stiffness: 100 },
     },
   };
-  const contentStagger = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-  };
-  const contentRise = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
 
   return (
-    <div
-      className={`min-h-screen ${
-        isDark ? "bg-black text-white" : "bg-gray-100 text-gray-900"
-      } transition-colors duration-500`}
-    >
-      <Seo
-        title="Weblynx Infotech Portfolio - Our Creative Work"
-        description="Explore a gallery of creative and impactful web development projects by Weblynx Infotech. See our expertise in creating unique digital experiences."
-        keywords="creative portfolio, web development projects, web design gallery, horizontal scroll portfolio, framer motion portfolio, React projects"
-        ogTitle="The Creative Portfolio of Weblynx Infotech"
-        ogDescription="Discover our work in a unique, interactive gallery showcasing the best of our e-commerce, corporate, and SaaS projects."
-        ogUrl="https://www.weblynxinfotech.com/portfolio"
-        canonical="https://www.weblynxinfotech.com/portfolio"
-      />
-      <CursorGlow isDark={isDark} />
-      <section className="relative py-28 sm:py-32 px-4 text-center">
+    <>
+      <section className="relative h-screen flex items-center justify-center text-center px-4">
         <div className="absolute inset-0 -z-10 h-full w-full bg-gray-100 dark:bg-black dark:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:2rem_2rem]">
           <motion.div
             animate={{
@@ -138,7 +265,7 @@ const Portfolio = () => {
             variants={textVariants}
             initial="hidden"
             animate="visible"
-            className="text-5xl md:text-8xl font-black mb-6 text-gray-900 dark:text-white tracking-tighter"
+            className="text-8xl font-black mb-6 text-gray-900 dark:text-white tracking-tighter"
           >
             {heroText.split("").map((char, i) => (
               <motion.span key={i} variants={letterVariants}>
@@ -150,7 +277,7 @@ const Portfolio = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
-            className="text-lg md:text-xl opacity-70 max-w-2xl mx-auto"
+            className="text-xl opacity-70 max-w-2xl mx-auto"
           >
             We don't just build websites; we create digital experiences that
             resonate. Scroll to explore a curated selection of our work.
@@ -170,8 +297,6 @@ const Portfolio = () => {
           </motion.div>
         </div>
       </section>
-
-      {/* Horizontal Scroll Projects Section */}
       <section ref={targetRef} className="relative h-[600vh]">
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <motion.div style={{ x }} className="flex gap-12 pl-12">
@@ -181,44 +306,7 @@ const Portfolio = () => {
           </motion.div>
         </div>
       </section>
-
-      {/* --- NEW: Overall Write-up Section --- */}
-      <section className="py-28 sm:py-32 px-4">
-        <motion.div
-          variants={contentStagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="container mx-auto max-w-3xl text-center"
-        >
-          <motion.h2
-            variants={contentRise}
-            className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500 dark:from-purple-400 dark:to-cyan-400"
-          >
-            Your Vision, Realized Through Technology.
-          </motion.h2>
-          <motion.div
-            variants={contentRise}
-            className="mt-8 text-lg md:text-xl text-gray-700 dark:text-gray-300 space-y-6 font-serif leading-relaxed"
-          >
-            <p>
-              You've seen our work, but each project is more than just a
-              collection of code and pixels—it's a story of a partnership. It's
-              a business challenge accepted and a digital solution delivered
-              with precision and passion.
-            </p>
-            <p>
-              Our approach combines strategic thinking with technical
-              excellence. We build scalable, high-performance applications
-              designed not just to function, but to drive growth and deliver
-              tangible results. The next success story we want to tell is yours.
-            </p>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="py-28 sm:py-32 px-4 text-center bg-gray-200 dark:bg-gray-900">
+      <section className="py-28 px-4 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -226,9 +314,7 @@ const Portfolio = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="container mx-auto max-w-3xl"
         >
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            Have a Project in Mind?
-          </h2>
+          <h2 className="text-6xl font-bold mb-6">Have a Project in Mind?</h2>
           <p className="text-lg mb-8 opacity-70">
             Let's collaborate and turn your idea into our next success story.
           </p>
@@ -244,10 +330,11 @@ const Portfolio = () => {
           </Link>
         </motion.div>
       </section>
-    </div>
+    </>
   );
 };
 
+// --- Common Components for Desktop View ---
 const useMousePosition = () => {
   const [isHovering, setIsHovering] = useState(false);
   const x = useMotionValue(0);
@@ -313,7 +400,7 @@ const ProjectCard = ({ project }) => {
   return (
     <motion.div
       style={{ rotateY, transformStyle: "preserve-3d" }}
-      className="group relative h-[300px] w-[400px] md:h-[450px] md:w-[600px] overflow-hidden bg-gray-900 rounded-2xl shadow-2xl flex-shrink-0"
+      className="group relative h-[450px] w-[600px] overflow-hidden bg-gray-900 rounded-2xl shadow-2xl flex-shrink-0"
     >
       <div
         ref={cardRef}
@@ -330,7 +417,6 @@ const ProjectCard = ({ project }) => {
         style={{ y: contentY, opacity: contentOpacity }}
         className="absolute inset-0 z-10 flex flex-col justify-end p-8 text-white"
       >
-        {/* Adjusted layout for shorter descriptions */}
         <h3 className="text-4xl font-bold mb-3">{project.title}</h3>
         <p className="text-xl opacity-80 mb-6">{project.description}</p>
         <div className="flex flex-wrap gap-2 mb-8">
