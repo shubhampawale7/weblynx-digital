@@ -256,7 +256,7 @@ const WhyChooseUs = () => {
         isDark ? "bg-black text-white" : "bg-white text-gray-900"
       } transition-colors duration-300`}
     >
-      <Seo
+      {/* <Seo
         title="Why Choose Weblynx Infotech? - Our Unique Advantages"
         description="Discover why Weblynx Infotech is your ideal digital partner. We offer innovative solutions, a client-centric approach, superior performance, and timely delivery."
         keywords="Why choose Weblynx Infotech, digital agency benefits, innovative solutions, client-centric, performance, scalability, pixel-perfect design, security, reliability, timely delivery"
@@ -264,7 +264,7 @@ const WhyChooseUs = () => {
         ogDescription="Learn what sets Weblynx Infotech apart and why we're the right choice for your next digital project."
         ogUrl="https://www.weblynxinfotech.com/#why-choose-us"
         canonical="https://www.weblynxinfotech.com/#why-choose-us"
-      />
+      /> */}
 
       <motion.div
         initial={{ opacity: 0 }}

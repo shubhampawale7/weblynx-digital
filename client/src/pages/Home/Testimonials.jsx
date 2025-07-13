@@ -70,7 +70,7 @@ const Testimonials = () => {
         isDark ? "bg-black text-white" : "bg-slate-50 text-gray-900"
       }`}
     >
-      <Seo
+      {/* <Seo
         title="Testimonials | Weblynx Infotech"
         description="See what our clients in Pune and beyond are saying about our web development, SEO, and digital marketing services. Real feedback from real partners."
         keywords="client testimonials, Weblynx Infotech reviews, web development feedback, client success stories, Pune web agency"
@@ -78,7 +78,7 @@ const Testimonials = () => {
         ogDescription="Hear directly from our partners about their experience working with Weblynx Infotech to achieve their digital goals."
         ogUrl="https://www.weblynxinfotech.com/testimonials"
         canonical="https://www.weblynxinfotech.com/testimonials"
-      />
+      /> */}
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
