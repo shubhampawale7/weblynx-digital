@@ -5,6 +5,8 @@ import Lottie from "lottie-react";
 import { Link } from "react-router-dom";
 import Seo from "../../components/common/Seo.jsx";
 import { motion, useScroll, useSpring } from "framer-motion";
+import wordpressAnimationData from "../../assets/lottie-animations/wordpress-animation.json";
+
 import {
   FiPenTool,
   FiCode,
@@ -16,239 +18,202 @@ import {
   FiThumbsUp,
   FiTrendingUp,
   FiDollarSign,
+  FiCompass,
+  FiLayout,
+  FiFlag,
+  FiCheck,
+  FiX,
 } from "react-icons/fi";
+import { FaWordpress, FaElementor, FaWpforms } from "react-icons/fa";
+import { SiWoocommerce, SiYoast } from "react-icons/si";
 
-// Lottie animation data
-import wordpressAnimationData from "../../assets/lottie-animations/wordpress-animation.json";
-
-// --- Data with Icons ---
-const offerData = [
+// --- Data for the page sections ---
+const typesOfServicesData = [
   {
     icon: <FiPenTool />,
     title: "Custom Theme Development",
-    desc: "From concept to code, we build unique WordPress themes that perfectly match your brand identity and functionality needs.",
+    description:
+      "Unique, high-performance themes built from scratch to perfectly match your brand identity.",
   },
   {
     icon: <FiCode />,
-    title: "Plugin Development & Customization",
-    desc: "Extend your site's capabilities with bespoke plugins or customize existing ones to fit your specific requirements.",
+    title: "Plugin Customization",
+    description:
+      "Modifying or building custom plugins to extend your site's functionality for specific needs.",
   },
   {
     icon: <FiShoppingCart />,
     title: "WooCommerce E-commerce",
-    desc: "Launch powerful online stores with seamless product management, secure payments, and a great shopping experience.",
+    description:
+      "Launching powerful online stores with secure payments and seamless product management.",
   },
   {
     icon: <FiShuffle />,
-    title: "Website Migration & Redesign",
-    desc: "Smoothly transition your existing website to WordPress or give your current WordPress site a modern facelift.",
+    title: "Site Migration & Redesign",
+    description:
+      "Smoothly transitioning your existing website to WordPress or giving it a modern facelift.",
   },
   {
     icon: <FiZap />,
-    title: "Performance & Security",
-    desc: "Optimize your WordPress site for speed, reliability, and robust security against common threats and vulnerabilities.",
+    title: "Performance Optimization",
+    description:
+      "Fine-tuning your site for lightning-fast load times and a superior user experience.",
   },
   {
     icon: <FiLifeBuoy />,
-    title: "Ongoing Support & Training",
-    desc: "Receive comprehensive support and training to confidently manage and update your WordPress website with ease.",
+    title: "Maintenance & Support",
+    description:
+      "Providing ongoing support and training to keep your WordPress website secure and updated.",
   },
 ];
 
-const approachData = [
-  {
-    num: 1,
-    title: "Discovery & Strategy",
-    desc: "We start by understanding your goals, target audience, and project scope to identify the best WordPress solutions for you.",
-  },
-  {
-    num: 2,
-    title: "Design & Prototyping",
-    desc: "Our team creates visually stunning and user-friendly designs, tailored to your brand, ensuring a flawless user experience.",
-  },
-  {
-    num: 3,
-    title: "Development & Customization",
-    desc: "We bring the designs to life, building or customizing themes and plugins to ensure robust and scalable functionality.",
-  },
-  {
-    num: 4,
-    title: "Testing & Optimization",
-    desc: "We rigorously test for responsiveness, performance, and security across all devices to guarantee a perfect launch.",
-  },
-  {
-    num: 5,
-    title: "Launch & Training",
-    desc: "We seamlessly deploy your new site and provide comprehensive training for easy content management.",
-  },
+const techStackData = [
+  { name: "WordPress Core", Icon: FaWordpress, color: "text-blue-500" },
+  { name: "WooCommerce", Icon: SiWoocommerce, color: "text-purple-500" },
+  { name: "Elementor", Icon: FaElementor, color: "text-pink-500" },
+  { name: "Advanced Custom Fields", Icon: FiEdit, color: "text-indigo-500" },
+  { name: "Yoast SEO", Icon: SiYoast, color: "text-orange-500" },
+  { name: "Contact Form 7", Icon: FaWpforms, color: "text-gray-500" },
 ];
 
-const benefitsData = [
+const industriesData = [
+  "Blogs & Publishers",
+  "Small Businesses",
+  "E-commerce Stores",
+  "Corporate Websites",
+  "Portfolios",
+  "Non-Profits",
+];
+
+const comparisonData = [
   {
-    icon: <FiEdit />,
-    title: "User-Friendly Management",
-    desc: "Easily update content, images, and features with WordPress's intuitive dashboard, no coding required.",
+    feature: "Uniqueness & Branding",
+    custom: "A bespoke design that perfectly matches your brand.",
+    template: "Risks looking generic or similar to other sites.",
   },
   {
-    icon: <FiThumbsUp />,
-    title: "Flexibility & Scalability",
-    desc: "WordPress adapts to your growing needs, offering endless customization options and robust scalability for the future.",
+    feature: "Performance",
+    custom: "Optimized for speed with clean, minimal code.",
+    template:
+      "Can be bloated with unused features, leading to slower load times.",
   },
   {
-    icon: <FiTrendingUp />,
-    title: "SEO-Friendly Structure",
-    desc: "Built-in SEO capabilities and powerful plugins help your site rank higher in search engine results from day one.",
+    feature: "Flexibility",
+    custom: "Infinitely flexible to accommodate any feature requirement.",
+    template:
+      "Limited to the features and layout options offered by the theme.",
   },
   {
-    icon: <FiDollarSign />,
-    title: "Cost-Effectiveness",
-    desc: "Benefit from a vast ecosystem of themes and plugins, offering powerful features without extensive custom coding.",
+    feature: "Security & Updates",
+    custom: "Leaner code means a smaller attack surface and easier updates.",
+    template:
+      "Can have security vulnerabilities if not from a reputable author.",
   },
 ];
 
 // --- Framer Motion Animation Variants ---
-const sectionVariant = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-};
-
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
 };
-
-const staggerItem = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 },
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 const WordPressSiteCreation = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  const timelineRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start center", "end end"],
-  });
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
   return (
     <div
       className={`min-h-screen ${
-        isDark ? "bg-gray-950 text-white" : "bg-slate-50 text-gray-800"
+        isDark ? "bg-black text-white" : "bg-white text-gray-900"
       } transition-colors duration-500`}
     >
       <Seo
-        title="WordPress Website Creation Services | Weblynx Infotech"
-        description="Weblynx Infotech specializes in creating custom, high-performance, and secure WordPress websites. From custom themes to e-commerce solutions and ongoing support, we build powerful online presences."
-        keywords="WordPress development, custom WordPress themes, WordPress e-commerce, WooCommerce, WordPress plugins, website migration, WordPress SEO, Weblynx Infotech"
-        ogTitle="Weblynx Infotech WordPress: Custom, Powerful, & User-Friendly Websites"
-        ogDescription="Unlock the full potential of WordPress with Weblynx Infotech's expert site creation and customization services."
-        ogUrl="https://www.weblynxinfotech.com/services/wordpress-site-creation"
-        canonical="https://www.weblynxinfotech.com/services/wordpress-site-creation"
+        title="WordPress Development Services | Weblynx Infotech"
+        description="We specialize in creating custom, high-performance, and secure WordPress websites, from custom themes to e-commerce solutions."
       />
 
       {/* Hero Section */}
       <section className="relative py-24 sm:py-32 px-4 overflow-hidden">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-slate-50 dark:bg-gray-950 dark:bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#cce3ff,transparent)] dark:bg-[radial-gradient(circle_500px_at_50%_200px,#3b82f622,transparent)]"></div>
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:2rem_2rem]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_200px,#dbeafe,transparent)] dark:bg-[radial-gradient(circle_800px_at_50%_200px,#0ea5e922,transparent)]" />
         </div>
         <motion.div
-          className="container mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center"
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
+          className="container mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center"
         >
           <div className="text-center md:text-left">
             <motion.h1
-              variants={staggerItem}
+              variants={itemVariants}
               className="text-5xl lg:text-6xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-600 dark:from-lime-400 dark:to-cyan-400"
             >
-              WordPress Site Creation
+              WordPress Development
             </motion.h1>
             <motion.p
-              variants={staggerItem}
+              variants={itemVariants}
               className="text-lg md:text-xl mb-8 opacity-80 max-w-xl mx-auto md:mx-0"
             >
               Unlock the power of WordPress with custom, high-performing
               websites tailored to your unique business needs.
             </motion.p>
-            <motion.div variants={staggerItem}>
+            <motion.div variants={itemVariants}>
               <Link
                 to="/contact"
-                className={`inline-block px-8 py-4 text-lg font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 ${
-                  isDark
-                    ? "bg-purple-600 text-white hover:bg-purple-500"
-                    : "bg-blue-600 text-white hover:bg-blue-700"
-                }`}
+                className="inline-block px-8 py-4 text-lg font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 bg-blue-600 text-white hover:bg-blue-700 dark:bg-sky-500 dark:hover:bg-sky-600"
               >
-                Start Your WordPress Project
+                Start Your Project
               </Link>
             </motion.div>
           </div>
           <motion.div
-            variants={staggerItem}
-            animate={{
-              y: [-10, 10],
-              transition: {
-                duration: 3,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut",
-              },
-            }}
-            className="w-full max-w-md mx-auto md:max-w-none"
+            variants={itemVariants}
+            className="w-full max-w-sm mx-auto md:max-w-none"
           >
-            <Lottie
-              animationData={wordpressAnimationData}
-              loop={true}
-              autoplay={true}
-            />
+            <Lottie animationData={wordpressAnimationData} loop={true} />
           </motion.div>
         </motion.div>
       </section>
 
       {/* What We Offer Section */}
-      <section className="py-20 sm:py-24 px-4">
+      <section
+        className={`py-20 sm:py-24 px-4 ${
+          isDark ? "bg-gray-950" : "bg-slate-50"
+        }`}
+      >
         <div className="container mx-auto max-w-6xl">
           <motion.h2
-            variants={sectionVariant}
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
             className="text-4xl md:text-5xl font-bold text-center mb-16"
           >
-            What We Offer
+            Our WordPress Services
           </motion.h2>
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {offerData.map((item, index) => (
+            {typesOfServicesData.map((item) => (
               <motion.div
-                variants={staggerItem}
-                key={index}
-                className={`p-8 rounded-2xl flex flex-col items-start text-left group transition-all duration-300 ${
-                  isDark
-                    ? "bg-gray-900 border border-gray-800 hover:border-purple-500 hover:bg-gray-800/50"
-                    : "bg-white border border-gray-200 hover:border-blue-300 hover:shadow-xl"
+                variants={itemVariants}
+                key={item.title}
+                className={`p-8 rounded-2xl flex flex-col items-start text-left group ${
+                  isDark ? "bg-gray-900" : "bg-white shadow-lg"
                 }`}
               >
-                <div
-                  className={`text-2xl mb-5 p-3 rounded-lg ${
-                    isDark
-                      ? "bg-gray-800 text-purple-400"
-                      : "bg-blue-100 text-blue-600"
-                  }`}
-                >
+                <div className="p-3 rounded-lg bg-blue-100 dark:bg-blue-900/30 mb-5 text-blue-500 dark:text-blue-400">
                   {item.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
@@ -259,130 +224,158 @@ const WordPressSiteCreation = () => {
         </div>
       </section>
 
-      {/* Our Approach Section */}
+      {/* Tech Stack Section */}
       <section className="py-20 sm:py-24 px-4">
         <div className="container mx-auto max-w-6xl">
           <motion.h2
-            variants={sectionVariant}
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
             className="text-4xl md:text-5xl font-bold text-center mb-16"
           >
-            Our Approach to WordPress
-          </motion.h2>
-          <div
-            ref={timelineRef}
-            className="relative grid grid-cols-[auto_1fr] md:gap-x-12 gap-x-6"
-          >
-            <div className="w-1 bg-gray-200 dark:bg-gray-700 rounded-full h-full absolute left-5 md:left-6 -translate-x-1/2">
-              <motion.div
-                className="w-full h-full bg-blue-600 dark:bg-purple-500 origin-top"
-                style={{ scaleY }}
-              />
-            </div>
-            {approachData.map((step) => (
-              <React.Fragment key={step.num}>
-                <div className="z-10">
-                  <div className="w-12 h-12 rounded-full bg-slate-50 dark:bg-gray-950 border-4 border-gray-200 dark:border-gray-700 flex items-center justify-center">
-                    <div className="w-6 h-6 rounded-full bg-blue-600 dark:bg-purple-500"></div>
-                  </div>
-                </div>
-                <motion.div
-                  variants={sectionVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.4 }}
-                  className="pt-2 pb-16"
-                >
-                  <h3 className="text-2xl font-bold text-blue-600 dark:text-purple-400 mb-2">
-                    Step {step.num}: {step.title}
-                  </h3>
-                  <p className="opacity-80">{step.desc}</p>
-                </motion.div>
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section
-        className={`py-20 sm:py-24 px-4 ${
-          isDark ? "bg-gray-900" : "bg-slate-100"
-        }`}
-      >
-        <div className="container mx-auto max-w-6xl">
-          <motion.h2
-            variants={sectionVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.5 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
-          >
-            Why Choose WordPress?
+            Tools of Our Craft
           </motion.h2>
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8"
           >
-            {benefitsData.map((item, index) => (
+            {techStackData.map((tech) => (
               <motion.div
-                variants={staggerItem}
-                key={index}
-                className={`p-8 rounded-2xl flex items-start text-left space-x-6 ${
-                  isDark ? "bg-gray-800" : "bg-white shadow-md"
-                }`}
+                variants={itemVariants}
+                key={tech.name}
+                className="flex flex-col items-center gap-3 text-center"
               >
-                <div
-                  className={`text-3xl mt-1 text-green-500 dark:text-green-400`}
-                >
-                  {item.icon}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                  <p className="opacity-70 text-base">{item.desc}</p>
-                </div>
+                <tech.Icon className={`w-12 h-12 ${tech.color}`} />
+                <span className="font-semibold">{tech.name}</span>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Final CTA Section */}
-      <section className="py-20 sm:py-24 px-4 text-center">
+      {/* Industries Section */}
+      <section
+        className={`py-20 sm:py-24 px-4 ${
+          isDark ? "bg-gray-950" : "bg-slate-50"
+        }`}
+      >
+        <div className="container mx-auto max-w-6xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
+            className="text-4xl md:text-5xl font-bold text-center mb-16"
+          >
+            Perfect For Any Industry
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="flex flex-wrap justify-center gap-4"
+          >
+            {industriesData.map((industry) => (
+              <motion.span
+                variants={itemVariants}
+                key={industry}
+                className={`px-5 py-2 rounded-full font-medium ${
+                  isDark ? "bg-gray-800" : "bg-gray-100"
+                }`}
+              >
+                {industry}
+              </motion.span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Comparison Section */}
+      <section className="py-20 sm:py-24 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
+            className="text-4xl md:text-5xl font-bold text-center mb-16"
+          >
+            Custom Theme vs. Pre-made
+          </motion.h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+            className="overflow-x-auto"
+          >
+            <table className="w-full min-w-[600px] text-left">
+              <thead>
+                <tr className="border-b dark:border-gray-700">
+                  <th className="p-4 font-semibold text-lg">Aspect</th>
+                  <th className="p-4 font-semibold text-lg text-blue-500 dark:text-sky-400">
+                    Our Custom Themes
+                  </th>
+                  <th className="p-4 font-semibold text-lg">
+                    Pre-made Templates
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonData.map((row, i) => (
+                  <motion.tr
+                    key={i}
+                    variants={itemVariants}
+                    className="border-b dark:border-gray-800"
+                  >
+                    <td className="p-4 font-semibold">{row.feature}</td>
+                    <td className="p-4 text-green-600 dark:text-green-400">
+                      <FiCheck className="inline mr-2" />
+                      {row.custom}
+                    </td>
+                    <td className="p-4 text-red-500 dark:text-red-400">
+                      <FiX className="inline mr-2" />
+                      {row.template}
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section
+        className={`py-20 sm:py-24 text-center ${
+          isDark ? "bg-gray-950" : "bg-slate-50"
+        }`}
+      >
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7 }}
           className="container mx-auto max-w-3xl"
         >
-          <motion.h2
-            variants={staggerItem}
-            className="text-4xl md:text-5xl font-bold mb-6"
-          >
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Ready to Build with WordPress?
-          </motion.h2>
-          <motion.p variants={staggerItem} className="text-lg mb-8 opacity-80">
+          </h2>
+          <p className="text-lg mb-8 opacity-80">
             Let's discuss how we can create a powerful and beautiful WordPress
             website for your business.
-          </motion.p>
-          <motion.div variants={staggerItem}>
-            <Link
-              to="/contact"
-              className={`inline-block px-10 py-5 text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 ${
-                isDark
-                  ? "bg-gradient-to-r from-purple-600 to-cyan-600 text-white"
-                  : "bg-gradient-to-r from-blue-600 to-green-500 text-white"
-              }`}
-            >
-              Get a Free Consultation
-            </Link>
-          </motion.div>
+          </p>
+          <Link
+            to="/contact"
+            className="inline-block px-10 py-5 text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 bg-gradient-to-r from-blue-600 to-green-500 text-white"
+          >
+            Get a Free Consultation
+          </Link>
         </motion.div>
       </section>
     </div>

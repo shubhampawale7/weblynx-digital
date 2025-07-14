@@ -1,4 +1,4 @@
-// File: client/src/pages/ApiIntegration.jsx
+// client/src/pages/Services/ApiIntegration.jsx
 import React, { useRef } from "react";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import Lottie from "lottie-react";
@@ -16,33 +16,95 @@ import {
   FiCheckCircle,
   FiRefreshCw,
   FiPlayCircle,
+  FiCheck,
+  FiX,
+  FiShoppingCart,
+  FiCreditCard,
+  FiUsers,
+  FiMessageSquare,
+  FiCode,
 } from "react-icons/fi";
+import { FaAws, FaGoogle, FaStripe, FaNodeJs } from "react-icons/fa";
+import { SiRazorpay } from "react-icons/si";
 
-// --- Data with Icons ---
-const benefitsData = [
+// --- Data for the page sections ---
+const typesOfIntegrations = [
   {
-    icon: <FiZap />,
-    title: "Streamlined Workflows",
+    icon: <FiShoppingCart />,
+    title: "E-commerce APIs",
     description:
-      "Automate tasks and reduce manual effort by connecting disparate systems.",
+      "Connecting platforms like Shopify, WooCommerce, and custom stores for seamless operations.",
   },
   {
-    icon: <FiShuffle />,
-    title: "Enhanced Functionality",
+    icon: <FiCreditCard />,
+    title: "Payment Gateways",
     description:
-      "Extend your app's capabilities by integrating powerful third-party services.",
+      "Integrating secure and reliable payment solutions like Stripe and Razorpay.",
   },
   {
-    icon: <FiDatabase />,
-    title: "Unified Data",
+    icon: <FaGoogle />,
+    title: "Google APIs",
     description:
-      "Ensure accurate, real-time data synchronization across all platforms.",
+      "Leveraging the power of Google Maps, Analytics, and other services within your app.",
   },
   {
-    icon: <FiLock />,
-    title: "Secure Exchange",
+    icon: <FiUsers />,
+    title: "CRM & ERP Systems",
     description:
-      "Implement robust security protocols for stable and secure data flow.",
+      "Syncing customer and business data with platforms like Salesforce and custom ERPs.",
+  },
+  {
+    icon: <FaAws />,
+    title: "Cloud Service APIs",
+    description:
+      "Integrating with AWS, Google Cloud, and other platforms for scalable infrastructure.",
+  },
+  {
+    icon: <FiMessageSquare />,
+    title: "Social & Communication APIs",
+    description:
+      "Connecting with social media platforms or communication tools like Twilio.",
+  },
+];
+
+const techStackData = [
+  { name: "Node.js", Icon: FaNodeJs, color: "text-green-500" },
+  { name: "Express.js", Icon: FiLayers, color: "text-gray-500" },
+  { name: "REST APIs", Icon: FiShuffle, color: "text-blue-500" },
+  { name: "GraphQL", Icon: FiCode, color: "text-pink-500" },
+  { name: "Stripe", Icon: FaStripe, color: "text-purple-500" },
+  { name: "RazorPay", Icon: SiRazorpay, color: "text-sky-500" },
+];
+
+const industriesData = [
+  "E-commerce",
+  "SaaS",
+  "FinTech",
+  "Healthcare",
+  "Logistics",
+  "Marketing Tech",
+];
+
+const comparisonData = [
+  {
+    feature: "Customization",
+    custom: "Perfectly tailored to your exact business logic and workflows.",
+    offTheShelf: "Limited to the provider's features and rules.",
+  },
+  {
+    feature: "Data Control",
+    custom: "You own and control your data flow completely.",
+    offTheShelf: "Data is often processed and stored by a third party.",
+  },
+  {
+    feature: "Scalability",
+    custom: "Built to handle your specific growth and traffic patterns.",
+    offTheShelf: "May have rate limits or performance bottlenecks.",
+  },
+  {
+    feature: "Cost Structure",
+    custom: "One-time development cost, no recurring fees.",
+    offTheShelf: "Ongoing subscription fees that can grow over time.",
   },
 ];
 
@@ -51,19 +113,19 @@ const approachData = [
     icon: <FiFileText />,
     title: "Analysis & Strategy",
     description:
-      "We meticulously analyze your existing systems and strategic goals to map out the perfect integration plan.",
+      "We meticulously analyze your systems and goals to map out the perfect integration plan.",
   },
   {
     icon: <FiLayers />,
     title: "Design & Development",
     description:
-      "Our team designs and develops robust, scalable APIs and integration pathways tailored to your needs.",
+      "Our team designs and develops robust, scalable APIs and integration pathways.",
   },
   {
     icon: <FiCheckCircle />,
     title: "Testing & Security",
     description:
-      "We conduct rigorous testing to ensure seamless functionality and implement top-tier security measures.",
+      "We conduct rigorous testing to ensure seamless functionality and implement top-tier security.",
   },
   {
     icon: <FiPlayCircle />,
@@ -75,157 +137,286 @@ const approachData = [
     icon: <FiRefreshCw />,
     title: "Optimization & Support",
     description:
-      "We provide ongoing support and optimize integrations as your business evolves and scales.",
+      "We provide ongoing support and optimize integrations as your business evolves.",
   },
 ];
 
-// --- Framer Motion Animation Variants ---
-const sectionVariant = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-};
-
+// --- Framer Motion Variants ---
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
 };
-
-const staggerItem = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 },
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 const ApiIntegration = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  const timelineRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start center", "end end"],
-  });
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
   return (
     <div
       className={`min-h-screen ${
-        isDark ? "bg-gray-950 text-white" : "bg-slate-50 text-gray-800"
+        isDark ? "bg-black text-white" : "bg-white text-gray-900"
       } transition-colors duration-500`}
     >
       <Seo
         title="API Integration Services | Weblynx Infotech"
-        description="Weblynx Infotech specializes in seamless API integration, connecting your systems for automated workflows, enhanced data exchange, and improved business efficiency."
-        keywords="API integration, API development, third-party APIs, CRM integration, payment gateways, data synchronization, custom APIs, Weblynx Infotech"
-        ogTitle="Weblynx Infotech API Integration: Connect Your Digital Landscape"
-        ogDescription="Automate workflows and enhance functionality with expert API integration services from Weblynx Infotech."
-        ogUrl="https://www.weblynxinfotech.com/services/api-integration"
-        canonical="https://www.weblynxinfotech.com/services/api-integration"
+        description="We specialize in seamless API integration, connecting systems for automated workflows, enhanced data exchange, and improved business efficiency."
       />
 
       {/* Hero Section */}
       <section className="relative py-24 sm:py-32 px-4 overflow-hidden">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-slate-50 dark:bg-gray-950 dark:bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#cce3ff,transparent)] dark:bg-[radial-gradient(circle_500px_at_50%_200px,#8b5cf622,transparent)]"></div>
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:2rem_2rem]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_200px,#fce7f3,transparent)] dark:bg-[radial-gradient(circle_800px_at_50%_200px,#ec489922,transparent)]" />
         </div>
         <motion.div
-          className="container mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center"
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
+          className="container mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center"
         >
           <div className="text-center md:text-left">
             <motion.h1
-              variants={staggerItem}
+              variants={itemVariants}
               className="text-5xl lg:text-6xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-600 dark:from-pink-400 dark:to-orange-400"
             >
               API Integration Services
             </motion.h1>
             <motion.p
-              variants={staggerItem}
+              variants={itemVariants}
               className="text-lg md:text-xl mb-8 opacity-80 max-w-xl mx-auto md:mx-0"
             >
-              Seamlessly connect your systems and applications, automating
-              workflows and enhancing data exchange across your entire digital
-              ecosystem.
+              Seamlessly connect your systems, automate workflows, and enhance
+              data exchange across your entire digital ecosystem.
             </motion.p>
-            <motion.div variants={staggerItem}>
+            <motion.div variants={itemVariants}>
               <Link
                 to="/contact"
-                className={`inline-block px-8 py-4 text-lg font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 ${
-                  isDark
-                    ? "bg-pink-600 text-white hover:bg-pink-500"
-                    : "bg-purple-600 text-white hover:bg-purple-700"
-                }`}
+                className="inline-block px-8 py-4 text-lg font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 bg-pink-600 text-white hover:bg-pink-700 dark:bg-pink-500 dark:hover:bg-pink-600"
               >
                 Connect Your Systems
               </Link>
             </motion.div>
           </div>
           <motion.div
-            variants={staggerItem}
-            animate={{
-              y: [-10, 10],
-              transition: {
-                duration: 3,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut",
-              },
-            }}
+            variants={itemVariants}
             className="w-full max-w-sm mx-auto md:max-w-none"
           >
-            <Lottie
-              animationData={apiIntegrationAnimationData}
-              loop={true}
-              autoplay={true}
-            />
+            <Lottie animationData={apiIntegrationAnimationData} loop={true} />
           </motion.div>
         </motion.div>
       </section>
 
-      {/* Benefits Section */}
+      {/* Types of Integrations Section */}
       <section
         className={`py-20 sm:py-24 px-4 ${
-          isDark ? "bg-gray-900" : "bg-slate-100"
+          isDark ? "bg-gray-950" : "bg-slate-50"
         }`}
       >
         <div className="container mx-auto max-w-6xl">
           <motion.h2
-            variants={sectionVariant}
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
             className="text-4xl md:text-5xl font-bold text-center mb-16"
           >
-            The Power of Connection
+            Integrations We Handle
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {typesOfIntegrations.map((item) => (
+              <motion.div
+                variants={itemVariants}
+                key={item.title}
+                className={`p-8 rounded-2xl flex flex-col items-start text-left group ${
+                  isDark ? "bg-gray-900" : "bg-white shadow-lg"
+                }`}
+              >
+                <div className="p-3 rounded-lg bg-purple-100 dark:bg-purple-900/30 mb-5 text-purple-500 dark:text-purple-400">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <p className="opacity-70 text-base">{item.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Tech Stack Section */}
+      <section className="py-20 sm:py-24 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
+            className="text-4xl md:text-5xl font-bold text-center mb-16"
+          >
+            Core Technologies
           </motion.h2>
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8"
           >
-            {benefitsData.map((item, index) => (
+            {techStackData.map((tech) => (
               <motion.div
-                variants={staggerItem}
-                key={index}
-                className={`p-8 rounded-2xl flex items-start text-left space-x-6 ${
-                  isDark ? "bg-gray-800" : "bg-white shadow-md"
+                variants={itemVariants}
+                key={tech.name}
+                className="flex flex-col items-center gap-3 text-center"
+              >
+                <tech.Icon className={`w-12 h-12 ${tech.color}`} />
+                <span className="font-semibold">{tech.name}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Industries Section */}
+      <section
+        className={`py-20 sm:py-24 px-4 ${
+          isDark ? "bg-gray-950" : "bg-slate-50"
+        }`}
+      >
+        <div className="container mx-auto max-w-6xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
+            className="text-4xl md:text-5xl font-bold text-center mb-16"
+          >
+            Industries We Serve
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="flex flex-wrap justify-center gap-4"
+          >
+            {industriesData.map((industry) => (
+              <motion.span
+                variants={itemVariants}
+                key={industry}
+                className={`px-5 py-2 rounded-full font-medium ${
+                  isDark ? "bg-gray-800" : "bg-gray-100"
                 }`}
               >
-                <div
-                  className={`text-3xl mt-1 text-purple-500 dark:text-purple-400`}
-                >
-                  {item.icon}
+                {industry}
+              </motion.span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Comparison Section */}
+      <section className="py-20 sm:py-24 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
+            className="text-4xl md:text-5xl font-bold text-center mb-16"
+          >
+            Custom vs. Third-Party
+          </motion.h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+            className="overflow-x-auto"
+          >
+            <table className="w-full min-w-[600px] text-left">
+              <thead>
+                <tr className="border-b dark:border-gray-700">
+                  <th className="p-4 font-semibold text-lg">Factor</th>
+                  <th className="p-4 font-semibold text-lg text-pink-500 dark:text-pink-400">
+                    Our Custom Integrations
+                  </th>
+                  <th className="p-4 font-semibold text-lg">
+                    Third-Party Platforms
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonData.map((row, i) => (
+                  <motion.tr
+                    key={i}
+                    variants={itemVariants}
+                    className="border-b dark:border-gray-800"
+                  >
+                    <td className="p-4 font-semibold">{row.feature}</td>
+                    <td className="p-4 text-green-600 dark:text-green-400">
+                      <FiCheck className="inline mr-2" />
+                      {row.custom}
+                    </td>
+                    <td className="p-4 text-red-500 dark:text-red-400">
+                      <FiX className="inline mr-2" />
+                      {row.offTheShelf}
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Approach Section */}
+      <section
+        className={`py-20 sm:py-24 px-4 ${
+          isDark ? "bg-gray-950" : "bg-slate-50"
+        }`}
+      >
+        <div className="container mx-auto max-w-4xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.7 }}
+            className="text-4xl md:text-5xl font-bold text-center mb-20"
+          >
+            Our Integration Blueprint
+          </motion.h2>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="space-y-8"
+          >
+            {approachData.map((step, i) => (
+              <motion.div
+                key={i}
+                variants={itemVariants}
+                className="flex items-start gap-6"
+              >
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-500 dark:text-purple-400 font-bold text-xl flex-shrink-0">
+                  {i + 1}
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                  <p className="opacity-70 text-base">{item.description}</p>
+                  <h3 className="text-xl font-bold mb-1">{step.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {step.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -233,92 +424,28 @@ const ApiIntegration = () => {
         </div>
       </section>
 
-      {/* Our Integration Blueprint Section */}
-      <section className="py-20 sm:py-24 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <motion.h2
-            variants={sectionVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.5 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-20"
-          >
-            Our Integration Blueprint
-          </motion.h2>
-          <div
-            ref={timelineRef}
-            className="relative grid grid-cols-[auto_1fr] md:gap-x-12 gap-x-6"
-          >
-            <div className="w-1 bg-gray-200 dark:bg-gray-700 rounded-full h-full absolute left-5 md:left-6 -translate-x-1/2">
-              <motion.div
-                className="w-full h-full bg-purple-600 dark:bg-pink-500 origin-top"
-                style={{ scaleY }}
-              />
-            </div>
-            {approachData.map((step, index) => (
-              <React.Fragment key={index}>
-                <motion.div
-                  variants={sectionVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="z-10"
-                >
-                  <div className="w-12 h-12 rounded-full bg-slate-50 dark:bg-gray-950 border-4 border-gray-200 dark:border-gray-700 flex items-center justify-center">
-                    <div className="text-2xl text-purple-600 dark:text-pink-500">
-                      {step.icon}
-                    </div>
-                  </div>
-                </motion.div>
-                <motion.div
-                  variants={sectionVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.4 }}
-                  className="pt-2 pb-16"
-                >
-                  <h3 className="text-2xl font-bold text-purple-600 dark:text-pink-400 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="opacity-80">{step.description}</p>
-                </motion.div>
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="py-20 sm:py-24 px-4 text-center">
+      {/* Final CTA */}
+      <section className="py-20 sm:py-24 text-center bg-white dark:bg-black">
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7 }}
           className="container mx-auto max-w-3xl"
         >
-          <motion.h2
-            variants={staggerItem}
-            className="text-4xl md:text-5xl font-bold mb-6"
-          >
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Ready to Connect Your Digital Landscape?
-          </motion.h2>
-          <motion.p variants={staggerItem} className="text-lg mb-8 opacity-80">
+          </h2>
+          <p className="text-lg mb-8 opacity-80">
             Let's discuss how seamless API integrations can transform your
             business workflows.
-          </motion.p>
-          <motion.div variants={staggerItem}>
-            <Link
-              to="/contact"
-              className={`inline-block px-10 py-5 text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 ${
-                isDark
-                  ? "bg-gradient-to-r from-pink-600 to-orange-500 text-white"
-                  : "bg-gradient-to-r from-purple-600 to-pink-500 text-white"
-              }`}
-            >
-              Get a Free Consultation
-            </Link>
-          </motion.div>
+          </p>
+          <Link
+            to="/contact"
+            className="inline-block px-10 py-5 text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+          >
+            Get a Free Consultation
+          </Link>
         </motion.div>
       </section>
     </div>
