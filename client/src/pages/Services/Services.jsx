@@ -15,6 +15,7 @@ import {
   FiArrowRight,
   FiCheckCircle,
 } from "react-icons/fi";
+import ScrollingBanner from "./ScrollingBanner.jsx";
 
 // Note: I've added a 'keyAspects' array to your data for a richer display.
 const serviceOverviewData = [
@@ -137,7 +138,7 @@ const Services = () => {
           className="container mx-auto px-4"
         >
           <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-            Our Digital Arsenal
+            OUR DIGITAL ARSENAL
           </h1>
           <p className="text-lg md:text-xl mt-4 max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
             A full spectrum of elite services, engineered to elevate your brand
@@ -145,7 +146,7 @@ const Services = () => {
           </p>
         </motion.div>
       </header>
-
+      <ScrollingBanner />
       <main className="container mx-auto px-4 pb-20 relative z-10">
         {isMobile ? (
           <MobileView isDark={isDark} />

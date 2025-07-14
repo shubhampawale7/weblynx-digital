@@ -413,6 +413,7 @@ const ProjectCard = ({ project }) => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       </div>
+      <div className="fixed bottom-8 right-8 z-50"></div>
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
         className="absolute inset-0 z-10 flex flex-col justify-end p-8 text-white"
@@ -429,6 +430,7 @@ const ProjectCard = ({ project }) => {
             </span>
           ))}
         </div>
+
         <div className="flex items-center gap-4">
           <a
             href={project.demoUrl}

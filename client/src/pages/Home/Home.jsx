@@ -11,6 +11,10 @@ import IndustriesWeServe from "./IndustriesWeServe.jsx";
 import ProjectPlannerCta from "./ProjectPlannerCta.jsx";
 import Faq from "./Faq.jsx";
 
+import TechStackTicker from "./TechStackTicker.jsx";
+
+import ValuesBanner from "./ValuesBanner.jsx";
+
 const Home = () => {
   return (
     <>
@@ -26,7 +30,10 @@ const Home = () => {
         canonical="https://www.weblynxinfotech.com/" // UPDATED: Use your new domain
       />
       <HeroSection />
+      <ValuesBanner />
       <ImpactNumbers />
+      <TechStackTicker />
+
       <ServicesPreview />
       <FeaturedProjects />
       <WhyChooseUs />

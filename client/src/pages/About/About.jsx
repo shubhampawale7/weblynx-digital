@@ -5,6 +5,7 @@ import MissionVision from "./MissionVision.jsx";
 import TechStack from "./TechStack.jsx";
 import FounderNote from "./FounderNote.jsx";
 import Seo from "../../components/common/Seo.jsx"; // Import the Seo component
+import AngledPraiseBanner from "./AngledPraiseBanner.jsx";
 
 const About = () => {
   return (
@@ -22,6 +23,7 @@ const About = () => {
       />
 
       <Story />
+      <AngledPraiseBanner />
       <MissionVision />
       <TechStack />
       <FounderNote />
