@@ -16,6 +16,7 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 import ScrollingBanner from "./ScrollingBanner.jsx";
+import SolutionFinderQuiz from "./SolutionFinderQuiz.jsx";
 
 // Note: I've added a 'keyAspects' array to your data for a richer display.
 const serviceOverviewData = [

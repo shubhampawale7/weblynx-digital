@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 import { FaLinkedinIn, FaGithub, FaInstagram } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-// Data for links to keep the component clean
+// Data for links
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/services", label: "Services" },
-  { to: "/blog", label: "Blog" }, // --- ADDED ---
+  { to: "/blog", label: "Blog" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -32,6 +32,20 @@ const socialLinks = [
   },
 ];
 
+// Framer Motion Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2, delayChildren: 0.2 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { ease: "easeOut", duration: 0.5 } },
+};
+
 const Footer = () => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -43,18 +57,19 @@ const Footer = () => {
       }`}
     >
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
         className="container mx-auto pt-16 pb-8 px-4 sm:px-8"
       >
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 text-center md:text-left">
-          {/* Column 1: Brand Info (larger span) */}
-          <div className="md:col-span-2 flex flex-col items-center md:items-start">
+        {/* Centered layout for all content */}
+        <div className="flex flex-col items-center gap-8">
+          {/* 1. Brand Logo */}
+          <motion.div variants={itemVariants}>
             <Link
               to="/"
-              className="text-2xl font-bold flex items-center gap-2 text-white mb-4"
+              className="text-2xl font-bold flex items-center gap-2 text-white"
             >
               <img
                 src="/weblynxinfo.png"
@@ -63,71 +78,73 @@ const Footer = () => {
               />
               Weblynx Infotech
             </Link>
-            <p className="max-w-md text-sm">
-              Crafting the next evolution of web experiences with a focus on
-              performance, design, and reliability. We are your dedicated
-              partners in digital growth.
-            </p>
-          </div>
+          </motion.div>
 
-          {/* Column 2: Quick Links */}
-          <div>
-            <h3 className="text-base font-semibold text-white tracking-wider uppercase mb-4">
-              Links
-            </h3>
-            <ul className="space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.to}>
-                  <Link
-                    to={link.to}
-                    className="hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Connect With Us */}
-          <div>
-            <h3 className="text-base font-semibold text-white tracking-wider uppercase mb-4">
-              Connect
-            </h3>
-            <div className="flex justify-center md:justify-start space-x-5 text-xl">
-              {socialLinks.map(({ href, label, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="hover:text-white transition-colors"
+          {/* 2. Navigation Links */}
+          <motion.ul
+            variants={itemVariants}
+            className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2"
+          >
+            {navLinks.map((link) => (
+              <li key={link.to}>
+                <Link
+                  to={link.to}
+                  className="text-sm font-medium hover:text-white transition-colors"
                 >
-                  <Icon />
-                </a>
-              ))}
-            </div>
-          </div>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </motion.ul>
+
+          {/* 3. Social Icons */}
+          <motion.div
+            variants={itemVariants}
+            className="flex items-center gap-6 text-2xl"
+          >
+            {socialLinks.map(({ href, label, Icon }) => (
+              <motion.a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="hover:text-white transition-colors"
+                whileHover={{ y: -3, scale: 1.1 }}
+              >
+                <Icon />
+              </motion.a>
+            ))}
+          </motion.div>
         </div>
 
-        {/* Bottom Bar: Copyright & Credit */}
-        <div className="border-t border-gray-800 pt-8 flex flex-col sm:flex-row-reverse justify-between items-center text-sm">
+        {/* Bottom Bar: Copyright */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="border-t border-gray-800 pt-8 mt-12 text-center text-sm text-gray-500"
+        >
           <p>
-            <a
-              href="https://www.shubhampawale.info"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              A Shubham Pawale Creation
-            </a>
-          </p>
-          <p className="text-gray-500 mt-4 sm:mt-0">
             &copy; {new Date().getFullYear()} Weblynx Infotech. All Rights
             Reserved.
           </p>
-        </div>
+          <div className="flex gap-4">
+            <Link
+              to="/privacy-policy"
+              className="hover:text-white transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms-of-service"
+              className="hover:text-white transition-colors"
+            >
+              Terms of Service
+            </Link>
+          </div>
+        </motion.div>
       </motion.div>
     </footer>
   );

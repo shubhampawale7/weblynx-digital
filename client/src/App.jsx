@@ -27,6 +27,8 @@ import ScrollToTopButton from "./components/common/ScrollToTopButton.jsx";
 import FloatingWhatsAppButton from "./components/common/FloatingWhatsAppButton.jsx";
 import ScrollToBegin from "./components/common/ScrollToBegin.jsx";
 import ServicePackagesPage from "./pages/Packages/ServicePackagesPage.jsx";
+import PrivacyPolicy from "./pages/Legal/PrivacyPolicy.jsx";
+import TermsOfService from "./pages/Legal/TermsOfService.jsx";
 
 // --- PERFORMANCE: Import blog pages dynamically with React.lazy ---
 const BlogListingPage = React.lazy(() =>
@@ -62,7 +64,8 @@ function App() {
               {/* Blog Routes */}
               <Route path="/blog" element={<BlogListingPage />} />
               <Route path="/blog/:slug" element={<BlogPostPage />} />
-
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
               {/* Detailed Service Pages */}
               <Route
                 path="/services/custom-web-applications"
