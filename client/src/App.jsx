@@ -26,6 +26,7 @@ import Footer from "./components/layout/Footer.jsx";
 import ScrollToTopButton from "./components/common/ScrollToTopButton.jsx";
 import FloatingWhatsAppButton from "./components/common/FloatingWhatsAppButton.jsx";
 import ScrollToBegin from "./components/common/ScrollToBegin.jsx";
+import ServicePackagesPage from "./pages/Packages/ServicePackagesPage.jsx";
 
 // --- PERFORMANCE: Import blog pages dynamically with React.lazy ---
 const BlogListingPage = React.lazy(() =>
@@ -54,6 +55,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/packages" element={<ServicePackagesPage />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/contact" element={<Contact />} />
 
