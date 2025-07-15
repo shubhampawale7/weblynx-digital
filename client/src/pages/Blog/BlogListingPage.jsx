@@ -38,7 +38,7 @@ const BlogListingPage = () => {
   return (
     <div
       className={`min-h-screen ${
-        isDark ? "bg-black text-white" : "bg-white text-gray-900"
+        isDark ? "bg-gray-900 text-white" : "bg-white text-gray-900"
       } transition-colors duration-500`}
     >
       <Seo
@@ -56,7 +56,7 @@ const BlogListingPage = () => {
           className="container mx-auto px-4"
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500 dark:from-purple-400 dark:to-cyan-400">
-            Insights & Ideas
+            INSIGHTS & IDEAS
           </h1>
           <p className="text-lg md:text-xl mt-4 max-w-2xl mx-auto text-gray-600 dark:text-gray-400">
             Our expert analysis on technology, design, and the future of digital

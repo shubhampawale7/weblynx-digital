@@ -149,7 +149,7 @@ const Contact = () => {
   return (
     <div
       className={`min-h-screen ${
-        isDark ? "bg-gray-950 text-white" : "bg-slate-50 text-gray-800"
+        isDark ? "bg-gray-900 text-white" : "bg-slate-50 text-gray-800"
       } transition-colors duration-300`}
     >
       <Seo

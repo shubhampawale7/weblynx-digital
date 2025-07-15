@@ -97,7 +97,7 @@ const ServicePackagesPage = () => {
   return (
     <div
       className={`min-h-screen ${
-        isDark ? "bg-black text-white" : "bg-gray-50 text-gray-900"
+        isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       } transition-colors duration-500`}
     >
       <Seo
