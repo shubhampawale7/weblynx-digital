@@ -12,6 +12,7 @@ import {
   FiUploadCloud,
 } from "react-icons/fi";
 import ScrollingBanner from "./ScrollingBanner.jsx";
+import AnimatedPathSection from "./AnimatedPathSection.jsx";
 
 const projectsData = [
   {
@@ -99,7 +100,9 @@ const Portfolio = () => {
         description="Explore a gallery of creative and impactful web development projects by Weblynx Infotech. See our expertise in creating unique digital experiences."
       />{" "}
       <HoverProjectList isDark={isDark} />
-      <ProcessSection isDark={isDark} /> <ScrollingBanner isDark={isDark} />
+      <ScrollingBanner isDark={isDark} />
+      <ProcessSection isDark={isDark} />
+      <AnimatedPathSection />
       <FinalCta isDark={isDark} />
     </div>
   );
