@@ -1,23 +1,24 @@
 // client/src/components/Home/ImpactNumbers.jsx
+
 import React, { useEffect, useRef } from "react";
 import { motion, useInView, animate } from "framer-motion";
-import { useTheme } from "../../context/ThemeContext";
 
-// UPDATED: Changed '50+' to '10+' and removed 'Countries Served'
+// --- CHANGE: More client-focused metrics ---
 const stats = [
   { value: 10, suffix: "+", label: "Projects Delivered" },
   { value: 99, suffix: "%", label: "Client Satisfaction" },
-  { value: 15, suffix: "k+", label: "Lines of Code Written" },
+  { value: 100, suffix: "%", label: "On-Time Delivery" }, // Replaced "Lines of Code"
 ];
 
 const AnimatedNumber = ({ value, suffix }) => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
+  const inView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
     if (inView) {
       animate(0, value, {
-        duration: 2,
+        duration: 2.5,
+        ease: [0.22, 1, 0.36, 1], // Smoother ease-out
         onUpdate(latest) {
           if (ref.current) {
             ref.current.textContent = Math.round(latest).toString();
@@ -28,41 +29,60 @@ const AnimatedNumber = ({ value, suffix }) => {
   }, [inView, value]);
 
   return (
-    <span className="flex items-center justify-center">
+    <>
       <span ref={ref}>0</span>
       {suffix}
-    </span>
+    </>
   );
 };
 
 const ImpactNumbers = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+  // --- CHANGE: Animation variants for a staggered entrance ---
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.1 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
 
   return (
-    <section
-      className={`py-20 sm:py-24 ${isDark ? "bg-gray-900" : "bg-gray-100"}`}
-    >
-      <div className="container mx-auto px-4">
-        {/* UPDATED: Changed grid columns to look better with 3 items */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+    // --- CHANGE: Seamless background and subtle top border for separation ---
+    <section className="bg-white dark:bg-brand-dark py-20 sm:py-28">
+      <div className="container mx-auto px-6">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          // --- CHANGE: Elegant horizontal layout with dividers ---
+          className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-y-10 md:gap-y-0 divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-brand-light-blue/20 rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 p-8 shadow-sm"
+        >
           {stats.map((stat) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.6 }}
+              variants={itemVariants}
+              className="text-center px-8 pt-8 md:pt-0"
             >
-              <h3 className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
+              {/* --- CHANGE: Updated typography and on-brand colors --- */}
+              <h3 className="font-display text-5xl md:text-6xl font-bold text-brand-accent">
                 <AnimatedNumber value={stat.value} suffix={stat.suffix} />
               </h3>
-              <p className="mt-2 text-sm md:text-base text-gray-600 dark:text-gray-400">
+              <p className="mt-2 text-base text-brand-light-blue dark:text-brand-gray tracking-wide">
                 {stat.label}
               </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

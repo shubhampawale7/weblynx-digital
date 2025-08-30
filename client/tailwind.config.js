@@ -1,26 +1,38 @@
 // client/tailwind.config.js
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx}", // Adjusted for .js and .jsx files
-  ],
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
+  darkMode: "class",
   theme: {
     extend: {
-      // Define custom colors, fonts, or other theme extensions here
-      // For example, if you want a specific primary color:
+      // --- A new, professional color palette ---
       colors: {
-        primary: "#1a73e8",
-        darkBg: "#121212",
-        lightBg: "#ffffff",
-        darkText: "#e0e0e0",
-        lightText: "#333333",
+        "brand-dark": "#0D1B2A",
+        "brand-dark-blue": "#1B263B",
+        "brand-light-blue": "#415A77",
+        "brand-gray": "#778DA9",
+        "brand-bg": "#E0E1DD",
+        "brand-accent": "#00F5D4",
+        "brand-accent-hover": "#00DFC4",
       },
+      // --- Professional and readable font pairings ---
       fontFamily: {
-        sans: ["Inter", "sans-serif"], // Example with a modern font
+        sans: ["Inter", "sans-serif"],
+        display: ["Poppins", "sans-serif"],
       },
+
+      // --- ADD THIS ---
+      animation: {
+        scroll: "scroll 60s linear infinite",
+      },
+      keyframes: {
+        scroll: {
+          to: { transform: "translateX(calc(-50% - 0.75rem))" },
+        },
+      },
+      // --- END ADD ---
     },
   },
   plugins: [require("@tailwindcss/typography")],
-  darkMode: "class", // Enable class-based dark mode
 };

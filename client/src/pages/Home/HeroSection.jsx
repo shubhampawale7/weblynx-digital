@@ -1,207 +1,155 @@
 // client/src/components/Home/Hero.jsx
-import React, { useEffect, useRef } from "react";
-import { useTheme } from "../../context/ThemeContext.jsx";
-import { gsap } from "gsap";
-import { TextPlugin } from "gsap/TextPlugin";
-import Lottie from "lottie-react";
-import { Link } from "react-router-dom";
-import Seo from "../../components/common/Seo.jsx";
-import heroAnimationData from "../../assets/lottie-animations/hero-animation.json";
 
-gsap.registerPlugin(TextPlugin);
+import React, { useRef } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FiArrowRight, FiCode, FiLayout, FiTrendingUp } from "react-icons/fi";
+import Seo from "../../components/common/Seo.jsx";
+
+// Custom hook for the magnetic spotlight effect
+const useMagneticSpotlight = (ref) => {
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      const { left, top, width, height } = el.getBoundingClientRect();
+      const x = clientX - left;
+      const y = clientY - top;
+      el.style.setProperty("--spotlight-x", `${x}px`);
+      el.style.setProperty("--spotlight-y", `${y}px`);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [ref]);
+};
 
 const HeroSection = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-  const sectionRef = useRef(null);
-  const taglineRef = useRef(null);
-  const mouseGlowRef = useRef(null);
+  const containerRef = useRef(null);
+  useMagneticSpotlight(containerRef);
 
-  const taglines = [
-    "Engineering Digital Excellence.",
-    "Building Tomorrow's Web.",
-    "The Future of Your Online Presence.",
-    "Crafting the Next Web Evolution.",
-  ];
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+    },
+  };
 
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      // Mouse Follow Glow Effect
-      const handleMouseMove = (e) => {
-        gsap.to(mouseGlowRef.current, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 1.5,
-          ease: "power3.out",
-        });
-      };
-      window.addEventListener("mousemove", handleMouseMove);
-
-      // Entrance Animation Timeline
-      const tl = gsap.timeline({ delay: 0.5 });
-      tl.from(".char", {
-        opacity: 0,
-        y: 50,
-        skewX: -20,
-        duration: 1,
-        stagger: 0.03,
-        ease: "power3.out",
-      })
-        .from(
-          ".lottie-container",
-          { opacity: 0, scale: 0.8, duration: 1, ease: "power3.out" },
-          "-=0.8"
-        )
-        .from(
-          ".tagline-wrapper",
-          { opacity: 0, y: 20, duration: 0.8, ease: "power2.out" },
-          "-=0.5"
-        )
-        .from(
-          ".intro-paragraph",
-          { opacity: 0, y: 20, duration: 0.8, ease: "power2.out" },
-          "-=0.6"
-        )
-        .from(
-          ".cta-button-group > *",
-          {
-            opacity: 0,
-            y: 20,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: "power2.out",
-          },
-          "<"
-        );
-
-      // Tagline Typing Animation
-      const typingTl = gsap.timeline({
-        repeat: -1,
-        repeatDelay: 1.5,
-        delay: 4,
-      });
-      taglines.forEach((tagline) => {
-        typingTl
-          .to(taglineRef.current, {
-            duration: 1.2,
-            text: tagline,
-            ease: "power1.inOut",
-          })
-          .to(taglineRef.current, {
-            duration: 1,
-            text: "",
-            ease: "power1.in",
-            delay: 1.5,
-          });
-      });
-
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        tl.kill(); // Kill the entrance animation timeline
-        typingTl.kill(); // Kill the typing timeline
-      };
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [isDark]);
-
-  const headingText = "WEBLYNX INFOTECH";
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
 
   return (
     <section
-      ref={sectionRef}
-      className={`relative min-h-screen flex items-center justify-center overflow-hidden
-                 ${isDark ? "bg-gray-950 text-white" : "bg-white text-gray-900"}
-                 transition-colors duration-500 ease-in-out py-20 sm:py-0`}
+      ref={containerRef}
+      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-brand-dark transition-colors duration-300
+                 [--spotlight-color:rgba(0,245,212,0.15)] dark:[--spotlight-color:rgba(0,245,212,0.1)]
+                 before:pointer-events-none before:fixed before:inset-0 before:z-20
+                 before:bg-[radial-gradient(circle_350px_at_var(--spotlight-x)_var(--spotlight-y),var(--spotlight-color),transparent_100%)]"
     >
       <Seo
-        title="Weblynx Infotech - Your Digital Services Partner"
-        description="Weblynx Infotech offers expert MERN stack development, WordPress solutions, SEO optimization, mobile app development, and full-stack services to transform your online presence."
-        keywords="digital services, web development, MERN stack, WordPress development, SEO optimization, API integration, full stack development, mobile app development, custom web applications, Weblynx Infotech, Pune, India"
+        title="Weblynx Infotech - We Engineer Digital Excellence"
+        description="A leading digital agency in Pune, India, building high-performance web platforms, mobile applications, and scalable software solutions that define the future of digital interaction."
+        keywords="elite web development, custom software Pune, tech agency India, performance engineering, Weblynx Infotech"
       />
+      <div className="absolute inset-0 z-0 h-full w-full bg-transparent bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
-      <div
-        ref={mouseGlowRef}
-        className="pointer-events-none absolute -inset-40 z-20 rounded-full opacity-30 blur-3xl"
-        style={{
-          background: `radial-gradient(circle at center, ${
-            isDark ? "rgba(192, 132, 252, 0.4)" : "rgba(129, 140, 248, 0.5)"
-          }, transparent 80%)`,
-        }}
-      ></div>
+      <div className="relative z-10 container mx-auto px-6">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center"
+        >
+          {/* Left Column: Headline & CTA */}
+          <div className="text-center lg:text-left">
+            <motion.h1
+              variants={itemVariants}
+              className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-brand-dark dark:text-white tracking-tighter"
+            >
+              We Engineer
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-teal-400">
+                Digital Excellence.
+              </span>
+            </motion.h1>
 
-      <div
-        className="absolute inset-0 z-0 opacity-20"
-        style={{
-          backgroundImage: `radial-gradient(${
-            isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.2)"
-          } 1px, transparent 1px)`,
-          backgroundSize: "30px 30px",
-        }}
-      ></div>
+            <motion.p
+              variants={itemVariants}
+              className="mt-6 text-lg text-brand-light-blue dark:text-brand-gray max-w-lg mx-auto lg:mx-0"
+            >
+              We are a Pune-based digital powerhouse, building high-performance
+              platforms that are secure, scalable, and engineered for success.
+            </motion.p>
 
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
-          {/* Left Column: Text Content */}
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-4 tracking-tighter">
-              {headingText.split("").map((char, index) => (
-                <span
-                  key={index}
-                  className="char inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 dark:from-purple-400 dark:to-cyan-400"
-                >
-                  {char === " " ? "\u00A0" : char}
-                </span>
-              ))}
-            </h1>
-            <div className="tagline-wrapper text-xl md:text-2xl font-medium mb-6 min-h-[3rem] opacity-80">
-              <span ref={taglineRef}></span>
-              <span className="inline-block opacity-70 animate-pulse">|</span>
-            </div>
-
-            <p className="intro-paragraph text-base md:text-lg max-w-lg mx-auto md:mx-0 mb-8 text-gray-700 dark:text-gray-300">
-              We are a full-service digital agency based in Pune, specializing
-              in crafting high-performance web applications. From the MERN stack
-              to WordPress, we transform your vision into a digital reality that
-              drives growth.
-            </p>
-
-            <div className="cta-button-group flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-              <Link to="/services">
-                <button
-                  className="px-8 py-3 w-full sm:w-auto rounded-full font-bold text-lg
-                             text-white bg-purple-600 dark:bg-purple-500
-                             hover:bg-purple-700 dark:hover:bg-purple-600
-                             transform transition-all duration-300 hover:scale-105 shadow-lg"
-                >
-                  Explore Our Services
-                </button>
-              </Link>
+            <motion.div
+              variants={itemVariants}
+              className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+            >
               <Link
-                to="/about"
-                className="group text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-300"
+                to="/contact"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 font-semibold text-white bg-brand-dark hover:bg-black dark:text-brand-dark dark:bg-brand-accent dark:hover:bg-brand-accent-hover rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
               >
-                <span className="font-semibold text-lg flex items-center gap-2">
-                  Our Story
-                  <span className="inline-block transform transition-transform duration-300 group-hover:translate-x-1">
-                    &rarr;
-                  </span>
-                </span>
+                <span>Start a Project</span>
+                <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-            </div>
+            </motion.div>
           </div>
 
-          {/* Right Column: Lottie Animation */}
-          <div className="lottie-container w-full max-w-sm mx-auto md:max-w-none mt-8 md:mt-0">
-            <Lottie
-              animationData={heroAnimationData}
-              loop={true}
-              autoplay={true}
+          {/* Right Column: Interactive Bento Grid */}
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-2 grid-rows-2 gap-4 lg:gap-6"
+          >
+            <GridItem
+              icon={<FiLayout className="text-brand-accent" />}
+              title="UI/UX Design"
+              description="Intuitive and beautiful interfaces."
+              className="col-span-2"
             />
-          </div>
-        </div>
+            <GridItem
+              icon={<FiCode className="text-brand-accent" />}
+              title="Clean Code"
+              description="Scalable and robust architecture."
+            />
+            <GridItem
+              icon={<FiTrendingUp className="text-brand-accent" />}
+              title="SEO & Growth"
+              description="Engineered for visibility."
+            />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
+  );
+};
+
+// Reusable Grid Item Component
+const GridItem = ({ icon, title, description, className = "" }) => {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.03, z: 10 }}
+      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+      className={`relative p-6 bg-white/50 dark:bg-brand-dark-blue/30 backdrop-blur-md rounded-2xl border border-white/20 dark:border-brand-light-blue/20 overflow-hidden shadow-xl ${className}`}
+    >
+      <div className="flex flex-col gap-3">
+        <div className="text-3xl">{icon}</div>
+        <h3 className="font-display font-semibold text-lg text-brand-dark dark:text-white">
+          {title}
+        </h3>
+        <p className="text-sm text-brand-light-blue dark:text-brand-gray">
+          {description}
+        </p>
+      </div>
+    </motion.div>
   );
 };
 

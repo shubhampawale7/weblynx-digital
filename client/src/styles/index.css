@@ -38,3 +38,21 @@ html {
 html {
   scroll-behavior: smooth;
 }
+
+/* Add this to client/src/index.css */
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
+}
+
+/* Add this to client/src/index.css */
+
+/* Add this to client/src/index.css */
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.75rem)); /* 0.75rem is half the gap */
+  }
+}

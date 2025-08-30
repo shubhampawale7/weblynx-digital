@@ -1,53 +1,80 @@
 // client/src/components/Home/IndustriesWeServe.jsx
+
 import React from "react";
 import { motion } from "framer-motion";
-import { useTheme } from "../../context/ThemeContext";
 import {
   FiShoppingCart,
   FiHeart,
   FiBriefcase,
   FiCloud,
   FiHome,
+  FiTrendingUp,
 } from "react-icons/fi";
 
-const industries = [
-  { name: "E-commerce", Icon: FiShoppingCart },
-  { name: "Non-Profit", Icon: FiHeart },
-  { name: "Corporate", Icon: FiBriefcase },
-  { name: "SaaS", Icon: FiCloud },
-  { name: "Hospitality", Icon: FiHome },
+const industriesData = [
+  {
+    name: "E-Commerce",
+    Icon: FiShoppingCart,
+    description:
+      "Building high-conversion online stores with seamless user experiences and secure payment gateways.",
+  },
+  {
+    name: "SaaS & Tech",
+    Icon: FiCloud,
+    description:
+      "Engineering scalable and secure SaaS platforms with robust architecture and user-centric design.",
+  },
+  {
+    name: "Corporate",
+    Icon: FiBriefcase,
+    description:
+      "Crafting professional, responsive websites that serve as a powerful digital headquarters for your brand.",
+  },
+  {
+    name: "Non-Profit",
+    Icon: FiHeart,
+    description:
+      "Empowering organizations with digital tools to amplify their message and engage communities.",
+  },
+  {
+    name: "FinTech",
+    Icon: FiTrendingUp,
+    description:
+      "Developing cutting-edge financial applications with a focus on data integrity and security.",
+  },
+  {
+    name: "Real Estate",
+    Icon: FiHome,
+    description:
+      "Creating engaging property platforms and management tools for the modern real estate market.",
+  },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
 const IndustriesWeServe = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
+  };
 
   return (
-    <section className={`py-20 sm:py-28 ${isDark ? "bg-black" : "bg-white"}`}>
-      <div className="container mx-auto px-4">
+    <section className="bg-white dark:bg-brand-dark py-20 sm:py-28">
+      <div className="container mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.7 }}
-          className="text-center mb-16"
+          className="text-center mb-16 max-w-3xl mx-auto"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-600 dark:from-cyan-400 dark:to-lime-400">
-            Expertise Across Industries
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
+            Versatility in Our DNA.
           </h2>
-          <p className="text-lg md:text-xl mt-4 max-w-2xl mx-auto text-gray-600 dark:text-gray-400">
-            We apply our digital expertise to solve unique challenges for a
-            diverse range of clients.
+          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
+            Our expertise isn't confined to a single box. We adapt and innovate
+            to deliver exceptional results across a diverse range of industries.
           </p>
         </motion.div>
 
@@ -55,25 +82,44 @@ const IndustriesWeServe = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {industries.map((industry) => (
-            <motion.div
-              key={industry.name}
-              variants={itemVariants}
-              whileHover={{ y: -5 }}
-              className={`p-8 text-center rounded-2xl transition-colors duration-300
-                        ${isDark ? "bg-gray-900" : "bg-gray-100"}
-                    `}
-            >
-              <industry.Icon className="w-12 h-12 mx-auto mb-4 text-purple-500 dark:text-purple-400" />
-              <h3 className="text-lg font-bold">{industry.name}</h3>
-            </motion.div>
+          {industriesData.map((industry) => (
+            <IndustryCard key={industry.name} {...industry} />
           ))}
         </motion.div>
       </div>
     </section>
+  );
+};
+
+// --- The Polished Card Component with Subtle Hover Effect ---
+const IndustryCard = ({ name, Icon, description }) => {
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
+  return (
+    <motion.div
+      variants={cardVariants}
+      className="group relative h-full p-8 bg-gray-50 dark:bg-brand-dark-blue/50 border border-gray-200 dark:border-brand-light-blue/20 rounded-2xl transition-all duration-300 hover:border-brand-accent/50 hover:shadow-2xl hover:shadow-brand-accent/10"
+    >
+      <div className="relative z-10">
+        <Icon className="w-10 h-10 text-brand-accent mb-5" />
+        <h3 className="font-display text-xl font-bold text-brand-dark dark:text-white mb-3">
+          {name}
+        </h3>
+        <p className="text-base text-brand-light-blue dark:text-brand-gray">
+          {description}
+        </p>
+      </div>
+    </motion.div>
   );
 };
 

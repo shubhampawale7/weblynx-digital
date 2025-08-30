@@ -1,60 +1,26 @@
 // client/src/components/layout/Header.jsx
+
 import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiSun, FiMoon, FiX } from "react-icons/fi";
-
-// --- Reusable Motion Variants ---
-const mobileMenuVariants = {
-  hidden: { opacity: 0, y: "-50%", scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.3, ease: [0.25, 1, 0.5, 1] },
-  },
-  exit: {
-    opacity: 0,
-    y: "-50%",
-    scale: 0.9,
-    transition: { duration: 0.2, ease: [0.5, 1, 0.25, 1] },
-  },
-};
-
-const navItemsContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
-  },
-};
-
-const navItemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { ease: "easeOut" } },
-};
+import { FiSun, FiMoon, FiX, FiMenu } from "react-icons/fi"; // Added FiMenu
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === "dark";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
+  // --- Effect for scroll detection ---
   useEffect(() => {
-    const handleScroll = () => {
-      setHasScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setHasScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // --- Effect to lock body scroll when mobile menu is open ---
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isMenuOpen ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -66,48 +32,60 @@ const Header = () => {
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
     { to: "/services", label: "Services" },
-    { to: "/packages", label: "Packages" },
     { to: "/portfolio", label: "Portfolio" },
     { to: "/blog", label: "Blog" },
-    { to: "/contact", label: "Contact" },
   ];
 
   return (
     <>
       <header
-        className={`fixed top-0 z-40 w-full transition-all duration-300 ${
+        // --- CHANGE: Updated styles using new brand colors and smoother transitions ---
+        className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out ${
           hasScrolled
-            ? "py-3 shadow-md bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800"
-            : "py-4 bg-transparent"
+            ? "py-3 shadow-lg bg-white/80 dark:bg-brand-dark/80 backdrop-blur-xl border-b border-gray-200 dark:border-brand-light-blue/20"
+            : "py-5 bg-transparent"
         }`}
       >
-        <nav className="container mx-auto flex justify-between items-center px-4">
+        <nav className="container mx-auto flex justify-between items-center px-6">
+          {/* --- CHANGE: Logo with new display font --- */}
           <Link
             to="/"
-            className="text-xl font-bold flex items-center gap-2 text-gray-900 dark:text-white"
+            className="flex items-center gap-2 text-xl font-bold font-display text-brand-dark dark:text-white"
           >
             <img
               src="/weblynxinfo.png"
               alt="Weblynx Infotech Logo"
-              className="h-8 rounded-md"
+              className="h-9 rounded-md"
             />
-            Weblynx Infotech
+            <span>Weblynx Infotech</span>
           </Link>
 
-          <ul className="hidden md:flex items-center gap-2">
+          {/* --- CHANGE: Desktop Navigation with better spacing and hover effects --- */}
+          <ul className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <li key={link.to}>
                 <NavLink
                   to={link.to}
-                  className="relative px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                  className={({ isActive }) =>
+                    `relative text-sm font-medium transition-colors duration-300 ${
+                      isActive
+                        ? "text-brand-dark dark:text-white"
+                        : "text-brand-light-blue hover:text-brand-dark dark:text-brand-gray dark:hover:text-white"
+                    }`
+                  }
                 >
                   {({ isActive }) => (
                     <>
-                      <span className="relative z-10">{link.label}</span>
+                      <motion.span
+                        whileHover={{ y: -2 }}
+                        className="inline-block"
+                      >
+                        {link.label}
+                      </motion.span>
                       {isActive && (
                         <motion.div
                           layoutId="active-nav-underline"
-                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-600 dark:bg-purple-400"
+                          className="absolute -bottom-2 left-0 right-0 h-0.5 bg-brand-accent"
                           transition={{
                             type: "spring",
                             stiffness: 350,
@@ -120,102 +98,120 @@ const Header = () => {
                 </NavLink>
               </li>
             ))}
-            <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
           </ul>
 
-          <div className="md:hidden flex items-center">
-            <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
-            <MenuToggle toggle={() => setIsMenuOpen(true)} />
+          {/* --- CHANGE: Prominent CTA button and Theme Toggle on desktop --- */}
+          <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to="/contact"
+                className="px-5 py-2.5 text-sm font-semibold text-brand-dark bg-brand-accent hover:bg-brand-accent-hover rounded-full shadow-lg transition-all duration-300"
+              >
+                Get a Quote
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* --- Mobile Menu Toggle --- */}
+          <div className="md:hidden flex items-center gap-3">
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <FiMenu className="w-6 h-6 text-brand-dark dark:text-white" />
+            </button>
           </div>
         </nav>
       </header>
 
-      {/* --- Mobile Menu --- */}
+      {/* --- Mobile Menu Overlay --- */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            variants={mobileMenuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            // FIXED: z-index is now 50, on top of the header, with a solid background
-            className="md:hidden fixed inset-0 z-50 bg-white dark:bg-black"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="md:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+            onClick={closeMenu}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.nav
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="md:hidden fixed top-0 right-0 z-50 h-full w-full max-w-xs bg-white dark:bg-brand-dark shadow-2xl"
           >
-            <motion.ul
-              variants={navItemsContainerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              className="flex flex-col items-center justify-center h-full gap-8"
-            >
-              {navLinks.map((link) => (
-                <motion.li key={link.to} variants={navItemVariants}>
-                  <NavLink
-                    to={link.to}
-                    onClick={closeMenu}
-                    className="text-3xl font-semibold text-gray-800 dark:text-gray-200"
+            <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-brand-light-blue/20">
+              <span className="font-display font-bold text-lg text-brand-dark dark:text-white">
+                Menu
+              </span>
+              <button onClick={closeMenu} aria-label="Close menu">
+                <FiX className="w-6 h-6 text-brand-dark dark:text-white" />
+              </button>
+            </div>
+            <ul className="flex flex-col p-6 gap-5">
+              {[...navLinks, { to: "/contact", label: "Contact Us" }].map(
+                (link, i) => (
+                  <motion.li
+                    key={link.to}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05 }}
                   >
-                    {link.label}
-                  </NavLink>
-                </motion.li>
-              ))}
-            </motion.ul>
-            {/* FIXED: Close button is now part of the menu itself */}
-            <motion.button
-              onClick={closeMenu}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.3 } }}
-              className="absolute top-6 right-4 p-2"
-              aria-label="Close menu"
-            >
-              <FiX className="w-8 h-8 text-gray-800 dark:text-gray-200" />
-            </motion.button>
-          </motion.div>
+                    <NavLink
+                      to={link.to}
+                      onClick={closeMenu}
+                      className={({ isActive }) =>
+                        `block text-lg font-medium py-2 ${
+                          isActive
+                            ? "text-brand-accent"
+                            : "text-brand-dark dark:text-brand-bg"
+                        }`
+                      }
+                    >
+                      {link.label}
+                    </NavLink>
+                  </motion.li>
+                )
+              )}
+            </ul>
+          </motion.nav>
         )}
       </AnimatePresence>
     </>
   );
 };
 
-// --- Animated Theme Toggle Component ---
-const ThemeToggle = ({ isDark, toggleTheme }) => (
+const ThemeToggle = ({ theme, toggleTheme }) => (
   <motion.button
     onClick={toggleTheme}
-    className="ml-4 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-black focus:ring-purple-500"
+    className="p-2 rounded-full text-brand-dark dark:text-brand-bg hover:bg-gray-200 dark:hover:bg-brand-dark-blue transition-colors"
+    whileTap={{ scale: 0.9, rotate: 15 }}
     aria-label="Toggle theme"
-    whileTap={{ scale: 0.9, rotate: -15 }}
   >
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence mode="wait">
       <motion.div
-        key={isDark ? "moon" : "sun"}
-        initial={{ y: -20, opacity: 0, rotate: -90 }}
+        key={theme}
+        initial={{ y: -15, opacity: 0, rotate: -90 }}
         animate={{ y: 0, opacity: 1, rotate: 0 }}
-        exit={{ y: 20, opacity: 0, rotate: 90 }}
-        transition={{ duration: 0.2 }}
+        exit={{ y: 15, opacity: 0, rotate: 90 }}
+        transition={{ duration: 0.25 }}
       >
-        {isDark ? (
-          <FiSun className="h-5 w-5 text-gray-300" />
+        {theme === "dark" ? (
+          <FiSun className="h-5 w-5" />
         ) : (
-          <FiMoon className="h-5 w-5 text-gray-700" />
+          <FiMoon className="h-5 w-5" />
         )}
       </motion.div>
     </AnimatePresence>
   </motion.button>
-);
-
-// --- Hamburger Menu Component (now only opens) ---
-const MenuToggle = ({ toggle }) => (
-  <button
-    onClick={toggle}
-    className="relative h-8 w-8 text-gray-800 dark:text-gray-200 transition-colors"
-    aria-label="Open menu"
-  >
-    <div className="absolute left-1/2 top-1/2 flex w-6 -translate-x-1/2 -translate-y-1/2 flex-col gap-[6px]">
-      <span className="h-0.5 w-full rounded-full bg-current" />
-      <span className="h-0.5 w-full rounded-full bg-current" />
-      <span className="h-0.5 w-full rounded-full bg-current" />
-    </div>
-  </button>
 );
 
 export default Header;
