@@ -15,7 +15,6 @@ import {
 } from "react-icons/si";
 import { motion } from "framer-motion";
 
-// The data is the same, but we will use it more dynamically
 const techStack = [
   { name: "React", Icon: FaReact, color: "#61DAFB" },
   { name: "Node.js", Icon: FaNodeJs, color: "#8CC84B" },
@@ -28,9 +27,22 @@ const techStack = [
   { name: "Figma", Icon: FaFigma, color: "#F24E1E" },
 ];
 
-const TechStackTicker = () => {
-  const extendedTech = [...techStack, ...techStack];
+// Animation variant for a smooth, continuous loop
+const tickerVariants = {
+  animate: {
+    x: ["0%", "-100%"],
+    transition: {
+      x: {
+        repeat: Infinity,
+        repeatType: "loop",
+        duration: 50, // Adjust duration for speed
+        ease: "linear",
+      },
+    },
+  },
+};
 
+const TechStackTicker = () => {
   return (
     <section className="bg-white dark:bg-brand-dark py-20 sm:py-24">
       <div className="container mx-auto px-6 text-center">
@@ -38,53 +50,52 @@ const TechStackTicker = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6 }}
         >
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-dark dark:text-white">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
             Technologies We Master
           </h2>
-          <p className="text-lg mt-3 max-w-2xl mx-auto text-brand-light-blue dark:text-brand-gray">
+          <p className="text-lg mt-4 max-w-2xl mx-auto text-brand-light-blue dark:text-brand-gray">
             Leveraging a modern, powerful, and scalable tech stack to bring your
             vision to life.
           </p>
         </motion.div>
 
-        {/* Polished scrolling banner */}
+        {/* Scrolling banner using Framer Motion */}
         <div className="mt-16 w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-          <div className="flex w-max animate-scroll [animation-duration:60s] gap-6">
-            {extendedTech.map((tech, index) => (
+          <motion.div
+            className="flex gap-8" // Increased gap for better spacing
+            variants={tickerVariants}
+            animate="animate"
+          >
+            {/* Render the list twice for a seamless loop */}
+            {[...techStack, ...techStack].map((tech, index) => (
               <TechPill key={index} {...tech} />
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
   );
 };
 
-// The enhanced and polished "Pill" component
+// Refactored "Pill" component using a declarative approach
 const TechPill = ({ name, Icon, color }) => (
   <motion.div
-    whileHover={{ y: -4 }}
-    transition={{ duration: 0.2 }}
-    className="group flex-shrink-0 flex items-center gap-3 px-6 py-3 bg-white dark:bg-brand-dark-blue/50 border border-gray-200 dark:border-brand-light-blue/20 rounded-full"
-    style={{
-      // The colored shadow appears on hover, using the specific color from your data
-      boxShadow: `0 0 0 0 ${color}00`,
-      transition: "box-shadow 0.3s ease-in-out",
+    // Use Framer Motion's whileHover for all hover effects
+    whileHover={{
+      y: -6,
+      boxShadow: `0 10px 25px -5px ${color}50`, // Hex code with alpha for transparency
     }}
-    onMouseEnter={(e) =>
-      (e.currentTarget.style.boxShadow = `0 10px 25px -5px ${color}40`)
-    }
-    onMouseLeave={(e) =>
-      (e.currentTarget.style.boxShadow = `0 0 0 0 ${color}00`)
-    }
+    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+    // The 'group' class allows us to style child elements on hover
+    className="group flex-shrink-0 flex items-center gap-3 px-6 py-3 bg-white dark:bg-brand-dark-blue/50 border border-gray-200 dark:border-brand-light-blue/20 rounded-full cursor-pointer"
+    // We pass the unique color as a CSS variable for the icon to use
+    style={{ "--tech-color": color }}
   >
     <Icon
-      className="w-7 h-7 text-brand-light-blue dark:text-brand-gray transition-colors duration-300"
-      // The icon's color changes to its unique color on hover
-      style={{ transition: "color 0.3s ease-in-out" }}
-      onMouseEnter={(e) => (e.currentTarget.style.color = color)}
-      onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+      className="w-7 h-7 text-brand-light-blue dark:text-brand-gray transition-colors duration-300
+                 group-hover:text-[var(--tech-color)]" // Icon color changes on parent hover
     />
     <span className="text-xl font-semibold text-brand-dark dark:text-white whitespace-nowrap">
       {name}

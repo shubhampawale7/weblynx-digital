@@ -1,5 +1,3 @@
-// client/src/components/Home/Hero.jsx
-
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -50,10 +48,11 @@ const HeroSection = () => {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-brand-dark transition-colors duration-300
-                 [--spotlight-color:rgba(0,245,212,0.15)] dark:[--spotlight-color:rgba(0,245,212,0.1)]
-                 before:pointer-events-none before:fixed before:inset-0 before:z-20
-                 before:bg-[radial-gradient(circle_350px_at_var(--spotlight-x)_var(--spotlight-y),var(--spotlight-color),transparent_100%)]"
+      // 👇 THIS IS THE ONLY LINE THAT CHANGED
+      className="pt-[104px] md:pt-24 relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-brand-dark transition-colors duration-300
+               [--spotlight-color:rgba(0,245,212,0.15)] dark:[--spotlight-color:rgba(0,245,212,0.1)]
+               before:pointer-events-none before:fixed before:inset-0 before:z-20
+               before:bg-[radial-gradient(circle_350px_at_var(--spotlight-x)_var(--spotlight-y),var(--spotlight-color),transparent_100%)]"
     >
       <Seo
         title="Weblynx Infotech - We Engineer Digital Excellence"
