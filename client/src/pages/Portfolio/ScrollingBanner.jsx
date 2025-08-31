@@ -1,5 +1,7 @@
+// client/src/components/Portfolio/ScrollingBanner.jsx
 import React from "react";
 import { motion } from "framer-motion";
+import { FiZap } from "react-icons/fi"; // Using a more on-brand separator icon
 
 // Define the content for the banner
 const bannerItems = [
@@ -11,49 +13,44 @@ const bannerItems = [
   "Clean Code",
 ];
 
-const ScrollingBanner = ({ isDark }) => {
+const ScrollingBanner = () => {
   // We repeat the items to create a seamless, infinite loop
-  const repeatedItems = React.useMemo(
-    () => Array(5).fill(bannerItems).flat(),
-    []
-  );
+  const repeatedItems = [...bannerItems, ...bannerItems];
 
   return (
-    <section className="py-16 md:py-24">
-      <div className="w-full overflow-hidden whitespace-nowrap">
-        <motion.div
-          className="flex items-center gap-12"
-          animate={{ x: ["0%", "-100%"] }}
-          transition={{
-            x: {
+    <section className="bg-white dark:bg-black w-full overflow-hidden">
+      {/* The main container is a group to enable pause-on-hover */}
+      <div className="group flex flex-col justify-center h-40 md:h-48 bg-brand-dark">
+        {/* Background Decorative Elements */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <motion.div
+            className="absolute inset-0 opacity-20"
+            style={{
+              background: `radial-gradient(circle at 50% 50%, hsla(169, 100%, 50%, 0.5), transparent 70%)`,
+            }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+            transition={{
+              duration: 15,
               repeat: Infinity,
-              repeatType: "loop",
-              duration: 70, // Adjust this value to change the speed
-              ease: "linear",
-            },
-          }}
-        >
-          {/* Map over the repeated items to create the scrolling content */}
+              repeatType: "mirror",
+              ease: "easeInOut",
+            }}
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:36px_36px]"></div>
+        </div>
+
+        {/* The scrolling content itself */}
+        <div className="relative flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused]">
           {repeatedItems.map((item, index) => (
-            <div key={index} className="flex items-center gap-12">
-              <span
-                className={`text-5xl md:text-7xl font-black tracking-tighter ${
-                  isDark ? "text-white" : "text-black"
-                }`}
-              >
+            <div key={index} className="flex items-center gap-12 mx-6">
+              <span className="font-display text-5xl md:text-7xl font-bold tracking-tighter text-white">
                 {item}
               </span>
               {/* This is the visual separator */}
-              <span
-                className={`text-3xl md:text-4xl ${
-                  isDark ? "text-purple-400" : "text-blue-600"
-                }`}
-              >
-                &#x2726;
-              </span>
+              <FiZap className="text-4xl md:text-5xl text-brand-accent flex-shrink-0" />
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

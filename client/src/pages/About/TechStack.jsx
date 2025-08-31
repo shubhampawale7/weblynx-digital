@@ -1,9 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { useTheme } from "../../context/ThemeContext.jsx";
-import { gsap } from "gsap";
+// client/src/pages/About/TechStack.jsx
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Seo from "../../components/common/Seo.jsx";
-
-// Import specific icons from react-icons
 import {
   SiReact,
   SiNodedotjs,
@@ -17,181 +15,169 @@ import {
   SiCss3,
   SiJavascript,
 } from "react-icons/si";
-import { FaGlobe } from "react-icons/fa"; // For REST APIs
+import { FaGlobe } from "react-icons/fa";
 
-// --- UPDATED Tech Stack Data ---
-// Using actual react-icon components for a professional look.
-// Divided into two rings for the orbital design.
-const techStackData = {
-  outerRing: [
-    { name: "React", Icon: SiReact, color: "#61DAFB" },
-    { name: "Node.js", Icon: SiNodedotjs, color: "#339933" },
-    { name: "MongoDB", Icon: SiMongodb, color: "#47A248" },
-    { name: "WordPress", Icon: SiWordpress, color: "#21759B" },
-    { name: "Tailwind CSS", Icon: SiTailwindcss, color: "#06B6D4" },
-    { name: "HTML5", Icon: SiHtml5, color: "#E34F26" },
-  ],
-  innerRing: [
-    { name: "Express.js", Icon: SiExpress, color: "#FFFFFF" },
-    { name: "JavaScript", Icon: SiJavascript, color: "#F7DF1E" },
-    { name: "GSAP", Icon: SiGreensock, color: "#88CE02" },
-    { name: "Framer Motion", Icon: SiFramer, color: "#0055FF" },
-    { name: "CSS3", Icon: SiCss3, color: "#1572B6" },
-    { name: "REST APIs", Icon: FaGlobe, color: "#808080" },
-  ],
-};
+// Data is now a single array with added descriptions
+const techStackData = [
+  {
+    name: "React",
+    Icon: SiReact,
+    description: "For building dynamic, high-performance user interfaces.",
+  },
+  {
+    name: "Node.js",
+    Icon: SiNodedotjs,
+    description: "For fast and scalable server-side applications.",
+  },
+  {
+    name: "MongoDB",
+    Icon: SiMongodb,
+    description: "A flexible NoSQL database for modern applications.",
+  },
+  {
+    name: "WordPress",
+    Icon: SiWordpress,
+    description: "The world's most popular content management system.",
+  },
+  {
+    name: "Tailwind CSS",
+    Icon: SiTailwindcss,
+    description: "A utility-first CSS framework for rapid UI development.",
+  },
+  {
+    name: "Framer Motion",
+    Icon: SiFramer,
+    description: "A production-ready motion library for React.",
+  },
+  {
+    name: "Express.js",
+    Icon: SiExpress,
+    description: "A minimal and flexible Node.js web application framework.",
+  },
+  {
+    name: "JavaScript",
+    Icon: SiJavascript,
+    description: "The core language of the web, powering dynamic experiences.",
+  },
+  {
+    name: "HTML5",
+    Icon: SiHtml5,
+    description: "The standard markup language for creating web pages.",
+  },
+  {
+    name: "CSS3",
+    Icon: SiCss3,
+    description:
+      "The stylesheet language used to describe the presentation of a document.",
+  },
+  {
+    name: "GSAP",
+    Icon: SiGreensock,
+    description: "A professional-grade animation library for the modern web.",
+  },
+  {
+    name: "REST APIs",
+    Icon: FaGlobe,
+    description:
+      "For building robust and scalable communication between services.",
+  },
+];
 
 const TechStack = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-  const sectionRef = useRef(null);
-  const outerRingRef = useRef(null);
-  const innerRingRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Animate the main heading
-      gsap.from(".tech-heading", {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          toggleActions: "play none none reverse",
-        },
-        opacity: 0,
-        y: -50,
-        duration: 1,
-        ease: "power3.out",
-      });
-
-      // Perpetual rotation for the rings
-      gsap.to(outerRingRef.current, {
-        rotation: 360,
-        duration: 90,
-        repeat: -1,
-        ease: "none",
-      });
-      gsap.to(innerRingRef.current, {
-        rotation: -360,
-        duration: 60,
-        repeat: -1,
-        ease: "none",
-      });
-
-      // Animate the icons into view
-      gsap.from(".tech-icon-wrapper", {
-        scrollTrigger: {
-          trigger: ".tech-cosmos",
-          start: "top 60%",
-          toggleActions: "play none none reverse",
-        },
-        scale: 0,
-        opacity: 0,
-        duration: 1,
-        ease: "back.out(1.7)",
-        stagger: 0.07,
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  // Function to render a ring of tech icons
-  const renderRing = (technologies, radius, ringRef, initialRotation = 0) => {
-    const angleStep = (2 * Math.PI) / technologies.length;
-    return (
-      <div
-        ref={ringRef}
-        className="absolute inset-0 flex items-center justify-center"
-      >
-        {technologies.map(({ name, Icon, color }, index) => {
-          const angle = index * angleStep;
-          const x = radius * Math.cos(angle);
-          const y = radius * Math.sin(angle);
-          const rotation = (angle * 180) / Math.PI + 90; // Align icon to the tangent
-
-          return (
-            <div
-              key={name}
-              className="tech-icon-wrapper group absolute"
-              style={{
-                transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
-              }}
-            >
-              <div className="relative flex flex-col items-center">
-                <Icon
-                  style={{ color: color }}
-                  className="text-4xl md:text-5xl transition-all duration-300 ease-in-out 
-                             group-hover:scale-125 group-hover:drop-shadow-[0_0_15px_var(--glow-color)]"
-                />
-                <span
-                  className="absolute top-full mt-3 px-3 py-1 rounded-md text-sm font-bold 
-                             bg-gray-800 text-white dark:bg-white dark:text-gray-900 
-                             opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                >
-                  {name}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  // Set the first item as the default active tech
+  const [activeTech, setActiveTech] = useState(techStackData[0]);
 
   return (
     <section
       id="tech-stack"
-      ref={sectionRef}
-      className={`py-20 sm:py-28 overflow-hidden ${
-        isDark ? "bg-gray-950 text-white" : "bg-black text-white"
-      } transition-colors duration-300`}
+      className="bg-white dark:bg-brand-dark py-20 sm:py-28"
     >
       <Seo
         title="Our Tech Stack | Weblynx Infotech - Modern Web Technologies"
-        description="Explore the cutting-edge technologies and frameworks Weblynx Infotech specializes in, including React, Node.js, Express.js, MongoDB, WordPress, Tailwind CSS, GSAP, and more."
-        keywords="Weblynx Infotech tech stack, web development technologies, MERN stack, WordPress development, React.js, Node.js, Express.js, MongoDB, Tailwind CSS, GSAP, Framer Motion, frontend, backend, full stack"
-        ogTitle="Weblynx Infotech: Building with Cutting-Edge Technologies"
-        ogDescription="See the powerful tools and frameworks Weblynx Infotech leverages to build high-performance and innovative digital solutions."
-        ogUrl="https://www.weblynxinfotech.com/about#tech-stack"
-        canonical="https://www.weblynxinfotech.com/about#tech-stack"
+        description="Explore the cutting-edge technologies and frameworks Weblynx Infotech specializes in, including React, Node.js, Express.js, MongoDB, WordPress, and more."
       />
-
-      <div className="container mx-auto max-w-6xl px-4">
-        <div className="text-center mb-12 md:mb-16">
-          <h2
-            className="tech-heading text-4xl md:text-5xl font-bold
-                       text-transparent bg-clip-text bg-gradient-to-r 
-                       from-orange-500 to-red-600
-                       dark:from-amber-400 dark:to-rose-400"
-          >
-            Our Tech Cosmos
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-16 max-w-3xl mx-auto"
+        >
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
+            Our Technology Stack
           </h2>
-          <p className="tech-heading mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
             A curated ecosystem of modern technologies we use to build
             high-performance applications.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="tech-cosmos relative w-full max-w-xl md:max-w-3xl mx-auto aspect-square">
-          {/* --- Central Core --- */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div
-              className={`w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center text-center
-                                 font-bold text-lg transition-all duration-300
-                                 ${
-                                   isDark
-                                     ? "bg-gray-900 text-gray-300 shadow-[0_0_30px_rgba(139,92,246,0.3)]"
-                                     : "bg-gray-200 text-gray-700 shadow-[0_0_30px_rgba(0,0,0,0.1)]"
-                                 }`}
-            >
-              Core Stack
-            </div>
+        <div className="max-w-4xl mx-auto">
+          {/* Information Panel */}
+          <div className="relative h-28 p-6 flex items-center gap-6 bg-gray-50 dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 rounded-2xl overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTech.name}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.3 }}
+                className="flex items-center gap-6"
+              >
+                <activeTech.Icon className="text-5xl text-brand-accent" />
+                <div>
+                  <h3 className="font-display text-2xl font-bold text-brand-dark dark:text-white">
+                    {activeTech.name}
+                  </h3>
+                  <p className="text-brand-light-blue dark:text-brand-gray">
+                    {activeTech.description}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* --- Rings --- */}
-          {renderRing(techStackData.outerRing, 280, outerRingRef)}
-          {renderRing(techStackData.innerRing, 180, innerRingRef)}
-          {/* Note: The radius (e.g., 280, 180) might need tweaking on smaller screens or different aspect ratios */}
+          {/* Icon Grid */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+              visible: { transition: { staggerChildren: 0.05 } },
+            }}
+            className="grid grid-cols-4 sm:grid-cols-6 gap-4 mt-8"
+          >
+            {techStackData.map((tech) => (
+              <motion.div
+                key={tech.name}
+                onMouseEnter={() => setActiveTech(tech)}
+                variants={{
+                  hidden: { opacity: 0, scale: 0.8 },
+                  visible: { opacity: 1, scale: 1 },
+                }}
+                className="cursor-pointer"
+              >
+                <div
+                  className={`w-full aspect-square flex items-center justify-center rounded-xl border transition-all duration-300
+                    ${
+                      activeTech.name === tech.name
+                        ? "bg-white/80 dark:bg-brand-dark-blue border-brand-accent/50"
+                        : "bg-gray-50/80 dark:bg-brand-dark-blue/30 border-transparent hover:border-brand-light-blue/20"
+                    }`}
+                >
+                  <tech.Icon
+                    className={`text-4xl transition-colors duration-300
+                      ${
+                        activeTech.name === tech.name
+                          ? "text-brand-accent"
+                          : "text-brand-light-blue dark:text-brand-gray"
+                      }`}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>

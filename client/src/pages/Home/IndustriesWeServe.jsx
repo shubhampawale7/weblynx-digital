@@ -1,7 +1,13 @@
 // client/src/components/Home/IndustriesWeServe.jsx
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useRef } from "react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useSpring,
+  AnimatePresence,
+} from "framer-motion";
 import {
   FiShoppingCart,
   FiHeart,
@@ -51,13 +57,8 @@ const industriesData = [
 ];
 
 const IndustriesWeServe = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  };
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeIndustry = industriesData[activeIndex];
 
   return (
     <section className="bg-white dark:bg-brand-dark py-20 sm:py-28">
@@ -70,7 +71,7 @@ const IndustriesWeServe = () => {
           className="text-center mb-16 max-w-3xl mx-auto"
         >
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-            Versatility in Our DNA.
+            Versatility in Our DNA
           </h2>
           <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
             Our expertise isn't confined to a single box. We adapt and innovate
@@ -78,48 +79,106 @@ const IndustriesWeServe = () => {
           </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {industriesData.map((industry) => (
-            <IndustryCard key={industry.name} {...industry} />
-          ))}
-        </motion.div>
+        {/* Main interactive container */}
+        <div className="max-w-4xl mx-auto">
+          {/* Content Viewport */}
+          <div className="relative w-full h-[300px] mb-8 bg-gray-50 dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 rounded-2xl overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndustry.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="w-full h-full flex flex-col justify-center items-center text-center p-8"
+              >
+                <activeIndustry.Icon className="w-12 h-12 text-brand-accent mb-4" />
+                <h3 className="font-display text-2xl md:text-3xl font-bold text-brand-dark dark:text-white mb-3">
+                  {activeIndustry.name}
+                </h3>
+                <p className="text-base text-brand-light-blue dark:text-brand-gray max-w-lg">
+                  {activeIndustry.description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Interactive Dock */}
+          <Dock activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+        </div>
       </div>
     </section>
   );
 };
 
-// --- The Polished Card Component with Subtle Hover Effect ---
-const IndustryCard = ({ name, Icon, description }) => {
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
+// --- The Interactive Dock Component ---
+const Dock = ({ activeIndex, setActiveIndex }) => {
+  const dockRef = useRef(null);
+  const mouseX = useMotionValue(Infinity);
 
   return (
-    <motion.div
-      variants={cardVariants}
-      className="group relative h-full p-8 bg-gray-50 dark:bg-brand-dark-blue/50 border border-gray-200 dark:border-brand-light-blue/20 rounded-2xl transition-all duration-300 hover:border-brand-accent/50 hover:shadow-2xl hover:shadow-brand-accent/10"
+    <nav
+      ref={dockRef}
+      onMouseMove={(e) => {
+        if (dockRef.current) {
+          const { left } = dockRef.current.getBoundingClientRect();
+          mouseX.set(e.clientX - left);
+        }
+      }}
+      onMouseLeave={() => mouseX.set(Infinity)}
+      className="flex justify-center items-end gap-4 h-20 p-3 bg-gray-100 dark:bg-brand-dark-blue/50 rounded-2xl border border-gray-200 dark:border-brand-light-blue/20"
     >
-      <div className="relative z-10">
-        <Icon className="w-10 h-10 text-brand-accent mb-5" />
-        <h3 className="font-display text-xl font-bold text-brand-dark dark:text-white mb-3">
-          {name}
-        </h3>
-        <p className="text-base text-brand-light-blue dark:text-brand-gray">
-          {description}
-        </p>
-      </div>
-    </motion.div>
+      {industriesData.map((industry, index) => (
+        <DockIcon
+          key={industry.name}
+          mouseX={mouseX}
+          isActive={activeIndex === index}
+          onClick={() => setActiveIndex(index)}
+        >
+          <industry.Icon className="w-7 h-7" />
+        </DockIcon>
+      ))}
+    </nav>
+  );
+};
+
+// --- The Dock Icon with Magnetic Effect ---
+const DockIcon = ({ mouseX, isActive, onClick, children }) => {
+  const ref = useRef(null);
+
+  const distance = useTransform(mouseX, (val) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  const scale = useTransform(distance, [-150, 0, 150], [1, 1.75, 1]);
+  const scaleSpring = useSpring(scale, {
+    mass: 0.1,
+    stiffness: 150,
+    damping: 12,
+  });
+
+  return (
+    <motion.button
+      ref={ref}
+      style={{ scale: scaleSpring }}
+      onClick={onClick}
+      className={`relative p-4 rounded-full transition-colors duration-200
+                  ${
+                    isActive
+                      ? "text-brand-accent bg-gray-200 dark:bg-brand-dark"
+                      : "text-brand-light-blue dark:text-brand-gray hover:text-brand-accent"
+                  }`}
+      aria-label={`Select ${children.props.name}`}
+    >
+      {children}
+      {isActive && (
+        <motion.div
+          layoutId="active-industry-indicator"
+          className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-2 h-2 bg-brand-accent rounded-full"
+        />
+      )}
+    </motion.button>
   );
 };
 

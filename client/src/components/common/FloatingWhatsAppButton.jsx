@@ -28,8 +28,8 @@ const FloatingWhatsAppButton = () => {
 
   // Framer Motion variants for the expanding pill and text
   const buttonVariants = {
-    initial: { width: "56px", borderRadius: "100%" }, // Circular shape
-    hover: { width: "190px", borderRadius: "9999px" }, // Pill shape
+    initial: { width: "56px", borderRadius: "100%" },
+    hover: { width: "210px", borderRadius: "9999px" },
   };
 
   const textVariants = {
@@ -46,7 +46,6 @@ const FloatingWhatsAppButton = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          // POSITION CHANGE: Changed 'right-6' and 'sm:right-8' to 'left-6' and 'sm:left-8'
           className="fixed bottom-6 left-6 sm:bottom-8 sm:left-8 z-50"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -58,7 +57,10 @@ const FloatingWhatsAppButton = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat with us on WhatsApp"
-            className="flex items-center justify-center h-14 overflow-hidden cursor-pointer shadow-lg bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400"
+            className="flex items-center justify-start h-14 px-4 overflow-hidden cursor-pointer shadow-lg
+                       bg-brand-accent hover:bg-brand-accent-hover 
+                       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-dark focus:ring-brand-accent
+                       dark:shadow-brand-accent/20"
             variants={buttonVariants}
             initial="initial"
             animate={isHovered ? "hover" : "initial"}
@@ -66,16 +68,11 @@ const FloatingWhatsAppButton = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            {/* LAYOUT CHANGE: Swapped order of Icon and Text for left-side positioning */}
+            <FaWhatsapp className="w-7 h-7 text-brand-dark flex-shrink-0" />
 
-            {/* The icon now comes first */}
-            <FaWhatsapp className="w-7 h-7 text-white flex-shrink-0" />
-
-            {/* The text part now comes second */}
             <motion.span
               variants={textVariants}
-              // LAYOUT CHANGE: Changed margin from 'mr-2' to 'ml-2'
-              className="ml-2 text-base font-semibold text-white whitespace-nowrap"
+              className="ml-2 text-base font-semibold text-brand-dark whitespace-nowrap"
             >
               Chat with us!
             </motion.span>

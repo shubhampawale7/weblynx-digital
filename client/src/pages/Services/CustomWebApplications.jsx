@@ -1,13 +1,10 @@
 // client/src/pages/Services/CustomWebApplications.jsx
 import React, { useRef } from "react";
-import { useTheme } from "../../context/ThemeContext.jsx";
-import Lottie from "lottie-react";
 import { Link } from "react-router-dom";
-import Seo from "../../components/common/Seo.jsx";
+import Lottie from "lottie-react";
 import { motion, useScroll, useSpring } from "framer-motion";
+import Seo from "../../components/common/Seo.jsx";
 import customWebAppsAnimationData from "../../assets/lottie-animations/custom-web-apps-animation.json";
-
-// --- FIXED: Icons are now imported from their correct libraries ---
 import { FaReact, FaNodeJs } from "react-icons/fa";
 import { SiMongodb, SiExpress, SiTailwindcss } from "react-icons/si";
 import {
@@ -17,66 +14,64 @@ import {
   FiGrid,
   FiMessageSquare,
   FiTrendingUp,
+  FiLayers,
   FiCompass,
   FiLayout,
   FiCode,
   FiFlag,
   FiLifeBuoy,
-  FiCheck,
+  FiCheckCircle,
   FiX,
-  FiDatabase,
-  FiLayers,
+  FiArrowLeft,
 } from "react-icons/fi";
 
 // --- Data for the page sections ---
 const whatWeBuildData = [
   {
-    icon: <FiBriefcase />,
+    icon: FiBriefcase,
     title: "Enterprise Solutions",
     description:
       "Custom CRMs, ERPs, and internal tools to streamline your operations.",
   },
   {
-    icon: <FiBox />,
+    icon: FiBox,
     title: "E-commerce Platforms",
     description:
       "Secure, scalable online stores with advanced features and payment integrations.",
   },
   {
-    icon: <FiGrid />,
+    icon: FiGrid,
     title: "Interactive Web Portals",
     description:
       "Dynamic portals for customers, partners, or employees with personalized experiences.",
   },
   {
-    icon: <FiCloud />,
+    icon: FiCloud,
     title: "SaaS Products",
     description:
       "Multi-tenant Software-as-a-Service applications with robust, scalable architecture.",
   },
   {
-    icon: <FiMessageSquare />,
+    icon: FiMessageSquare,
     title: "Real-time Applications",
     description:
       "Engaging apps with live chat, interactive dashboards, and collaborative tools.",
   },
   {
-    icon: <FiTrendingUp />,
-    title: "Progressive Web Apps (PWAs)",
+    icon: FiTrendingUp,
+    title: "Progressive Web Apps",
     description:
       "Websites that offer app-like experiences, working offline and installable on home screens.",
   },
 ];
-
 const techStackData = [
-  { name: "React", Icon: FaReact, color: "text-sky-500" },
-  { name: "Node.js", Icon: FaNodeJs, color: "text-green-500" },
-  { name: "Express.js", Icon: SiExpress, color: "text-gray-500" },
-  { name: "MongoDB", Icon: SiMongodb, color: "text-lime-500" },
-  { name: "Tailwind CSS", Icon: SiTailwindcss, color: "text-cyan-400" },
-  { name: "MERN Stack", Icon: FiLayers, color: "text-purple-500" },
+  { name: "React", Icon: FaReact },
+  { name: "Node.js", Icon: FaNodeJs },
+  { name: "Express.js", Icon: SiExpress },
+  { name: "MongoDB", Icon: SiMongodb },
+  { name: "Tailwind CSS", Icon: SiTailwindcss },
+  { name: "MERN Stack", Icon: FiLayers },
 ];
-
 const industriesData = [
   "E-commerce & Retail",
   "SaaS & Technology",
@@ -85,7 +80,6 @@ const industriesData = [
   "Hospitality",
   "Startups",
 ];
-
 const comparisonData = [
   {
     feature: "Flexibility & Features",
@@ -110,209 +104,224 @@ const comparisonData = [
   {
     feature: "Long-term Cost",
     custom: "Higher initial investment, but no recurring license fees.",
-    offTheShelf: "Lower upfront cost, but ongoing subscription fees.",
+    offTheShelf: "Ongoing subscription fees.",
   },
 ];
-
 const approachData = [
   {
-    icon: <FiCompass />,
+    icon: FiCompass,
     title: "Discovery & Planning",
     description:
       "We dive deep into your requirements and business goals to create a detailed project roadmap.",
   },
   {
-    icon: <FiLayout />,
+    icon: FiLayout,
     title: "Design & Prototyping",
     description:
       "Our UX/UI experts design intuitive interfaces and create interactive prototypes for your feedback.",
   },
   {
-    icon: <FiCode />,
+    icon: FiCode,
     title: "Development & Testing",
     description:
       "Using agile methodologies, we build your application with clean code and conduct rigorous testing.",
   },
   {
-    icon: <FiFlag />,
+    icon: FiFlag,
     title: "Deployment & Launch",
     description:
       "We handle the entire deployment process, ensuring a smooth and successful launch.",
   },
   {
-    icon: <FiLifeBuoy />,
+    icon: FiLifeBuoy,
     title: "Support & Evolution",
     description:
       "Post-launch, we provide ongoing support and work with you to evolve the product.",
   },
 ];
 
-// --- Framer Motion Animation Variants ---
-const sectionVariant = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-};
+// --- Framer Motion Variants ---
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 const itemVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
+// --- Main Page Component ---
 const CustomWebApplications = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-  const timelineRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start center", "end end"],
-  });
-  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-
   return (
-    <div
-      className={`min-h-screen ${
-        isDark ? "bg-black text-white" : "bg-white text-gray-900"
-      } transition-colors duration-500`}
-    >
+    <>
       <Seo
         title="Custom Web Applications Development | Weblynx Infotech"
         description="We craft scalable, secure, and intuitive custom web applications tailored to your business needs, from enterprise solutions to e-commerce platforms."
       />
+      <main className="pt-[104px] md:pt-24 bg-white dark:bg-brand-dark">
+        <Hero />
+        <WhatWeBuildSection />
+        <TechAndIndustriesSection />
+        <ComparisonSection />
+        <ApproachSection />
+        <FinalCta />
+      </main>
+    </>
+  );
+};
 
-      {/* Hero Section */}
-      <section className="relative py-24 sm:py-32 px-4 overflow-hidden">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:2rem_2rem]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_200px,#dbeafe,transparent)] dark:bg-[radial-gradient(circle_800px_at_50%_200px,#3b82f622,transparent)]" />
-        </div>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          className="container mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center"
+// --- Page Sections (Broken into Components) ---
+
+const Hero = () => (
+  <section className="relative py-24 sm:py-32 px-6 overflow-hidden">
+    <div className="absolute inset-0 -z-10 h-full w-full dark:bg-brand-dark bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:2rem_2rem]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_200px,#e0e1dd,transparent)] dark:bg-[radial-gradient(circle_800px_at_50%_200px,#00f5d41a,transparent)]" />
+    </div>
+    <motion.div
+      variants={staggerContainer}
+      initial="hidden"
+      animate="visible"
+      className="container mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center"
+    >
+      <div className="text-center md:text-left">
+        <motion.h1
+          variants={itemVariants}
+          className="font-display text-5xl lg:text-6xl font-bold mb-6 text-brand-dark dark:text-white tracking-tighter"
         >
-          <div className="text-center md:text-left">
-            <motion.h1
-              variants={itemVariants}
-              className="text-5xl lg:text-6xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 dark:from-purple-400 dark:to-cyan-400"
-            >
-              Custom Web Applications
-            </motion.h1>
-            <motion.p
-              variants={itemVariants}
-              className="text-lg md:text-xl mb-8 opacity-80 max-w-xl mx-auto md:mx-0"
-            >
-              Build your unique digital presence from the ground up. We craft
-              scalable, secure, and intuitive web applications tailored
-              precisely to your business objectives.
-            </motion.p>
-            <motion.div variants={itemVariants}>
-              <Link
-                to="/contact"
-                className="inline-block px-8 py-4 text-lg font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 bg-blue-600 text-white hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700"
-              >
-                Start Your Project
-              </Link>
-            </motion.div>
-          </div>
-          <motion.div
-            variants={itemVariants}
-            className="w-full max-w-sm mx-auto md:max-w-none"
+          Custom Web Applications
+        </motion.h1>
+        <motion.p
+          variants={itemVariants}
+          className="text-lg md:text-xl mb-8 text-brand-light-blue dark:text-brand-gray max-w-xl mx-auto md:mx-0"
+        >
+          Build your unique digital presence from the ground up. We craft
+          scalable, secure, and intuitive web applications tailored precisely to
+          your business objectives.
+        </motion.p>
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4"
+        >
+          <Link
+            to="/contact"
+            className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
           >
-            <Lottie animationData={customWebAppsAnimationData} loop={true} />
-          </motion.div>
+            <motion.span
+              className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
+              initial={{ x: "-150%" }}
+              whileHover={{ x: "150%" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+            <span className="relative">Start Your Project</span>
+          </Link>
+          <Link
+            to="/services"
+            className="group inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-brand-light-blue dark:text-brand-gray hover:bg-gray-100 dark:hover:bg-brand-dark-blue/50 rounded-full transition-colors duration-300"
+          >
+            <FiArrowLeft className="transition-transform duration-300 group-hover:-translate-x-1" />
+            <span>Back to All Services</span>
+          </Link>
         </motion.div>
-      </section>
-
-      {/* What We Build (Types) Section */}
-      <section className="py-20 sm:py-24 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
-          >
-            What We Build
-          </motion.h2>
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {whatWeBuildData.map((item) => (
-              <motion.div
-                variants={itemVariants}
-                key={item.title}
-                className={`p-8 rounded-2xl flex flex-col items-start text-left group ${
-                  isDark ? "bg-gray-900" : "bg-gray-50 border"
-                }`}
-              >
-                <div className="p-3 rounded-lg bg-blue-100 dark:bg-blue-900/30 mb-5 text-blue-500 dark:text-blue-400">
-                  {item.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="opacity-70 text-base">{item.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Tech Stack Section */}
-      <section
-        className={`py-20 sm:py-24 px-4 ${
-          isDark ? "bg-gray-950" : "bg-slate-100"
-        }`}
+      </div>
+      <motion.div
+        variants={itemVariants}
+        className="w-full max-w-sm mx-auto md:max-w-none"
       >
-        <div className="container mx-auto max-w-6xl">
+        <Lottie animationData={customWebAppsAnimationData} loop={true} />
+      </motion.div>
+    </motion.div>
+  </section>
+);
+
+const WhatWeBuildSection = () => (
+  <section className="bg-gray-50 dark:bg-black py-20 sm:py-28 px-6">
+    <div className="container mx-auto max-w-6xl">
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.7 }}
+        className="font-display text-4xl sm:text-5xl font-bold text-center mb-16 text-brand-dark dark:text-white tracking-tighter"
+      >
+        What We Build
+      </motion.h2>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        {whatWeBuildData.map((item) => {
+          const Icon = item.icon;
+          return (
+            <motion.div
+              variants={itemVariants}
+              key={item.title}
+              whileHover={{ y: -8 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="p-8 rounded-2xl flex flex-col items-start text-left bg-white dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 shadow-lg cursor-pointer transition-shadow hover:shadow-2xl hover:shadow-brand-accent/10"
+            >
+              <div className="p-3 rounded-lg bg-brand-accent/20 mb-5 text-brand-accent">
+                {/* Corrected Render Logic */}
+                <Icon size={28} />
+              </div>
+              <h3 className="font-display text-xl font-bold text-brand-dark dark:text-white mb-2">
+                {item.title}
+              </h3>
+              <p className="text-brand-light-blue dark:text-brand-gray text-base">
+                {item.description}
+              </p>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+    </div>
+  </section>
+);
+
+const TechAndIndustriesSection = () => (
+  <section className="py-20 sm:py-28 px-6">
+    <div className="container mx-auto max-w-6xl">
+      <div className="grid lg:grid-cols-2 gap-16">
+        <div>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.7 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            className="font-display text-3xl md:text-4xl font-bold mb-8 text-brand-dark dark:text-white tracking-tighter"
           >
-            Our Core Technology Stack
+            Our Core Technology
           </motion.h2>
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8"
+            className="flex flex-wrap gap-4"
           >
             {techStackData.map((tech) => (
               <motion.div
                 variants={itemVariants}
                 key={tech.name}
-                className="flex flex-col items-center gap-3 text-center"
+                className="flex items-center gap-3 px-4 py-2 bg-gray-100 dark:bg-brand-dark-blue/50 rounded-lg border border-gray-200 dark:border-brand-light-blue/20"
               >
-                <tech.Icon className={`w-12 h-12 ${tech.color}`} />
-                <span className="font-semibold">{tech.name}</span>
+                <tech.Icon className="w-6 h-6 text-brand-accent" />
+                <span className="font-semibold text-brand-dark dark:text-white">
+                  {tech.name}
+                </span>
               </motion.div>
             ))}
           </motion.div>
         </div>
-      </section>
-
-      {/* Industries Section */}
-      <section className="py-20 sm:py-24 px-4">
-        <div className="container mx-auto max-w-6xl">
+        <div>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.7 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            className="font-display text-3xl md:text-4xl font-bold mb-8 text-brand-dark dark:text-white tracking-tighter"
           >
             Industries We Serve
           </motion.h2>
@@ -321,167 +330,221 @@ const CustomWebApplications = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-wrap justify-center gap-4"
+            className="flex flex-wrap gap-3"
           >
             {industriesData.map((industry) => (
               <motion.span
                 variants={itemVariants}
                 key={industry}
-                className={`px-5 py-2 rounded-full font-medium ${
-                  isDark ? "bg-gray-800" : "bg-gray-100"
-                }`}
+                className="px-4 py-2 rounded-full font-medium bg-gray-100 dark:bg-brand-dark-blue/50 text-brand-light-blue dark:text-brand-gray"
               >
                 {industry}
               </motion.span>
             ))}
           </motion.div>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
+);
 
-      {/* Comparison Section */}
-      <section
-        className={`py-20 sm:py-24 px-4 ${
-          isDark ? "bg-gray-950" : "bg-slate-100"
-        }`}
+const ComparisonSection = () => (
+  <section className="bg-gray-50 dark:bg-black py-20 sm:py-28 px-6">
+    <div className="container mx-auto max-w-5xl">
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.7 }}
+        className="font-display text-4xl sm:text-5xl font-bold text-center mb-16 text-brand-dark dark:text-white tracking-tighter"
       >
-        <div className="container mx-auto max-w-5xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
-          >
-            Custom vs. Off-the-Shelf
-          </motion.h2>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
-            className="overflow-x-auto"
-          >
-            <table className="w-full min-w-[600px] text-left">
-              <thead>
-                <tr className="border-b dark:border-gray-700">
-                  <th className="p-4 font-semibold text-lg">Feature</th>
-                  <th className="p-4 font-semibold text-lg text-blue-500 dark:text-purple-400">
-                    Custom Application
-                  </th>
-                  <th className="p-4 font-semibold text-lg">
-                    Off-the-Shelf Software
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparisonData.map((row, i) => (
-                  <motion.tr
-                    key={i}
-                    variants={itemVariants}
-                    className="border-b dark:border-gray-800"
-                  >
-                    <td className="p-4 font-semibold">{row.feature}</td>
-                    <td className="p-4 text-green-600 dark:text-green-400">
-                      <FiCheck className="inline mr-2" />
-                      {row.custom}
-                    </td>
-                    <td className="p-4 text-red-500 dark:text-red-400">
-                      <FiX className="inline mr-2" />
-                      {row.offTheShelf}
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Development Approach Section */}
-      <section className="py-20 sm:py-24 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-20"
-          >
-            Our Development Approach
-          </motion.h2>
-          <div
-            ref={timelineRef}
-            className="relative grid grid-cols-[auto_1fr] md:gap-x-12 gap-x-6"
-          >
-            <div className="w-1 bg-gray-200 dark:bg-gray-700 rounded-full h-full absolute left-5 md:left-6 -translate-x-1/2">
-              <motion.div
-                className="w-full h-full bg-blue-600 dark:bg-purple-500 origin-top"
-                style={{ scaleY }}
-              />
-            </div>
-            {approachData.map((step, index) => (
-              <React.Fragment key={index}>
-                <motion.div
-                  variants={sectionVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="z-10"
-                >
-                  <div className="w-12 h-12 rounded-full bg-slate-50 dark:bg-gray-950 border-4 border-gray-200 dark:border-gray-700 flex items-center justify-center">
-                    <div className="text-2xl text-blue-600 dark:text-purple-500">
-                      {step.icon}
-                    </div>
-                  </div>
-                </motion.div>
-                <motion.div
-                  variants={sectionVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.4 }}
-                  className="pt-2 pb-16"
-                >
-                  <h3 className="text-2xl font-bold text-blue-600 dark:text-purple-400 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="opacity-80">{step.description}</p>
-                </motion.div>
-              </React.Fragment>
+        Custom vs. Off-the-Shelf
+      </motion.h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7 }}
+          className="p-8 rounded-2xl bg-white dark:bg-brand-dark-blue/30 border-2 border-brand-accent shadow-2xl shadow-brand-accent/10"
+        >
+          <h3 className="font-display text-2xl font-bold mb-6 text-brand-dark dark:text-white">
+            Custom Application
+          </h3>
+          <div className="space-y-4">
+            {comparisonData.map((row) => (
+              <div
+                key={row.feature}
+                className="p-4 bg-gray-100 dark:bg-brand-dark rounded-lg"
+              >
+                <p className="font-semibold text-brand-dark dark:text-white">
+                  {row.feature}
+                </p>
+                <p className="flex items-start gap-2 mt-1 text-brand-light-blue dark:text-brand-gray">
+                  <FiCheckCircle className="w-5 h-5 mt-1 text-brand-accent flex-shrink-0" />{" "}
+                  {row.custom}
+                </p>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section
-        className={`py-20 sm:py-24 text-center ${
-          isDark ? "bg-gray-950" : "bg-slate-100"
-        }`}
-      >
+        </motion.div>
         <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7 }}
+          className="p-8 rounded-2xl bg-white dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20"
+        >
+          <h3 className="font-display text-2xl font-bold mb-6 text-brand-dark dark:text-white">
+            Off-the-Shelf Software
+          </h3>
+          <div className="space-y-4">
+            {comparisonData.map((row) => (
+              <div
+                key={row.feature}
+                className="p-4 bg-gray-100 dark:bg-brand-dark rounded-lg"
+              >
+                <p className="font-semibold text-brand-dark dark:text-white">
+                  {row.feature}
+                </p>
+                <p className="flex items-start gap-2 mt-1 text-brand-light-blue dark:text-brand-gray">
+                  <FiX className="w-5 h-5 mt-1 text-red-500 flex-shrink-0" />{" "}
+                  {row.offTheShelf}
+                </p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  </section>
+);
+
+// This is a standalone component. You can replace the existing ApproachSection in your file with this.
+const ApproachSection = () => {
+  const timelineRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start end", "end end"],
+  });
+
+  const lineProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  return (
+    <section className="py-20 sm:py-28 px-6 bg-white dark:bg-brand-dark">
+      <div className="container mx-auto max-w-4xl">
+        <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.7 }}
-          className="container mx-auto max-w-3xl"
+          className="font-display text-4xl sm:text-5xl font-bold text-center mb-20 text-brand-dark dark:text-white tracking-tighter"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Build Your Custom Application?
-          </h2>
-          <p className="text-lg mb-8 opacity-80">
-            Let's discuss your unique idea and how we can turn it into a
-            powerful digital reality.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-block px-10 py-5 text-xl font-bold rounded-full shadow-lg transform hover:-translate-y-1 transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-500 text-white"
-          >
-            Get a Free Consultation
-          </Link>
-        </motion.div>
-      </section>
-    </div>
+          Our Development Blueprint
+        </motion.h2>
+
+        <div ref={timelineRef} className="relative">
+          {/* The Timeline Line */}
+          <div className="absolute left-6 w-1 h-full bg-gray-200 dark:bg-brand-dark-blue rounded-full">
+            <motion.div
+              className="w-full h-full bg-brand-accent origin-top rounded-full"
+              style={{ scaleY: lineProgress }}
+            />
+          </div>
+
+          {/* Timeline Items */}
+          <div className="space-y-16">
+            {approachData.map((step, i) => (
+              <TimelineItem key={i} step={step} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
+
+// Sub-component for each step in the timeline for cleaner code
+const TimelineItem = ({ step }) => {
+  const { icon: Icon, title, description } = step;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.4 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="relative pl-20"
+    >
+      {/* Node on the timeline */}
+      <div className="absolute left-6 top-1 w-12 h-12 -translate-x-1/2 flex items-center justify-center rounded-full bg-white dark:bg-brand-dark border-4 border-gray-200 dark:border-brand-dark-blue">
+        <Icon className="text-2xl text-brand-accent" />
+      </div>
+
+      {/* Animated SVG Connector */}
+      <div className="absolute top-7 left-12 h-1 w-8">
+        <svg width="100%" height="100%" viewBox="0 0 32 1">
+          <motion.line
+            x1="0"
+            y1="0.5"
+            x2="32"
+            y2="0.5"
+            stroke="var(--brand-accent)"
+            strokeWidth="1"
+            initial={{ pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          />
+        </svg>
+      </div>
+
+      {/* Content Card */}
+      <div className="p-6 rounded-2xl bg-gray-50 dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20">
+        <h3 className="font-display text-2xl font-bold text-brand-dark dark:text-white mb-2">
+          {title}
+        </h3>
+        <p className="text-base text-brand-light-blue dark:text-brand-gray">
+          {description}
+        </p>
+      </div>
+    </motion.div>
+  );
+};
+const FinalCta = () => (
+  <section className="py-20 sm:py-28 px-6 bg-gray-50 dark:bg-black">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.7 }}
+      className="container mx-auto max-w-3xl text-center"
+    >
+      <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter mb-6">
+        Ready to Build Your Custom Application?
+      </h2>
+      <p className="text-lg text-brand-light-blue dark:text-brand-gray mb-8">
+        Let's discuss your unique idea and how we can turn it into a powerful
+        digital reality.
+      </p>
+      <Link
+        to="/contact"
+        className="group relative inline-flex items-center justify-center gap-2 px-10 py-5 text-xl font-bold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
+      >
+        <motion.span
+          className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
+          initial={{ x: "-150%" }}
+          whileHover={{ x: "150%" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        />
+        <span className="relative">Get a Free Consultation</span>
+      </Link>
+    </motion.div>
+  </section>
+);
 
 export default CustomWebApplications;

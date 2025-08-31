@@ -1,147 +1,136 @@
 // client/src/components/Home/FeaturedProjects.jsx
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
-import { projectsData } from "../../data/projectsData.js"; // Ensure you have this data file
+import { projectsData } from "../../data/projectsData.js"; // Make sure this data file exists and is populated
 
-// Assuming you want to feature the first 2-3 projects
-const featuredProjects = projectsData.slice(0, 2);
-
-// Reusable Project Card Component for a cleaner structure
-const ProjectCard = ({ project }) => {
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.7, ease: "easeOut" },
-        },
-      }}
-      whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      className="group block"
-    >
-      <Link to="/portfolio">
-        <div className="bg-white dark:bg-brand-dark-blue rounded-2xl overflow-hidden border border-gray-200 dark:border-brand-light-blue/20 transition-shadow duration-300 shadow-sm hover:shadow-2xl">
-          <div className="overflow-hidden">
-            <img
-              src={project.imageUrl}
-              alt={project.title}
-              className="w-full h-72 object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
-            />
-          </div>
-          <div className="p-6">
-            <h3 className="font-display text-xl font-bold text-brand-dark dark:text-white mb-2">
-              {project.title}
-            </h3>
-            <p className="text-brand-light-blue dark:text-brand-gray text-sm mb-4">
-              {project.description}{" "}
-              {/* --- CHANGE: Added project description --- */}
-            </p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {/* --- CHANGE: Added technology tags --- */}
-              {project.technologies.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-3 py-1 text-xs font-medium text-brand-light-blue dark:text-brand-gray bg-gray-100 dark:bg-brand-dark rounded-full"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-            <div className="inline-flex items-center gap-2 font-semibold text-brand-accent transition-colors duration-300">
-              <span>View Case Study</span>
-              <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-};
+// We'll feature the first 3 projects for a better interaction
+const featuredProjects = projectsData.slice(0, 3);
 
 const FeaturedProjects = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.1 },
-    },
-  };
+  // State to track the project currently being hovered or viewed
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    // --- CHANGE: Seamless background for integration ---
     <section className="bg-white dark:bg-brand-dark py-20 sm:py-28">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        className="container mx-auto px-6"
-      >
-        {/* --- CHANGE: Modern split layout for the header --- */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            className="max-w-xl text-center md:text-left"
-          >
-            <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-              Crafted with Precision.
-            </h2>
-            <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
-              A glimpse into the solutions we've engineered for our valued
-              partners.
-            </p>
-          </motion.div>
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            className="hidden md:block"
-          >
-            <Link
-              to="/portfolio"
-              className="group inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-brand-dark dark:text-white hover:bg-gray-200 dark:hover:bg-brand-dark-blue rounded-full transition-colors duration-300"
-            >
-              <span>View All Work</span>
-              <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* --- CHANGE: Grid now uses the redesigned ProjectCard component --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-
-        {/* --- CHANGE: Centered CTA for mobile view --- */}
+      <div className="container mx-auto px-6">
+        {/* Section Header */}
         <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0 },
-          }}
-          className="text-center md:hidden mt-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl text-center mx-auto mb-16"
+        >
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
+            Crafted with Precision
+          </h2>
+          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
+            A glimpse into the solutions we've engineered for our valued
+            partners.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Left Column: Interactive Project List */}
+          <div className="flex flex-col gap-4">
+            {featuredProjects.map((project, index) => (
+              <ProjectListItem
+                key={project.id}
+                project={project}
+                isActive={activeIndex === index}
+                onMouseEnter={() => setActiveIndex(index)}
+              />
+            ))}
+          </div>
+
+          {/* Right Column: Sticky Image Display */}
+          <div className="hidden lg:block lg:sticky top-32">
+            <div className="relative w-full h-[450px] rounded-2xl overflow-hidden border border-gray-200 dark:border-brand-light-blue/20">
+              <AnimatePresence>
+                {/* The image corresponding to the activeIndex is rendered here */}
+                <motion.img
+                  key={featuredProjects[activeIndex].id}
+                  src={featuredProjects[activeIndex].imageUrl}
+                  alt={featuredProjects[activeIndex].title}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+
+        {/* Centered CTA for all screen sizes */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          className="text-center mt-16"
         >
           <Link
             to="/portfolio"
-            className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 font-semibold text-brand-dark dark:text-white bg-gray-100 dark:bg-brand-dark-blue rounded-full transition-colors duration-300"
+            className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 font-semibold text-brand-dark bg-gray-100 hover:bg-gray-200 dark:text-white dark:bg-brand-dark-blue dark:hover:bg-opacity-70 rounded-full transition-colors duration-300"
           >
             <span>View All Work</span>
             <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };
+
+// A dedicated component for the list items for cleaner code
+const ProjectListItem = ({ project, isActive, onMouseEnter }) => (
+  <div
+    onMouseEnter={onMouseEnter}
+    className="relative p-6 rounded-2xl cursor-pointer transition-colors duration-300
+               bg-transparent hover:bg-gray-50 dark:hover:bg-brand-dark-blue/30"
+  >
+    {isActive && (
+      <motion.div
+        layoutId="active-project-indicator"
+        className="absolute inset-0 bg-white dark:bg-brand-dark-blue rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 shadow-lg"
+        transition={{ duration: 0.5, type: "spring" }}
+      />
+    )}
+    <div className="relative z-10">
+      <h3 className="font-display text-2xl font-bold text-brand-dark dark:text-white mb-3">
+        {project.title}
+      </h3>
+      <p className="text-brand-light-blue dark:text-brand-gray mb-4">
+        {project.description}
+      </p>
+      <div className="flex flex-wrap gap-2 mb-4">
+        {project.technologies.map((tech) => (
+          <span
+            key={tech}
+            className={`px-3 py-1 text-xs font-medium rounded-full
+                       ${
+                         isActive
+                           ? "bg-gray-200 dark:bg-brand-dark"
+                           : "bg-gray-100 dark:bg-brand-dark-blue/50"
+                       }`}
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+      <Link
+        to={`/portfolio/${project.id}`} // Link to a specific project page
+        className="group inline-flex items-center gap-2 font-semibold text-brand-accent"
+      >
+        <span>View Case Study</span>
+        <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+      </Link>
+    </div>
+  </div>
+);
 
 export default FeaturedProjects;

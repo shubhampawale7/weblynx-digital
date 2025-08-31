@@ -1,7 +1,6 @@
 // client/src/components/common/AngledPraiseBanner.jsx
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { useTheme } from "../../context/ThemeContext";
 import {
   FiLayers,
   FiUsers,
@@ -10,7 +9,6 @@ import {
   FiBarChart2,
 } from "react-icons/fi";
 
-// UPDATED: Content is now focused on company values and philosophy
 const principles = [
   { text: "Pixel-Perfect Design", Icon: FiLayers },
   { text: "User-Centric Philosophy", Icon: FiUsers },
@@ -20,78 +18,42 @@ const principles = [
 ];
 
 const AngledPraiseBanner = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-  const [isHovered, setIsHovered] = useState(false);
-
-  // The content is duplicated for a seamless loop
   const marqueeContent = [...principles, ...principles];
 
-  const animation = {
-    x: ["0%", "-50%"],
-    transition: { ease: "linear", duration: 35, repeat: Infinity },
-  };
-
   return (
-    <section
-      className="relative h-48 md:h-64 w-full overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Animated Wave Layers */}
-      <motion.div
-        className="absolute inset-0 z-0"
-        animate={{ y: ["-5%", "5%", "-5%"] }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          repeatType: "mirror",
-          ease: "easeInOut",
-        }}
-      >
-        <div
-          className={`absolute -bottom-1/2 w-[200%] h-full rounded-[100%] ${
-            isDark ? "bg-gray-900" : "bg-blue-50"
-          }`}
-        />
-      </motion.div>
-      <motion.div
-        className="absolute inset-0 z-0"
-        animate={{ y: ["5%", "-5%", "5%"], x: ["-5%", "5%", "-5%"] }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          repeatType: "mirror",
-          ease: "easeInOut",
-        }}
-      >
-        <div
-          className={`absolute -bottom-1/2 w-[200%] h-full rounded-[100%] ${
-            isDark ? "bg-purple-900/20" : "bg-blue-100/50"
-          }`}
-        />
-      </motion.div>
+    // The outer section is now simpler
+    <section className="bg-brand-dark w-full overflow-hidden group">
+      {/* The inner container is no longer rotated or scaled */}
+      <div className="relative flex items-center h-32 md:h-40">
+        {/* Background Aurora & Grid */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <motion.div
+            className="absolute inset-0 opacity-20"
+            style={{
+              background: `radial-gradient(circle at 50% 50%, hsla(169, 100%, 50%, 0.5), transparent 70%)`,
+            }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              repeatType: "mirror",
+              ease: "easeInOut",
+            }}
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:36px_36px]"></div>
+        </div>
 
-      {/* Scrolling Content */}
-      <div className="absolute inset-0 z-10 flex items-center">
-        <motion.div
-          className="flex whitespace-nowrap"
-          initial={{ x: "0%" }}
-          // Pauses animation on hover by conditionally applying the animation
-          animate={isHovered ? {} : animation}
-        >
+        {/* Scrolling Content - now pauses on hover via CSS */}
+        <div className="absolute flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused]">
           {marqueeContent.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center text-gray-700 dark:text-gray-300 mx-10"
-            >
-              <item.Icon className="w-7 h-7 mr-4 text-purple-500 dark:text-purple-400 flex-shrink-0" />
-              <span className="text-2xl md:text-4xl font-bold tracking-tight">
+            <div key={index} className="flex items-center text-gray-300 mx-10">
+              <item.Icon className="w-8 h-8 mr-4 text-brand-accent flex-shrink-0" />
+              <span className="font-display text-2xl md:text-4xl font-bold tracking-tight text-white">
                 {item.text}
               </span>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

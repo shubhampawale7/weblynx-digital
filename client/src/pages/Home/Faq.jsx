@@ -1,8 +1,6 @@
 // client/src/components/Home/Faq.jsx
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "../../context/ThemeContext";
-import { FiChevronDown } from "react-icons/fi";
 
 const faqData = [
   {
@@ -27,35 +25,46 @@ const faqData = [
   },
 ];
 
-const AccordionItem = ({ item }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const AccordionItem = ({ item, isActive, onToggle }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.6 }}
-      className="border-b border-gray-200 dark:border-gray-800"
+      transition={{ duration: 0.6, delay: 0.2 }}
+      className="bg-white dark:bg-brand-dark-blue/30 rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 overflow-hidden"
     >
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center py-6 text-left"
+        onClick={onToggle}
+        className="w-full flex justify-between items-center p-6 text-left"
       >
-        <h3 className="text-lg font-semibold">{item.question}</h3>
-        <motion.div animate={{ rotate: isOpen ? 180 : 0 }}>
-          <FiChevronDown />
-        </motion.div>
+        <h3 className="flex-1 font-display text-lg font-semibold text-brand-dark dark:text-white">
+          {item.question}
+        </h3>
+        {/* Animated Plus/Minus Icon */}
+        <div className="relative w-4 h-4 text-brand-accent">
+          <motion.span
+            className="absolute inset-0 w-full h-0.5 bg-current"
+            animate={{ rotate: isActive ? 90 : 0, y: "1.5px" }}
+            transition={{ duration: 0.3 }}
+          />
+          <motion.span
+            className="absolute inset-0 w-full h-0.5 bg-current"
+            animate={{ rotate: isActive ? 180 : 0, y: "1.5px" }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
       </button>
       <AnimatePresence>
-        {isOpen && (
+        {isActive && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <p className="pb-6 text-gray-600 dark:text-gray-400">
+            <p className="px-6 pb-6 text-brand-light-blue dark:text-brand-gray">
               {item.answer}
             </p>
           </motion.div>
@@ -66,29 +75,38 @@ const AccordionItem = ({ item }) => {
 };
 
 const Faq = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+  // State is lifted to the parent to manage which item is open
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleToggle = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   return (
-    <section className={`py-20 sm:py-28 ${isDark ? "bg-black" : "bg-gray-50"}`}>
-      <div className="container mx-auto px-4 max-w-4xl">
+    <section className="bg-gray-50 dark:bg-black py-20 sm:py-28">
+      <div className="container mx-auto px-6 max-w-4xl">
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.7 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg md:text-xl mt-4 text-gray-600 dark:text-gray-400">
+          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
             Quick answers to some of our most common inquiries.
           </p>
         </motion.div>
         <div className="space-y-4">
-          {faqData.map((item) => (
-            <AccordionItem key={item.question} item={item} />
+          {faqData.map((item, index) => (
+            <AccordionItem
+              key={item.question}
+              item={item}
+              isActive={activeIndex === index}
+              onToggle={() => handleToggle(index)}
+            />
           ))}
         </div>
       </div>

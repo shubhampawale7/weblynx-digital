@@ -1,24 +1,28 @@
 // client/src/components/layout/Header.jsx
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext.jsx";
-import { motion, AnimatePresence } from "framer-motion";
-import { FiSun, FiMoon, FiX, FiMenu } from "react-icons/fi"; // Added FiMenu
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import { FiSun, FiMoon, FiX, FiMenu } from "react-icons/fi";
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
-  // --- Effect for scroll detection ---
   useEffect(() => {
     const handleScroll = () => setHasScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // --- Effect to lock body scroll when mobile menu is open ---
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "unset";
     return () => {
@@ -32,6 +36,7 @@ const Header = () => {
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
     { to: "/services", label: "Services" },
+    { to: "/packages", label: "Packages" },
     { to: "/portfolio", label: "Portfolio" },
     { to: "/blog", label: "Blog" },
   ];
@@ -39,7 +44,6 @@ const Header = () => {
   return (
     <>
       <header
-        // --- CHANGE: Updated styles using new brand colors and smoother transitions ---
         className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out ${
           hasScrolled
             ? "py-3 shadow-lg bg-white/80 dark:bg-brand-dark/80 backdrop-blur-xl border-b border-gray-200 dark:border-brand-light-blue/20"
@@ -47,7 +51,6 @@ const Header = () => {
         }`}
       >
         <nav className="container mx-auto flex justify-between items-center px-6">
-          {/* --- CHANGE: Logo with new display font --- */}
           <Link
             to="/"
             className="flex items-center gap-2 text-xl font-bold font-display text-brand-dark dark:text-white"
@@ -57,10 +60,9 @@ const Header = () => {
               alt="Weblynx Infotech Logo"
               className="h-16 rounded-full"
             />
-            <span>Weblynx Infotech</span>
+            <span className="hidden sm:inline">Weblynx Infotech</span>
           </Link>
 
-          {/* --- CHANGE: Desktop Navigation with better spacing and hover effects --- */}
           <ul className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <li key={link.to}>
@@ -100,20 +102,20 @@ const Header = () => {
             ))}
           </ul>
 
-          {/* --- CHANGE: Prominent CTA button and Theme Toggle on desktop --- */}
           <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Magnetic>
+              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            </Magnetic>
+            <Magnetic>
               <Link
                 to="/contact"
-                className="px-5 py-2.5 text-sm font-semibold text-brand-dark bg-brand-accent hover:bg-brand-accent-hover rounded-full shadow-lg transition-all duration-300"
+                className="block px-5 py-2.5 text-sm font-semibold text-brand-dark bg-brand-accent hover:bg-brand-accent-hover rounded-full shadow-lg transition-all duration-300"
               >
                 Get a Quote
               </Link>
-            </motion.div>
+            </Magnetic>
           </div>
 
-          {/* --- Mobile Menu Toggle --- */}
           <div className="md:hidden flex items-center gap-3">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <button
@@ -126,69 +128,81 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* --- Mobile Menu Overlay --- */}
       <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="md:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-            onClick={closeMenu}
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.nav
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="md:hidden fixed top-0 right-0 z-50 h-full w-full max-w-xs bg-white dark:bg-brand-dark shadow-2xl"
-          >
-            <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-brand-light-blue/20">
-              <span className="font-display font-bold text-lg text-brand-dark dark:text-white">
-                Menu
-              </span>
-              <button onClick={closeMenu} aria-label="Close menu">
-                <FiX className="w-6 h-6 text-brand-dark dark:text-white" />
-              </button>
-            </div>
-            <ul className="flex flex-col p-6 gap-5">
-              {[...navLinks, { to: "/contact", label: "Contact Us" }].map(
-                (link, i) => (
-                  <motion.li
-                    key={link.to}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + i * 0.05 }}
-                  >
-                    <NavLink
-                      to={link.to}
-                      onClick={closeMenu}
-                      className={({ isActive }) =>
-                        `block text-lg font-medium py-2 ${
-                          isActive
-                            ? "text-brand-accent"
-                            : "text-brand-dark dark:text-brand-bg"
-                        }`
-                      }
-                    >
-                      {link.label}
-                    </NavLink>
-                  </motion.li>
-                )
-              )}
-            </ul>
-          </motion.nav>
-        )}
+        {isMenuOpen && <MobileMenu navLinks={navLinks} closeMenu={closeMenu} />}
       </AnimatePresence>
     </>
   );
 };
 
+// --- Full Screen Mobile Menu ---
+const mobileMenuVariants = {
+  open: {
+    y: "0%",
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 25,
+      when: "beforeChildren",
+      staggerChildren: 0.05,
+    },
+  },
+  closed: {
+    y: "-100%",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 30,
+      when: "afterChildren",
+      staggerChildren: 0.05,
+      staggerDirection: -1,
+    },
+  },
+};
+
+const mobileLinkVariants = {
+  open: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 200 } },
+  closed: { y: 20, opacity: 0 },
+};
+
+const MobileMenu = ({ navLinks, closeMenu }) => (
+  <motion.div
+    variants={mobileMenuVariants}
+    initial="closed"
+    animate="open"
+    exit="closed"
+    className="md:hidden fixed inset-0 z-50 bg-white dark:bg-brand-dark flex flex-col items-center justify-center"
+  >
+    <button
+      onClick={closeMenu}
+      aria-label="Close menu"
+      className="absolute top-6 right-6"
+    >
+      <FiX className="w-8 h-8 text-brand-dark dark:text-white" />
+    </button>
+    <ul className="flex flex-col items-center gap-8">
+      {[...navLinks, { to: "/contact", label: "Get a Quote" }].map((link) => (
+        <motion.li key={link.to} variants={mobileLinkVariants}>
+          <NavLink
+            to={link.to}
+            onClick={closeMenu}
+            className={({ isActive }) =>
+              `font-display text-4xl font-bold transition-colors ${
+                isActive
+                  ? "text-brand-accent"
+                  : "text-brand-dark dark:text-white"
+              }`
+            }
+          >
+            {link.label}
+          </NavLink>
+        </motion.li>
+      ))}
+    </ul>
+  </motion.div>
+);
+
+// --- Theme Toggle Button ---
 const ThemeToggle = ({ theme, toggleTheme }) => (
   <motion.button
     onClick={toggleTheme}
@@ -213,5 +227,36 @@ const ThemeToggle = ({ theme, toggleTheme }) => (
     </AnimatePresence>
   </motion.button>
 );
+
+// --- Magnetic Effect Wrapper Component ---
+const Magnetic = ({ children }) => {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const mouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { width, height, left, top } = ref.current.getBoundingClientRect();
+    const x = clientX - (left + width / 2);
+    const y = clientY - (top + height / 2);
+    setPosition({ x, y });
+  };
+
+  const mouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  const { x, y } = position;
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={mouseMove}
+      onMouseLeave={mouseLeave}
+      animate={{ x, y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 export default Header;

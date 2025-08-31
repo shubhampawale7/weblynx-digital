@@ -1,7 +1,12 @@
 // client/src/pages/Services/Services.jsx
-import React, { useState, useEffect } from "react";
-import { useTheme } from "../../context/ThemeContext.jsx";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useSpring,
+  useTransform,
+  useMotionValue,
+} from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import Seo from "../../components/common/Seo.jsx";
 import {
@@ -14,18 +19,22 @@ import {
   FiSettings,
   FiArrowRight,
   FiCheckCircle,
+  FiRefreshCw,
+  FiZap,
+  FiShoppingCart,
+  FiClock,
+  FiCalendar,
+  FiDollarSign,
+  FiGift,
 } from "react-icons/fi";
-// Removed unused ScrollingBanner import
 
-// Note: I've added a 'keyAspects' array to your data for a richer display.
 const serviceOverviewData = [
   {
     id: "custom-web-applications",
-    title: "Custom Web Applications",
+    title: "Custom Web Apps",
     Icon: FiCode,
     description:
       "Bespoke web solutions tailored to your unique business needs, built for scalability, security, and high performance.",
-    color: "#3b82f6",
     keyAspects: [
       "Scalable Architecture",
       "Secure by Design",
@@ -38,7 +47,6 @@ const serviceOverviewData = [
     Icon: FiSmartphone,
     description:
       "Crafting intuitive and engaging native mobile applications for both iOS & Android ecosystems to connect with your users anywhere.",
-    color: "#f97316",
     keyAspects: [
       "Native iOS & Android",
       "User-Centric UI/UX",
@@ -51,7 +59,6 @@ const serviceOverviewData = [
     Icon: FiPenTool,
     description:
       "Flexible and user-friendly WordPress websites, from custom theme development to robust e-commerce solutions.",
-    color: "#0ea5e9",
     keyAspects: ["Custom Themes", "Plugin Development", "WooCommerce Experts"],
   },
   {
@@ -60,7 +67,6 @@ const serviceOverviewData = [
     Icon: FiTrendingUp,
     description:
       "Boost your online visibility and drive organic traffic with our data-driven, comprehensive optimization strategies.",
-    color: "#22c55e",
     keyAspects: ["On-Page & Off-Page SEO", "Content Strategy", "PPC Campaigns"],
   },
   {
@@ -69,7 +75,6 @@ const serviceOverviewData = [
     Icon: FiLink,
     description:
       "Seamlessly connect your applications with third-party services, automating workflows and enhancing functionality.",
-    color: "#ec4899",
     keyAspects: [
       "Third-Party APIs",
       "Custom API Development",
@@ -82,7 +87,6 @@ const serviceOverviewData = [
     Icon: FiLayers,
     description:
       "End-to-end web development covering both frontend and backend for cohesive, powerful, and seamless digital experiences.",
-    color: "#8b5cf6",
     keyAspects: [
       "Frontend & Backend",
       "Database Management",
@@ -95,283 +99,204 @@ const serviceOverviewData = [
     Icon: FiSettings,
     description:
       "Proactive maintenance, continuous monitoring, and dedicated security to ensure your digital assets run smoothly and securely.",
-    color: "#64748b",
     keyAspects: ["24/7 Monitoring", "Security Audits", "Regular Updates"],
   },
 ];
 
-// Custom hook to check window size
-const useWindowSize = () => {
-  const [size, setSize] = useState([0, 0]);
-  useEffect(() => {
-    function updateSize() {
-      setSize([window.innerWidth, window.innerHeight]);
-    }
-    window.addEventListener("resize", updateSize);
-    updateSize();
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-  return size;
-};
-
 const Services = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-  const [width] = useWindowSize();
-  const isMobile = width < 1024;
-
   return (
-    <div
-      className={`min-h-screen overflow-x-hidden ${
-        isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
-      } transition-colors duration-500`}
-    >
+    <>
       <Seo
         title="Our Digital Services | Weblynx Infotech"
         description="Explore our comprehensive digital services: custom web apps, mobile development, WordPress, SEO, API integration, and more."
       />
-      <header className="py-20 text-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="container mx-auto px-4"
-        >
-          <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-            OUR DIGITAL ARSENAL
-          </h1>
-          <p className="text-lg md:text-xl mt-4 max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
-            A full spectrum of elite services, engineered to elevate your brand
-            and empower your vision.
-          </p>
-        </motion.div>
-      </header>
-
-      <main className="container mx-auto px-4 pb-20 relative z-10">
-        {isMobile ? (
-          <MobileView isDark={isDark} />
-        ) : (
-          <DesktopView isDark={isDark} />
-        )}
-      </main>
-
-      {/* --- ADDED: The Solution Finder Quiz at the bottom of the page --- */}
-      <SolutionFinderQuiz />
-    </div>
-  );
-};
-
-// --- Polished Mobile View ---
-const MobileView = ({ isDark }) => {
-  const navigate = useNavigate();
-  return (
-    <div className="space-y-6">
-      {serviceOverviewData.map((service, index) => (
-        <motion.div
-          key={service.id}
-          initial={{ opacity: 0, y: 50, scale: 0.95 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-          className={`rounded-2xl border p-6 transition-all duration-300 group ${
-            isDark
-              ? "border-gray-800 bg-gray-900/50 hover:border-gray-700"
-              : "border-gray-200 bg-white/50 hover:border-gray-300"
-          }`}
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div
-              className="p-3 rounded-lg"
-              style={{ backgroundColor: `${service.color}20` }}
-            >
-              <service.Icon
-                className="w-6 h-6"
-                style={{ color: service.color }}
-              />
-            </div>
-            <h2 className="text-xl font-bold">{service.title}</h2>
-          </div>
-          <p className="text-gray-600 dark:text-gray-400 mb-5 text-sm leading-relaxed">
-            {service.description}
-          </p>
-          <div className="space-y-2 mb-6">
-            {service.keyAspects.map((aspect) => (
-              <div
-                key={aspect}
-                className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400"
-              >
-                <FiCheckCircle
-                  className="w-4 h-4"
-                  style={{ color: service.color }}
-                />
-                <span>{aspect}</span>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={() => navigate(`/services/${service.id}`)}
-            className="font-semibold text-sm inline-flex items-center gap-2 group/button"
-            style={{ color: service.color }}
+      <main className="pt-[104px] md:pt-24 bg-white dark:bg-brand-dark">
+        <header className="py-20 text-center relative z-10 container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Learn More
-            <FiArrowRight className="transition-transform group-hover/button:translate-x-1" />
-          </button>
-        </motion.div>
-      ))}
-    </div>
+            <h1 className="font-display text-5xl md:text-7xl font-bold text-brand-dark dark:text-white tracking-tighter">
+              Our Digital Arsenal
+            </h1>
+            <p className="text-lg md:text-xl mt-4 max-w-3xl mx-auto text-brand-light-blue dark:text-brand-gray">
+              A full spectrum of elite services, engineered to elevate your
+              brand and empower your vision.
+            </p>
+          </motion.div>
+        </header>
+
+        <ServiceShowcase />
+        <SolutionFinderQuiz />
+      </main>
+    </>
   );
 };
 
-// --- Redesigned Desktop View ---
-const DesktopView = ({ isDark }) => {
+const ServiceShowcase = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeService = serviceOverviewData[activeIndex];
 
   return (
-    <div className="relative min-h-[550px]">
-      <BackgroundBlobs color={activeService.color} />
-      <div className="grid grid-cols-12 gap-8 relative z-10">
+    <section className="container mx-auto px-6 pb-20 sm:pb-28">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-          className="col-span-4"
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="lg:col-span-4 space-y-3"
         >
-          <ServiceSelector
-            activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}
-            isDark={isDark}
-          />
+          {serviceOverviewData.map((service, index) => (
+            <ServiceSelectorItem
+              key={service.id}
+              service={service}
+              isActive={activeIndex === index}
+              onHover={() => setActiveIndex(index)}
+            />
+          ))}
         </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
-          className="col-span-8"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+          className="lg:col-span-8 lg:sticky top-32"
         >
-          <ServiceDisplay service={activeService} isDark={isDark} />
+          <ServiceDisplay service={activeService} />
         </motion.div>
       </div>
-    </div>
+    </section>
   );
 };
 
-// --- Helper Components for Desktop View ---
-const ServiceSelector = ({ activeIndex, setActiveIndex, isDark }) => {
+const ServiceSelectorItem = ({ service, isActive, onHover }) => {
   const navigate = useNavigate();
-  return (
-    <div className="space-y-3">
-      {serviceOverviewData.map((service, index) => (
-        <div
-          key={service.id}
-          onMouseEnter={() => setActiveIndex(index)}
-          onClick={() => navigate(`/services/${service.id}`)}
-          className={`p-4 rounded-lg cursor-pointer transition-all duration-300 relative group ${
-            activeIndex === index
-              ? isDark
-                ? "bg-gray-800/60"
-                : "bg-white/60"
-              : isDark
-              ? "hover:bg-gray-800/40"
-              : "hover:bg-white/40"
-          }`}
-        >
-          <div className="flex items-center gap-4">
-            <motion.div
-              animate={{
-                backgroundColor: `${service.color}${
-                  activeIndex === index ? "FF" : "00"
-                }`,
-              }}
-              transition={{ duration: 0.3 }}
-              className="p-2 rounded-md"
-            >
-              <service.Icon
-                className="w-6 h-6 transition-colors"
-                style={{
-                  color: activeIndex === index ? "#FFFFFF" : service.color,
-                }}
-              />
-            </motion.div>
-            <h3
-              className={`text-lg font-semibold transition-colors ${
-                activeIndex === index
-                  ? isDark
-                    ? "text-white"
-                    : "text-gray-900"
-                  : isDark
-                  ? "text-gray-400"
-                  : "text-gray-500"
-              }`}
-            >
-              {service.title}
-            </h3>
-          </div>
-          {activeIndex === index && (
-            <motion.div
-              layoutId="activeServiceBorder"
-              className="absolute -left-1 top-0 bottom-0 w-1 rounded-full"
-              style={{ backgroundColor: service.color }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const ServiceDisplay = ({ service, isDark }) => {
-  const navigate = useNavigate();
-  const { id, Icon, title, description, color, keyAspects } = service;
   return (
     <div
-      className={`rounded-2xl p-8 h-full border ${
-        isDark
-          ? "border-gray-700/50 bg-gray-900/50"
-          : "border-gray-200/80 bg-white/50"
-      } backdrop-blur-xl shadow-lg shadow-black/5`}
+      onMouseEnter={onHover}
+      onClick={() => navigate(`/services/${service.id}`)}
+      className={`relative p-4 rounded-xl cursor-pointer transition-colors duration-300 group
+        ${
+          isActive
+            ? "bg-gray-100 dark:bg-brand-dark-blue"
+            : "hover:bg-gray-100/50 dark:hover:bg-brand-dark-blue/30"
+        }`}
     >
+      <div className="flex items-center gap-4">
+        <div
+          className={`p-2 rounded-lg transition-colors duration-300 ${
+            isActive ? "bg-brand-accent" : "bg-gray-200 dark:bg-brand-dark-blue"
+          }`}
+        >
+          <service.Icon
+            className={`w-6 h-6 transition-colors duration-300 ${
+              isActive ? "text-brand-dark" : "text-brand-accent"
+            }`}
+          />
+        </div>
+        <h3
+          className={`font-display text-lg font-semibold transition-colors duration-300 ${
+            isActive
+              ? "text-brand-dark dark:text-white"
+              : "text-brand-light-blue dark:text-brand-gray"
+          }`}
+        >
+          {service.title}
+        </h3>
+      </div>
+      {isActive && (
+        <motion.div
+          layoutId="activeServiceBorder"
+          className="absolute -left-1 top-0 bottom-0 w-1 rounded-full bg-brand-accent"
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        />
+      )}
+    </div>
+  );
+};
+
+const ServiceDisplay = ({ service }) => {
+  const navigate = useNavigate();
+  const { id, Icon, title, description, keyAspects } = service;
+  return (
+    <div className="relative p-8 h-full bg-white/80 dark:bg-brand-dark-blue/40 backdrop-blur-md rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 shadow-xl">
       <AnimatePresence mode="wait">
         <motion.div
           key={id}
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0, transition: { staggerChildren: 0.1 } }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            transition: { staggerChildren: 0.07, delayChildren: 0.1 },
+          }}
           exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
+            variants={{
+              hidden: { opacity: 0, scale: 0.8 },
+              visible: { opacity: 1, scale: 1 },
+            }}
+            initial="hidden"
+            animate="visible"
           >
-            <Icon className="w-16 h-16 mb-6" style={{ color }} />
+            <Icon className="w-16 h-16 mb-6 text-brand-accent" />
           </motion.div>
-          <motion.h2 className="text-4xl font-bold mb-3">{title}</motion.h2>
-          <motion.p className="text-base text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+          <motion.h2
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            className="font-display text-4xl font-bold text-brand-dark dark:text-white mb-3"
+          >
+            {title}
+          </motion.h2>
+          <motion.p
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            className="text-base text-brand-light-blue dark:text-brand-gray mb-6 leading-relaxed"
+          >
             {description}
           </motion.p>
-          <motion.div className="border-t border-gray-500/20 pt-5 mb-8 space-y-3">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            className="border-t border-brand-light-blue/20 pt-5 mb-8 space-y-3"
+          >
             {keyAspects.map((aspect) => (
               <div key={aspect} className="flex items-center gap-3">
-                <FiCheckCircle
-                  className="w-5 h-5 flex-shrink-0"
-                  style={{ color }}
-                />
-                <span className="font-medium text-gray-700 dark:text-gray-200">
+                <FiCheckCircle className="w-5 h-5 flex-shrink-0 text-brand-accent" />
+                <span className="font-medium text-brand-dark dark:text-white">
                   {aspect}
                 </span>
               </div>
             ))}
           </motion.div>
-          <motion.div>
-            <button
-              onClick={() => navigate(`/services/${id}`)}
-              className="px-6 py-3 rounded-lg font-bold text-lg text-white transform transition-all duration-300 hover:scale-105 shadow-lg"
-              style={{
-                background: `linear-gradient(45deg, ${color}, ${color}d0)`,
-              }}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
+            <Link
+              to={`/services/${id}`}
+              className="group relative inline-flex items-center justify-center gap-2 px-8 py-3 text-lg font-semibold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
             >
-              Explore Service
-            </button>
+              <motion.span
+                className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
+                initial={{ x: "-150%" }}
+                whileHover={{ x: "150%" }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+              />
+              <span className="relative">Explore Service</span>
+            </Link>
           </motion.div>
         </motion.div>
       </AnimatePresence>
@@ -379,73 +304,97 @@ const ServiceDisplay = ({ service, isDark }) => {
   );
 };
 
-const BackgroundBlobs = ({ color }) => (
-  <div className="absolute inset-0 overflow-hidden opacity-50 dark:opacity-40">
-    <AnimatePresence>
-      <motion.div
-        key={color}
-        initial={{ opacity: 0, scale: 0.5, x: "50%", y: "20%" }}
-        animate={{ opacity: 1, scale: 1.2, x: "40%", y: "10%" }}
-        exit={{ opacity: 0, scale: 0 }}
-        transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
-        className="absolute w-96 h-96 rounded-full"
-        style={{ backgroundColor: color, filter: "blur(150px)" }}
-      />
-      <motion.div
-        key={`${color}-2`}
-        initial={{ opacity: 0, scale: 0.5, x: "20%", y: "-20%" }}
-        animate={{ opacity: 0.7, scale: 1, x: "10%", y: "0%" }}
-        exit={{ opacity: 0, scale: 0 }}
-        transition={{ duration: 1.5, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
-        className="absolute w-80 h-80 rounded-full"
-        style={{ backgroundColor: color, filter: "blur(120px)" }}
-      />
-    </AnimatePresence>
-  </div>
-);
+// --- SOLUTION FINDER QUIZ (REDESIGNED) ---
+const questions = [
+  {
+    question: "What is the primary goal of your project?",
+    answers: [
+      {
+        text: "Launch a new business or idea",
+        key: "new_business",
+        icon: FiGift,
+      },
+      {
+        text: "Grow my existing business",
+        key: "grow_business",
+        icon: FiTrendingUp,
+      },
+      {
+        text: "Sell products or services online",
+        key: "ecommerce",
+        icon: FiShoppingCart,
+      },
+    ],
+    key: "goal",
+  },
+  {
+    question: "How quickly do you need to see results?",
+    answers: [
+      { text: "ASAP (1-3 months)", key: "fast", icon: FiZap },
+      { text: "Standard (3-6 months)", key: "medium", icon: FiClock },
+      {
+        text: "Long-term growth (6+ months)",
+        key: "long_term",
+        icon: FiCalendar,
+      },
+    ],
+    key: "speed",
+  },
+];
+const resultMapping = {
+  ecommerce: {
+    title: "E-commerce Accelerator",
+    description:
+      "Our comprehensive e-commerce package is tailored to build, optimize, and scale your online store.",
+    link: "/services/ecommerce-development",
+    buttonText: "Explore E-commerce",
+    icon: FiShoppingCart,
+  },
+  new_business_fast: {
+    title: "Startup Launchpad",
+    description:
+      "Perfect for new ventures needing a quick, impactful online presence to validate ideas and attract customers.",
+    link: "/packages",
+    buttonText: "See Packages",
+    icon: FiGift,
+  },
+  grow_business_medium: {
+    title: "Business Growth Engine",
+    description:
+      "Designed for established businesses looking to expand their market reach and enhance user engagement.",
+    link: "/services/full-stack-development",
+    buttonText: "Explore Full-Stack",
+    icon: FiTrendingUp,
+  },
+  default: {
+    title: "Custom Digital Strategy",
+    description:
+      "Based on your unique responses, we recommend a bespoke solution. Let's discuss your vision.",
+    link: "/contact",
+    buttonText: "Schedule a Consultation",
+    icon: FiZap,
+  },
+};
+const questionVariants = {
+  enter: (direction) => ({ x: direction > 0 ? "50%" : "-50%", opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (direction) => ({ x: direction < 0 ? "50%" : "-50%", opacity: 0 }),
+};
+const answerVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1 },
+};
 
-// =================================================================================
-// SOLUTION FINDER QUIZ COMPONENT
-// =================================================================================
 const SolutionFinderQuiz = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [result, setResult] = useState(null);
+  const [resultKey, setResultKey] = useState(null);
 
-  const questions = [
-    {
-      question: "What is the primary goal of your project?",
-      answers: [
-        "Launch a new business or idea",
-        "Grow my existing business",
-        "Sell products online",
-      ],
-      key: "goal",
-    },
-    {
-      question: "What is your estimated budget?",
-      answers: ["Under ₹50,000", "₹50,000 - ₹2,00,000", "Over ₹2,00,000"],
-      key: "budget",
-    },
-  ];
-  const variants = {
-    enter: (direction = 1) => ({
-      x: direction > 0 ? "100%" : "-100%",
-      opacity: 0,
-    }),
-    center: { x: 0, opacity: 1 },
-    exit: (direction = 1) => ({
-      x: direction < 0 ? "100%" : "-100%",
-      opacity: 0,
-    }),
-  };
-
-  const handleAnswer = (answer) => {
+  const handleAnswer = (answerKey) => {
     const currentQuestion = questions[step];
-    const newAnswers = { ...answers, [currentQuestion.key]: answer };
+    const newAnswers = { ...answers, [currentQuestion.key]: answerKey };
     setAnswers(newAnswers);
+
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
@@ -454,114 +403,168 @@ const SolutionFinderQuiz = () => {
   };
 
   const calculateResult = (finalAnswers) => {
-    const { goal, budget } = finalAnswers;
-    if (goal === "Sell products online") setResult("E-commerce Powerhouse");
-    else if (
-      goal === "Launch a new business or idea" &&
-      budget === "Under ₹50,000"
-    )
-      setResult("Startup Launchpad");
-    else setResult("Business Growth Engine");
+    const { goal, speed } = finalAnswers;
+    let key = "default";
+    if (goal === "ecommerce") key = "ecommerce";
+    else if (goal === "new_business" && speed === "fast")
+      key = "new_business_fast";
+    else if (goal === "grow_business" && speed === "medium")
+      key = "grow_business_medium";
+
+    setResultKey(key);
     setStep(step + 1);
   };
 
-  const progress = (step / questions.length) * 100;
+  const handleReset = () => {
+    setStep(0);
+    setAnswers({});
+    setResultKey(null);
+  };
+
+  const currentProgress = step / questions.length;
+  const currentResult = resultKey
+    ? resultMapping[resultKey] || resultMapping.default
+    : null;
+  const ResultIcon = currentResult?.icon;
 
   return (
-    <section
-      className={`py-20 sm:py-24 ${isDark ? "bg-gray-900" : "bg-gray-50"}`}
-    >
-      <div className="container mx-auto px-4 max-w-4xl text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Find Your Perfect Solution
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Answer two quick questions, and we'll recommend the best service
-            package for your needs.
-          </p>
-        </motion.div>
-
-        <div
-          className={`mt-12 w-full max-w-2xl mx-auto rounded-2xl p-8 shadow-2xl relative overflow-hidden h-96 flex flex-col justify-center items-center ${
-            isDark ? "bg-gray-900" : "bg-white"
-          }`}
-        >
-          <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 absolute top-0 left-0">
+    <section className="bg-gray-50 dark:bg-black py-20 sm:py-28 relative min-h-[90vh] flex flex-col justify-center items-center overflow-hidden">
+      <div className="absolute inset-0 z-0 opacity-10 dark:opacity-20">
+        <JourneyPath progress={currentProgress} />
+      </div>
+      <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
+        <AnimatePresence mode="wait">
+          {step < questions.length && (
             <motion.div
-              className="bg-purple-600 h-2 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-          </div>
+              key={step}
+              variants={questionVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="w-full"
+            >
+              <motion.h2
+                variants={answerVariants}
+                className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter mb-12"
+              >
+                {questions[step].question}
+              </motion.h2>
+              <motion.div
+                variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+                className="grid grid-cols-1 md:grid-cols-3 gap-6"
+              >
+                {questions[step].answers.map((answer) => (
+                  <AnswerCard
+                    key={answer.key}
+                    answer={answer}
+                    onAnswer={() => handleAnswer(answer.key)}
+                  />
+                ))}
+              </motion.div>
+            </motion.div>
+          )}
 
-          <AnimatePresence mode="wait">
-            {step < questions.length && (
-              <motion.div
-                key={step}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                custom={1}
-                transition={{ duration: 0.3 }}
-                className="w-full"
-              >
-                <h3 className="text-2xl font-semibold mb-8">
-                  {questions[step].question}
-                </h3>
-                <div className="grid grid-cols-1 gap-4">
-                  {questions[step].answers.map((answer) => (
-                    <button
-                      key={answer}
-                      onClick={() => handleAnswer(answer)}
-                      className={`w-full p-4 rounded-lg text-lg font-medium border-2 transition-all ${
-                        isDark
-                          ? "border-gray-700 hover:bg-purple-900/50 hover:border-purple-500"
-                          : "border-gray-200 hover:bg-purple-50 hover:border-purple-300"
-                      }`}
-                    >
-                      {answer}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-            {result && (
-              <motion.div
-                key="result"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-center flex flex-col justify-center items-center h-full"
-              >
-                <p className="text-lg text-gray-500 dark:text-gray-400">
-                  Our Recommendation For You:
-                </p>
-                <h3 className="text-4xl font-bold my-4 text-purple-600 dark:text-purple-400">
-                  {result}
-                </h3>
-                <p className="mb-8">
-                  This package is designed to meet your specific goals.
-                </p>
+          {currentResult && (
+            <motion.div
+              key="result"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="text-center flex flex-col justify-center items-center"
+            >
+              <ResultIcon className="w-16 h-16 text-brand-accent mb-6" />
+              <p className="text-lg text-brand-light-blue dark:text-brand-gray">
+                Our Recommendation:
+              </p>
+              <h3 className="font-display text-5xl md:text-6xl font-bold my-4 text-brand-dark dark:text-white leading-tight">
+                {currentResult.title}
+              </h3>
+              <p className="mb-8 text-lg text-brand-light-blue dark:text-brand-gray max-w-md mx-auto">
+                {currentResult.description}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Link
-                  to="/packages"
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-transform hover:-translate-y-0.5"
+                  to={currentResult.link}
+                  className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
                 >
-                  Learn More <FiArrowRight />
+                  <motion.span
+                    className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
+                    initial={{ x: "-150%" }}
+                    whileHover={{ x: "150%" }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                  />
+                  <span className="relative">{currentResult.buttonText}</span>
+                  <FiArrowRight className="relative" />
                 </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+                <button
+                  onClick={handleReset}
+                  className="group inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-brand-light-blue dark:text-brand-gray hover:bg-gray-100 dark:hover:bg-brand-dark-blue/50 rounded-full transition-colors duration-300"
+                >
+                  <FiRefreshCw className="transition-transform duration-300 group-hover:rotate-180" />
+                  <span>Start Over</span>
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
+  );
+};
+
+const AnswerCard = ({ answer, onAnswer }) => {
+  const { icon: Icon, text } = answer;
+  return (
+    <motion.button
+      onClick={onAnswer}
+      variants={answerVariants}
+      whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
+      className="group relative h-full p-6 text-center rounded-2xl border transition-all duration-300
+                       bg-white/80 dark:bg-brand-dark-blue/30 backdrop-blur-md
+                       border-gray-200 dark:border-brand-light-blue/20
+                       hover:border-brand-accent hover:shadow-2xl hover:shadow-brand-accent/10"
+    >
+      <Icon className="w-10 h-10 mx-auto mb-4 text-brand-accent" />
+      <span className="font-display text-xl font-semibold text-brand-dark dark:text-white">
+        {text}
+      </span>
+    </motion.button>
+  );
+};
+
+const JourneyPath = ({ progress }) => {
+  const ref = useRef(null);
+  const motionProgress = useMotionValue(progress);
+  useEffect(() => {
+    motionProgress.set(progress);
+  }, [progress, motionProgress]);
+
+  const pathLength = useSpring(useTransform(motionProgress, [0, 1], [0, 1]), {
+    stiffness: 400,
+    damping: 90,
+  });
+  return (
+    <svg
+      ref={ref}
+      className="w-full h-full"
+      viewBox="0 0 500 500"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <motion.path
+        d="M 50 250 C 150 50, 350 450, 450 250"
+        fill="none"
+        strokeWidth="2"
+        className="stroke-gray-200 dark:stroke-brand-dark-blue"
+      />
+      <motion.path
+        d="M 50 250 C 150 50, 350 450, 450 250"
+        fill="none"
+        strokeWidth="2"
+        className="stroke-brand-accent"
+        style={{ pathLength }}
+      />
+    </svg>
   );
 };
 

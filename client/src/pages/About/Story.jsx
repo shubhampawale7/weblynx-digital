@@ -1,175 +1,139 @@
 // client/src/components/About/Story.jsx
-import React, { useRef } from "react";
-import { useTheme } from "../../context/ThemeContext.jsx";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React from "react";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import Seo from "../../components/common/Seo.jsx";
-import { FiArrowDown } from "react-icons/fi";
+import { FiZap, FiTrendingUp, FiAward } from "react-icons/fi";
 
+// Data is now enriched with icons for the cards
 const storyPoints = [
   {
+    Icon: FiZap,
     title: "The Spark of an Idea",
     description:
-      "Our journey began with a shared passion for the MERN stack and a vision to bridge the gap between complex digital needs and seamless, elegant user experiences.",
+      "Our journey began with a passion for the MERN stack and a vision to bridge the gap between complex digital needs and seamless user experiences.",
   },
   {
+    Icon: FiTrendingUp,
     title: "Growth & Adaptation",
     description:
-      "Driven by the belief that every business deserves a powerful online presence, we've evolved into a dedicated agency, constantly learning and adapting in the ever-changing tech landscape.",
+      "Driven by the belief that every business deserves a powerful online presence, we evolved into a dedicated agency, constantly adapting in the ever-changing tech landscape.",
   },
   {
+    Icon: FiAward,
     title: "Our Commitment Today",
     description:
-      "Today, Weblynx Infotech is a testament to innovation and a client-first approach. We craft digital solutions that perform exceptionally, helping our clients achieve their goals.",
+      "Weblynx Infotech is a testament to innovation and a client-first approach. We craft digital solutions that perform exceptionally, helping our clients achieve their goals.",
   },
 ];
 
 const Story = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"],
-  });
-
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["0%", `-${((storyPoints.length - 1) * 100) / storyPoints.length}%`]
-  );
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-
-  // This is a simplified check for mobile that doesn't require a resize listener.
-  // For a full redesign, the useWindowSize hook is more robust.
-  const isLikelyMobile =
-    typeof window !== "undefined" && window.innerWidth < 768;
-
-  if (isLikelyMobile) {
-    return (
-      <section
-        className={`py-20 sm:py-24 ${
-          isDark ? "bg-gray-950 text-white" : "bg-white text-gray-800"
-        }`}
-      >
-        <Seo
-          title="Our Story - The Journey of Weblynx Infotech"
-          description="Discover the inspiring story behind Weblynx Infotech..."
-        />
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600 dark:from-purple-400 dark:to-cyan-400">
-            Our Story
-          </h2>
-          <div className="space-y-16">
-            {storyPoints.map((point, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="text-center"
-              >
-                <h3 className="text-2xl font-bold mb-3">{point.title}</h3>
-                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-                  {point.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    // TIMING CHANGE: Increased height from 300vh to 400vh to make the scroll longer.
-    <section ref={targetRef} className="relative h-[400vh]">
+    <section className="bg-white dark:bg-brand-dark py-20 sm:py-28">
       <Seo
         title="Our Story - The Journey of Weblynx Infotech"
         description="Discover the inspiring story behind Weblynx Infotech, our passion for digital innovation, and our journey to becoming a leading web development agency focused on client success."
-        keywords="Weblynx Infotech history, company story, digital agency journey, web development founding, our beginnings, innovation, collaboration"
-        ogTitle="The Weblynx Infotech Story: Passionate About Digital Excellence"
-        ogDescription="Learn about the values and vision that shaped Weblynx Infotech into a dedicated agency delivering cutting-edge digital solutions."
-        ogUrl="https://www.weblynxinfotech.com/about"
-        canonical="https://www.weblynxinfotech.com/about"
       />
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <motion.div style={{ scale }} className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/40" />
-          <img
-            src="/about-us-story.jpg"
-            alt="Weblynx Infotech team collaborating"
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
-        <div className="absolute top-16 md:top-24 left-1/2 -translate-x-1/2 z-20 text-center">
-          <h2
-            className="text-4xl md:text-5xl font-bold
-                       text-transparent bg-clip-text bg-gradient-to-r 
-                       from-blue-500 to-purple-600
-                       dark:from-purple-400 dark:to-cyan-400"
-          >
-            OUR STORY
-          </h2>
-        </div>
+      <div className="container mx-auto px-6">
         <motion.div
-          style={{ x }}
-          className="absolute top-0 left-0 flex h-full w-[300vw]"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-16 max-w-3xl mx-auto"
         >
-          {storyPoints.map((point, index) => (
-            <StorySlide
-              key={index}
-              index={index}
-              title={point.title}
-              description={point.description}
-              progress={scrollYProgress}
-            />
+          <h1 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
+            Our Journey of Innovation
+          </h1>
+          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
+            From a simple idea to a powerhouse of digital engineering, discover
+            the story behind our passion.
+          </p>
+        </motion.div>
+
+        {/* The Bento Box Grid */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            visible: { transition: { staggerChildren: 0.15 } },
+          }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+          {storyPoints.map((point) => (
+            <StoryCard key={point.title} point={point} />
           ))}
         </motion.div>
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
-          <motion.div
-            animate={{ y: [0, 5, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="text-white/50 text-sm flex items-center gap-2"
-          >
-            <FiArrowDown /> Scroll to discover
-          </motion.div>
-          <div className="w-48 h-1 bg-white/20 rounded-full">
-            <motion.div
-              style={{ scaleX: scrollYProgress }}
-              className="h-full bg-white rounded-full origin-left"
-            />
-          </div>
-        </div>
       </div>
     </section>
   );
 };
 
-const StorySlide = ({ index, title, description, progress }) => {
-  const slideCount = storyPoints.length;
-  const slideStart = index / slideCount;
-  const slideEnd = (index + 1) / slideCount;
+// Reusing the successful Aurora Card component logic
+const StoryCard = ({ point }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const opacity = useTransform(
-    progress,
-    [slideStart, slideStart + 0.05, slideEnd - 0.05, slideEnd],
-    [0, 1, 1, 0]
-  );
-  const y = useTransform(progress, [slideStart, slideStart + 0.05], [30, 0]);
+  const rotateX = useTransform(mouseY, [-200, 200], [15, -15]);
+  const rotateY = useTransform(mouseX, [-200, 200], [-15, 15]);
+
+  const springConfig = { stiffness: 300, damping: 20 };
+  const springRotateX = useSpring(rotateX, springConfig);
+  const springRotateY = useSpring(rotateY, springConfig);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left - rect.width / 2);
+    mouseY.set(e.clientY - rect.top - rect.height / 2);
+    e.currentTarget.style.setProperty(
+      "--mouse-x",
+      `${e.clientX - rect.left}px`
+    );
+    e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   return (
-    <div className="w-screen h-full flex flex-col justify-center items-center text-center p-8 z-10">
-      <motion.div style={{ opacity, y }} className="max-w-md md:max-w-xl">
-        <h3 className="text-3xl md:text-5xl font-bold text-white mb-4">
-          {title}
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX: springRotateX,
+        rotateY: springRotateY,
+        transformStyle: "preserve-d",
+      }}
+      variants={{
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.5, ease: "easeOut" },
+        },
+      }}
+      className="group relative h-full p-8 bg-white dark:bg-brand-dark-blue/30 rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 shadow-lg overflow-hidden"
+    >
+      <div
+        className="absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(350px circle at var(--mouse-x) var(--mouse-y), hsla(169, 100%, 50%, 0.15), transparent 80%)`,
+        }}
+      />
+      <div
+        style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
+      >
+        <point.Icon className="w-10 h-10 text-brand-accent mb-4" />
+        <h3 className="font-display text-2xl font-bold text-brand-dark dark:text-white mb-3">
+          {point.title}
         </h3>
-        <p className="text-lg md:text-2xl text-gray-200 leading-relaxed">
-          {description}
+        <p className="text-base text-brand-light-blue dark:text-brand-gray">
+          {point.description}
         </p>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 };
 
