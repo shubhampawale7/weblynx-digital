@@ -75,9 +75,9 @@ const Footer = () => {
               className="flex items-center gap-2 text-xl font-bold font-display text-white mb-4"
             >
               <img
-                src="/weblynxinfo.png"
+                src="/weblynxlogo.png"
                 alt="Weblynx Infotech Logo"
-                className="h-9 rounded-md"
+                className="h-16 rounded-full"
               />
               <span>Weblynx Infotech</span>
             </Link>
@@ -118,18 +118,18 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="mailto:contact@weblynxinfotech.com"
+                  href="mailto:weblynxinfotech@gmail.com"
                   className="text-brand-gray hover:text-brand-accent transition-colors duration-300"
                 >
-                  contact@weblynxinfotech.com
+                  weblynxinfotech@gmail.com
                 </a>
               </li>
               <li>
                 <a
-                  href="tel:+911234567890"
+                  href="tel:+919518364400"
                   className="text-brand-gray hover:text-brand-accent transition-colors duration-300"
                 >
-                  +91 123-456-7890
+                  +91 951-836-4400
                 </a>
               </li>
               <li className="text-brand-gray">Pune, Maharashtra, India</li>

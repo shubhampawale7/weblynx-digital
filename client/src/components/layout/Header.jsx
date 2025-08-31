@@ -53,9 +53,9 @@ const Header = () => {
             className="flex items-center gap-2 text-xl font-bold font-display text-brand-dark dark:text-white"
           >
             <img
-              src="/weblynxinfo.png"
+              src="/weblynxlogo.png"
               alt="Weblynx Infotech Logo"
-              className="h-9 rounded-md"
+              className="h-16 rounded-full"
             />
             <span>Weblynx Infotech</span>
           </Link>
