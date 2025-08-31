@@ -2,6 +2,7 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useTheme } from "./context/ThemeContext.jsx";
+import { motion } from "framer-motion";
 
 // Main Pages
 import Home from "./pages/Home/Home.jsx";
@@ -36,6 +37,17 @@ const BlogListingPage = React.lazy(() =>
 );
 const BlogPostPage = React.lazy(() => import("./pages/Blog/BlogPostPage.jsx"));
 
+// A styled loading spinner for Suspense
+const LoadingSpinner = () => (
+  <div className="flex h-screen w-full items-center justify-center bg-white dark:bg-brand-dark">
+    <motion.div
+      className="w-12 h-12 rounded-full border-4 border-brand-dark border-t-brand-accent dark:border-brand-dark-blue dark:border-t-brand-accent"
+      animate={{ rotate: 360 }}
+      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+    />
+  </div>
+);
+
 function App() {
   const { theme } = useTheme();
 
@@ -44,63 +56,59 @@ function App() {
       <Router>
         <ScrollToBegin />
         <Header />
-        <main className="flex-grow">
-          {/* --- PERFORMANCE: Suspense wraps Routes for code splitting --- */}
-          <Suspense
-            fallback={
-              <div className="flex h-screen w-full items-center justify-center">
-                <div>Loading...</div>
-              </div>
-            }
-          >
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
 
-              <Route path="/services" element={<Services />} />
-              <Route path="/packages" element={<ServicePackagesPage />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/contact" element={<Contact />} />
+        {/* The <main> tag was removed from here to allow each page to control its own layout */}
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/packages" element={<ServicePackagesPage />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/contact" element={<Contact />} />
 
-              {/* Blog Routes */}
-              <Route path="/blog" element={<BlogListingPage />} />
-              <Route path="/blog/:slug" element={<BlogPostPage />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-of-service" element={<TermsOfService />} />
-              {/* Detailed Service Pages */}
-              <Route
-                path="/services/custom-web-applications"
-                element={<CustomWebApplications />}
-              />
-              <Route
-                path="/services/mobile-app-development"
-                element={<MobileAppDevelopment />}
-              />
-              <Route
-                path="/services/wordpress-site-creation"
-                element={<WordPressSiteCreation />}
-              />
-              <Route
-                path="/services/seo-optimization"
-                element={<SeoOptimization />}
-              />
-              <Route
-                path="/services/api-integration"
-                element={<ApiIntegration />}
-              />
-              <Route
-                path="/services/full-stack-development"
-                element={<FullStackDevelopment />}
-              />
-              <Route
-                path="/services/support-management-services"
-                element={<SupportManagementServices />}
-              />
+            {/* Blog Routes */}
+            <Route path="/blog" element={<BlogListingPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </main>
+            {/* Legal Routes */}
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+
+            {/* Detailed Service Pages */}
+            <Route
+              path="/services/custom-web-applications"
+              element={<CustomWebApplications />}
+            />
+            <Route
+              path="/services/mobile-app-development"
+              element={<MobileAppDevelopment />}
+            />
+            <Route
+              path="/services/wordpress-site-creation"
+              element={<WordPressSiteCreation />}
+            />
+            <Route
+              path="/services/seo-optimization"
+              element={<SeoOptimization />}
+            />
+            <Route
+              path="/services/api-integration"
+              element={<ApiIntegration />}
+            />
+            <Route
+              path="/services/full-stack-development"
+              element={<FullStackDevelopment />}
+            />
+            <Route
+              path="/services/support-management-services"
+              element={<SupportManagementServices />}
+            />
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+
         <Footer />
         <ScrollToTopButton />
         <FloatingWhatsAppButton />
