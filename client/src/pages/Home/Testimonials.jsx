@@ -89,7 +89,7 @@ const Testimonials = () => {
     <section className="bg-gray-50 dark:bg-black py-20 sm:py-28">
       {/* SEO Component */}
       <Seo
-        title="Testimonials | Weblynx Infotech"
+        title="Home | Weblynx Infotech"
         description="See what our clients in Pune and beyond are saying about our web development, SEO, and digital marketing services. Real feedback from real partners."
       />
 
