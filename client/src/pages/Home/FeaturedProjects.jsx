@@ -56,7 +56,7 @@ const FeaturedProjects = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-fill"
                 />
               </AnimatePresence>
             </div>
