@@ -18,7 +18,7 @@ const Footer = () => {
 
   const companyLinks = [
     { to: "/about", label: "About Us" },
-    { to: "/portfolio", label: "Our Work" },
+    { to: "/our-work", label: "Our Work" },
     { to: "/packages", label: "Packages" },
     { to: "/blog", label: "Blog" },
   ];

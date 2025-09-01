@@ -196,7 +196,7 @@ const ProjectShowcase = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-fill"
               />
             </AnimatePresence>
           </motion.div>
@@ -268,14 +268,7 @@ const ProjectListItem = ({ project, isActive, setActive }) => (
             >
               <FiExternalLink /> Live Demo
             </a>
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors bg-gray-200 dark:bg-brand-dark-blue text-brand-dark dark:text-white hover:bg-gray-300 dark:hover:bg-brand-light-blue/20"
-            >
-              <FiGithub /> GitHub
-            </a>
+            {/* --- GITHUB BUTTON REMOVED --- */}
           </div>
         </motion.div>
       )}
