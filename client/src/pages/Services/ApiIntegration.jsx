@@ -1,497 +1,449 @@
 // client/src/pages/Services/ApiIntegration.jsx
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Lottie from "lottie-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Seo from "../../components/common/Seo.jsx";
-import apiIntegrationAnimationData from "../../assets/lottie-animations/api-integration-animation.json";
 import {
+  FiArrowLeft,
+  FiZap,
+  FiActivity,
+  FiMaximize,
+  FiGlobe,
+  FiLock,
+  FiCpu,
+  FiRepeat,
+  FiCheckCircle,
+  FiShuffle,
+  FiCode,
   FiShoppingCart,
   FiCreditCard,
-  FiUsers,
-  FiMessageSquare,
-  FiShuffle,
-  FiLayers,
-  FiFileText,
-  FiCheckCircle,
-  FiPlayCircle,
   FiRefreshCw,
-  FiArrowRight,
-  FiCheck,
-  FiX,
-  FiCode,
-  FiArrowLeft,
+  FiClock,
+  FiCalendar,
+  FiGift,
+  FiTrendingUp,
+  FiLayers,
+  FiSettings,
 } from "react-icons/fi";
-import { FaAws, FaGoogle, FaStripe, FaNodeJs } from "react-icons/fa";
+import { FaNodeJs, FaAws, FaStripe, FaGoogle } from "react-icons/fa";
 import { SiRazorpay } from "react-icons/si";
 
-// --- Data (Restyled and on-brand) ---
+// --- Data Models ---
 const typesOfIntegrations = [
   {
+    id: "01",
     icon: FiShoppingCart,
     title: "E-commerce APIs",
-    description:
-      "Connecting platforms like Shopify, WooCommerce, and custom stores for seamless operations.",
+    desc: "Headless commerce sync for Shopify, WooCommerce, and custom MERN stores.",
+    span: "md:col-span-8",
   },
   {
+    id: "02",
     icon: FiCreditCard,
-    title: "Payment Gateways",
-    description:
-      "Integrating secure and reliable payment solutions like Stripe and Razorpay.",
+    title: "Payments",
+    desc: "Hardened Stripe & Razorpay gateways.",
+    span: "md:col-span-4",
   },
   {
+    id: "03",
     icon: FaGoogle,
-    title: "Google APIs",
-    description:
-      "Leveraging the power of Google Maps, Analytics, and other services within your app.",
+    title: "Google Stack",
+    desc: "Maps, Analytics, and Auth integration.",
+    span: "md:col-span-4",
   },
   {
-    icon: FiUsers,
-    title: "CRM & ERP Systems",
-    description:
-      "Syncing customer and business data with platforms like Salesforce and custom ERPs.",
-  },
-  {
-    icon: FaAws,
-    title: "Cloud Service APIs",
-    description:
-      "Integrating with AWS, Google Cloud, and other platforms for scalable infrastructure.",
-  },
-  {
-    icon: FiMessageSquare,
-    title: "Social & Communication",
-    description:
-      "Connecting with social media platforms or communication tools like Twilio.",
+    id: "04",
+    icon: FiCpu,
+    title: "CRM / ERP",
+    desc: "Salesforce & SAP real-time data bridges.",
+    span: "md:col-span-8",
   },
 ];
-const techStackData = [
-  { name: "Node.js", Icon: FaNodeJs },
-  { name: "Express.js", Icon: FiLayers },
-  { name: "REST APIs", Icon: FiShuffle },
-  { name: "GraphQL", Icon: FiCode },
-  { name: "Stripe", Icon: FaStripe },
-  { name: "RazorPay", Icon: SiRazorpay },
-];
-const industriesData = [
-  "E-commerce",
-  "SaaS",
-  "FinTech",
-  "Healthcare",
-  "Logistics",
-  "Marketing Tech",
-];
+
 const comparisonData = [
   {
     feature: "Customization",
-    custom: "Perfectly tailored to your exact business logic and workflows.",
-    offTheShelf: "Limited to the provider's features and rules.",
+    custom: "Perfectly tailored to your business logic.",
+    offTheShelf: "Limited to provider's fixed rules.",
   },
   {
     feature: "Data Control",
-    custom: "You own and control your data flow completely.",
-    offTheShelf: "Data is often processed by a third party.",
+    custom: "You own the entire data pipeline.",
+    offTheShelf: "Data lives in third-party black boxes.",
   },
   {
     feature: "Scalability",
-    custom: "Built to handle your specific growth and traffic patterns.",
-    offTheShelf: "May have rate limits or performance bottlenecks.",
+    custom: "Built for your specific traffic spikes.",
+    offTheShelf: "Subject to external rate limits.",
   },
   {
-    feature: "Cost Structure",
-    custom: "One-time development cost, no recurring fees.",
-    offTheShelf: "Ongoing subscription fees that can grow.",
-  },
-];
-const approachData = [
-  {
-    title: "Analysis & Strategy",
-    description:
-      "We meticulously analyze your systems and goals to map out the perfect integration plan.",
-  },
-  {
-    title: "Design & Development",
-    description:
-      "Our team designs and develops robust, scalable APIs and integration pathways.",
-  },
-  {
-    title: "Testing & Security",
-    description:
-      "We conduct rigorous testing to ensure seamless functionality and implement top-tier security.",
-  },
-  {
-    title: "Deployment & Monitoring",
-    description:
-      "After a smooth deployment, we continuously monitor performance to ensure everything runs flawlessly.",
-  },
-  {
-    title: "Optimization & Support",
-    description:
-      "We provide ongoing support and optimize integrations as your business evolves.",
+    feature: "Cost",
+    custom: "One-time dev cost, long-term ROI.",
+    offTheShelf: "Lifetime monthly subscription tax.",
   },
 ];
 
-// --- Framer Motion Variants ---
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-};
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+const roadmap = [
+  {
+    title: "Discovery",
+    desc: "Mapping system architecture and data endpoints.",
+  },
+  {
+    title: "Protocol Design",
+    desc: "Defining REST/GraphQL schemas and security.",
+  },
+  { title: "Hardening", desc: "Encryption and stress-testing the bridge." },
+  { title: "Sync", desc: "Live deployment with real-time logging." },
+];
+
+const questions = [
+  {
+    question: "What is your primary project goal?",
+    key: "goal",
+    answers: [
+      { text: "Launch a new business", key: "new_business", icon: FiGift },
+      {
+        text: "Grow existing business",
+        key: "grow_business",
+        icon: FiTrendingUp,
+      },
+      { text: "Sell products online", key: "ecommerce", icon: FiShoppingCart },
+    ],
+  },
+  {
+    question: "How quickly do you need results?",
+    key: "speed",
+    answers: [
+      { text: "ASAP (1-3 months)", key: "fast", icon: FiZap },
+      { text: "Standard (3-6 months)", key: "medium", icon: FiClock },
+      { text: "Long-term (6+ months)", key: "long_term", icon: FiCalendar },
+    ],
+  },
+];
+
+const resultMapping = {
+  ecommerce: {
+    title: "Commerce Accelerator",
+    desc: "MERN-based scale for high-volume sales.",
+    link: "/services/ecommerce-development",
+  },
+  new_business_fast: {
+    title: "Startup Launchpad",
+    desc: "Rapid MVP deployment for market validation.",
+    link: "/packages",
+  },
+  default: {
+    title: "Custom Blueprint",
+    desc: "Bespoke technical strategy for unique needs.",
+    link: "/contact",
+  },
 };
 
-// --- Main Page Component ---
 const ApiIntegration = () => {
   return (
     <>
       <Seo
-        title="API Integration Services | Weblynx Infotech"
-        description="We specialize in seamless API integration, connecting systems for automated workflows, enhanced data exchange, and improved business efficiency."
+        title="API Orchestration | Weblynx"
+        description="Surgical system connectivity."
       />
-      <main className="pt-[104px] md:pt-24 bg-white dark:bg-brand-dark">
-        <Hero />
-        <IntegrationsSection />
-        <TechAndIndustriesSection />
-        <ComparisonSection />
-        <ApproachSection />
-        <FinalCta />
+
+      <main className="bg-white dark:bg-brand-dark min-h-screen text-brand-dark dark:text-white selection:bg-brand-accent selection:text-brand-dark">
+        {/* --- HERO SECTION WITH CODE-BASED ANIMATION --- */}
+        <section className="pt-32 pb-20 px-6 border-b border-gray-100 dark:border-white/5 overflow-hidden">
+          <div className="container mx-auto">
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-all mb-16"
+            >
+              <FiArrowLeft /> Back to Arsenal
+            </Link>
+
+            <div className="grid lg:grid-cols-2 gap-20 items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <span className="text-brand-accent font-mono text-sm tracking-[0.2em] mb-4 block uppercase">
+                  Protocol: Bridge_v2.0
+                </span>
+                <h1 className="text-[10vw] md:text-[8rem] font-black leading-[0.8] tracking-tighter uppercase mb-8">
+                  API <br /> <span className="text-brand-accent">Bridges</span>
+                </h1>
+                <p className="text-xl md:text-2xl font-light opacity-60 max-w-lg leading-relaxed">
+                  We architect the invisible nervous system of modern business.
+                  Robust. Encrypted. Fully Automated.
+                </p>
+                <div className="mt-12 flex gap-4">
+                  <Link
+                    to="/contact"
+                    className="px-8 py-4 bg-brand-accent text-brand-dark font-black rounded-full uppercase text-sm tracking-widest hover:scale-105 transition-transform"
+                  >
+                    Initialize Link
+                  </Link>
+                </div>
+              </motion.div>
+
+              {/* THE REPLACEMENT ANIMATION (No Lottie Required) */}
+              <div className="relative h-[400px] flex items-center justify-center">
+                <DataPulseAnimation />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* --- THE BLUEPRINT GRID --- */}
+        <section className="container mx-auto px-6 py-24">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-gray-100 dark:bg-white/5 border border-gray-100 dark:border-white/5">
+            {typesOfIntegrations.map((item) => (
+              <div
+                key={item.id}
+                className={`${item.span} bg-white dark:bg-brand-dark p-12 group hover:bg-brand-dark-blue/10 transition-all duration-500 relative overflow-hidden`}
+              >
+                <div className="flex justify-between items-start mb-16 relative z-10">
+                  <span className="text-xs font-mono opacity-20">
+                    [{item.id}]
+                  </span>
+                  <item.icon
+                    className="text-brand-accent opacity-30 group-hover:opacity-100 transition-all duration-500"
+                    size={32}
+                  />
+                </div>
+                <h3 className="text-3xl font-bold tracking-tighter mb-4 uppercase relative z-10">
+                  {item.title}
+                </h3>
+                <p className="text-lg opacity-50 leading-tight max-w-xs relative z-10">
+                  {item.desc}
+                </p>
+                <div className="absolute -bottom-10 -right-10 opacity-[0.02] group-hover:opacity-[0.05] transition-opacity">
+                  <item.icon size={250} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* --- COMPARISON TABLE --- */}
+        <section className="py-32 px-6 bg-gray-50 dark:bg-black/20">
+          <div className="container mx-auto max-w-5xl">
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter mb-20 text-center uppercase">
+              Custom vs Generic
+            </h2>
+            <div className="border border-gray-200 dark:border-white/10 rounded-[2rem] overflow-hidden backdrop-blur-3xl">
+              <div className="grid grid-cols-3 bg-gray-100 dark:bg-white/5 p-8 border-b border-gray-200 dark:border-white/10">
+                <div className="font-mono text-[10px] opacity-40 uppercase tracking-widest">
+                  Parameter
+                </div>
+                <div className="font-mono text-[10px] text-brand-accent uppercase tracking-widest">
+                  Weblynx Core
+                </div>
+                <div className="font-mono text-[10px] opacity-40 uppercase text-right tracking-widest">
+                  Legacy Provider
+                </div>
+              </div>
+              {comparisonData.map((row, i) => (
+                <div
+                  key={i}
+                  className="grid grid-cols-3 p-8 border-b border-gray-100 dark:border-white/5 last:border-0 hover:bg-brand-accent/5 transition-colors"
+                >
+                  <div className="font-bold text-lg uppercase tracking-tighter">
+                    {row.feature}
+                  </div>
+                  <div className="text-brand-accent font-medium pr-4">
+                    {row.custom}
+                  </div>
+                  <div className="opacity-40 text-right italic text-sm">
+                    {row.offTheShelf}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* --- PROCESS ROADMAP --- */}
+        <section className="py-40 container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-20">
+            <div className="md:sticky top-40 max-w-sm">
+              <h2 className="text-6xl font-black tracking-tighter uppercase mb-6 leading-[0.8]">
+                The <br /> <span className="text-brand-accent">Protocol</span>
+              </h2>
+              <p className="opacity-50 text-lg">
+                A surgical integration roadmap ensuring zero data latency.
+              </p>
+            </div>
+            <div className="flex-grow space-y-px bg-gray-200 dark:bg-white/5 border border-gray-200 dark:border-white/5">
+              {roadmap.map((step, i) => (
+                <div
+                  key={i}
+                  className="bg-white dark:bg-brand-dark p-12 flex gap-10 items-start hover:bg-brand-accent/5 transition-all"
+                >
+                  <span className="text-5xl font-black text-brand-accent opacity-10">
+                    0{i + 1}
+                  </span>
+                  <div>
+                    <h4 className="text-2xl font-bold uppercase mb-2">
+                      {step.title}
+                    </h4>
+                    <p className="opacity-50 max-w-md leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* --- INTERACTIVE QUIZ SECTION --- */}
+        <section className="py-40 bg-brand-dark text-white">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <QuizSection />
+          </div>
+        </section>
+
+        {/* --- FINAL CALL TO ACTION --- */}
+        <section className="py-40 px-6 text-center">
+          <h2 className="text-7xl md:text-[10rem] font-black tracking-tighter uppercase mb-12 leading-[0.8]">
+            Sync <br /> <span className="text-brand-accent italic">Now.</span>
+          </h2>
+          <Link
+            to="/contact"
+            className="px-16 py-8 bg-brand-accent text-brand-dark font-black text-2xl rounded-full hover:scale-105 transition-all shadow-2xl shadow-brand-accent/20 inline-flex items-center gap-4 uppercase tracking-tighter"
+          >
+            Initialize Link <FiMaximize />
+          </Link>
+        </section>
       </main>
     </>
   );
 };
 
-// --- Page Sections (Broken into Components) ---
-
-const Hero = () => (
-  <section className="relative py-24 sm:py-32 px-6 overflow-hidden">
-    <div className="absolute inset-0 -z-10 h-full w-full dark:bg-brand-dark bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:2rem_2rem]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_200px,#e0e1dd,transparent)] dark:bg-[radial-gradient(circle_800px_at_50%_200px,#00f5d41a,transparent)]" />
-    </div>
-    <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      animate="visible"
-      className="container mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center"
-    >
-      <div className="text-center md:text-left">
-        <motion.h1
-          variants={itemVariants}
-          className="font-display text-5xl lg:text-6xl font-bold mb-6 text-brand-dark dark:text-white tracking-tighter"
-        >
-          API Integration Services
-        </motion.h1>
-        <motion.p
-          variants={itemVariants}
-          className="text-lg md:text-xl mb-8 text-brand-light-blue dark:text-brand-gray max-w-xl mx-auto md:mx-0"
-        >
-          Seamlessly connect your systems, automate workflows, and enhance data
-          exchange across your entire digital ecosystem.
-        </motion.p>
-        <motion.div
-          variants={itemVariants}
-          className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4"
-        >
-          <Link
-            to="/contact"
-            className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
-          >
-            <motion.span
-              className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-              initial={{ x: "-150%" }}
-              whileHover={{ x: "150%" }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            />
-            <span className="relative">Connect Your Systems</span>
-          </Link>
-          {/* Back Button Added Here */}
-          <Link
-            to="/services"
-            className="group inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-brand-light-blue dark:text-brand-gray hover:bg-gray-100 dark:hover:bg-brand-dark-blue/50 rounded-full transition-colors duration-300"
-          >
-            <FiArrowLeft className="transition-transform duration-300 group-hover:-translate-x-1" />
-            <span>Back to All Services</span>
-          </Link>
-        </motion.div>
-      </div>
+// --- CUSTOM ANIMATION COMPONENT (REPLACES LOTTIE) ---
+const DataPulseAnimation = () => (
+  <div className="relative w-full h-full flex items-center justify-center">
+    <div className="absolute w-64 h-64 border border-brand-accent/20 rounded-full animate-ping" />
+    <div className="absolute w-48 h-48 border border-brand-accent/40 rounded-full" />
+    <div className="relative z-10 grid grid-cols-2 gap-12">
       <motion.div
-        variants={itemVariants}
-        className="w-full max-w-sm mx-auto md:max-w-none"
+        animate={{ y: [0, -10, 0] }}
+        transition={{ repeat: Infinity, duration: 3 }}
+        className="p-6 bg-brand-dark border border-brand-accent/50 rounded-2xl shadow-2xl shadow-brand-accent/20"
       >
-        <Lottie animationData={apiIntegrationAnimationData} loop={true} />
+        <FiCpu className="text-brand-accent text-4xl" />
       </motion.div>
-    </motion.div>
-  </section>
-);
-
-const IntegrationsSection = () => (
-  <section className="bg-gray-50 dark:bg-black py-20 sm:py-28 px-6">
-    <div className="container mx-auto max-w-6xl">
-      <motion.h2
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.7 }}
-        className="font-display text-4xl sm:text-5xl font-bold text-center mb-16 text-brand-dark dark:text-white tracking-tighter"
-      >
-        Integrations We Handle
-      </motion.h2>
       <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 3, delay: 0.5 }}
+        className="p-6 bg-brand-dark border border-white/20 rounded-2xl shadow-2xl"
       >
-        {typesOfIntegrations.map((item) => {
-          const Icon = item.icon;
-          return (
-            // Hover effect added to this motion.div
-            <motion.div
-              variants={itemVariants}
-              key={item.title}
-              whileHover={{ y: -8 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="p-8 rounded-2xl flex flex-col items-start text-left bg-white dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 shadow-lg cursor-pointer transition-shadow hover:shadow-2xl hover:shadow-brand-accent/10"
-            >
-              <div className="p-3 rounded-lg bg-brand-accent/20 mb-5 text-brand-accent">
-                <Icon size={28} />
-              </div>
-              <h3 className="font-display text-xl font-bold text-brand-dark dark:text-white mb-2">
-                {item.title}
-              </h3>
-              <p className="text-brand-light-blue dark:text-brand-gray text-base">
-                {item.description}
-              </p>
-            </motion.div>
-          );
-        })}
+        <FiGlobe className="text-white text-4xl" />
       </motion.div>
-    </div>
-  </section>
-);
-
-const TechAndIndustriesSection = () => (
-  <section className="py-20 sm:py-28 px-6">
-    <div className="container mx-auto max-w-6xl">
-      <div className="grid lg:grid-cols-2 gap-16">
-        <div>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7 }}
-            className="font-display text-3xl md:text-4xl font-bold mb-8 text-brand-dark dark:text-white tracking-tighter"
-          >
-            Core Technologies
-          </motion.h2>
+      <div className="col-span-2 flex justify-center">
+        <div className="w-full h-[2px] bg-gradient-to-r from-brand-accent via-white to-brand-accent relative overflow-hidden">
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-wrap gap-4"
-          >
-            {techStackData.map((tech) => (
-              <motion.div
-                variants={itemVariants}
-                key={tech.name}
-                className="flex items-center gap-3 px-4 py-2 bg-gray-100 dark:bg-brand-dark-blue/50 rounded-lg border border-gray-200 dark:border-brand-light-blue/20"
-              >
-                <tech.Icon className="w-6 h-6 text-brand-accent" />
-                <span className="font-semibold text-brand-dark dark:text-white">
-                  {tech.name}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-        <div>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7 }}
-            className="font-display text-3xl md:text-4xl font-bold mb-8 text-brand-dark dark:text-white tracking-tighter"
-          >
-            Industries We Serve
-          </motion.h2>
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-wrap gap-3"
-          >
-            {industriesData.map((industry) => (
-              <motion.span
-                variants={itemVariants}
-                key={industry}
-                className="px-4 py-2 rounded-full font-medium bg-gray-100 dark:bg-brand-dark-blue/50 text-brand-light-blue dark:text-brand-gray"
-              >
-                {industry}
-              </motion.span>
-            ))}
-          </motion.div>
+            animate={{ x: [-100, 400] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+            className="absolute top-0 bottom-0 w-20 bg-brand-accent blur-sm"
+          />
         </div>
       </div>
     </div>
-  </section>
+  </div>
 );
 
-const ComparisonSection = () => (
-  <section className="bg-gray-50 dark:bg-black py-20 sm:py-28 px-6">
-    <div className="container mx-auto max-w-5xl">
-      <motion.h2
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.7 }}
-        className="font-display text-4xl sm:text-5xl font-bold text-center mb-16 text-brand-dark dark:text-white tracking-tighter"
-      >
-        Custom vs. Third-Party
-      </motion.h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7 }}
-          className="p-8 rounded-2xl bg-white dark:bg-brand-dark-blue/30 border-2 border-brand-accent shadow-2xl shadow-brand-accent/10"
-        >
-          <h3 className="font-display text-2xl font-bold mb-6 text-brand-dark dark:text-white">
-            Our Custom Integrations
-          </h3>
-          <div className="space-y-4">
-            {comparisonData.map((row) => (
-              <div
-                key={row.feature}
-                className="p-4 bg-gray-100 dark:bg-brand-dark rounded-lg"
-              >
-                <p className="font-semibold text-brand-dark dark:text-white">
-                  {row.feature}
-                </p>
-                <p className="flex items-start gap-2 mt-1 text-brand-light-blue dark:text-brand-gray">
-                  <FiCheckCircle className="w-5 h-5 mt-1 text-brand-accent flex-shrink-0" />{" "}
-                  {row.custom}
-                </p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7 }}
-          className="p-8 rounded-2xl bg-white dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20"
-        >
-          <h3 className="font-display text-2xl font-bold mb-6 text-brand-dark dark:text-white">
-            Third-Party Platforms
-          </h3>
-          <div className="space-y-4">
-            {comparisonData.map((row) => (
-              <div
-                key={row.feature}
-                className="p-4 bg-gray-100 dark:bg-brand-dark rounded-lg"
-              >
-                <p className="font-semibold text-brand-dark dark:text-white">
-                  {row.feature}
-                </p>
-                <p className="flex items-start gap-2 mt-1 text-brand-light-blue dark:text-brand-gray">
-                  <FiX className="w-5 h-5 mt-1 text-red-500 flex-shrink-0" />{" "}
-                  {row.offTheShelf}
-                </p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+// --- QUIZ COMPONENT ---
+const QuizSection = () => {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [result, setResult] = useState(null);
+
+  const handleChoice = (key) => {
+    const updatedAnswers = { ...answers, [questions[step].key]: key };
+    setAnswers(updatedAnswers);
+    if (step < questions.length - 1) setStep(step + 1);
+    else {
+      const { goal } = updatedAnswers;
+      let final =
+        goal === "ecommerce"
+          ? "ecommerce"
+          : goal === "new_business"
+            ? "new_business_fast"
+            : "default";
+      setResult(resultMapping[final]);
+    }
+  };
+
+  return (
+    <div className="relative border border-white/10 p-12 md:p-24 rounded-[4rem] bg-brand-dark-blue/20 backdrop-blur-3xl overflow-hidden">
+      <div className="absolute top-0 right-0 p-8 opacity-10">
+        <FiActivity size={100} />
       </div>
-    </div>
-  </section>
-);
-
-const ApproachSection = () => (
-  <section className="py-20 sm:py-28 px-6">
-    <div className="container mx-auto max-w-4xl">
-      <motion.h2
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.7 }}
-        className="font-display text-4xl sm:text-5xl font-bold text-center mb-20 text-brand-dark dark:text-white tracking-tighter"
-      >
-        Our Integration Blueprint
-      </motion.h2>
-      <div className="relative">
-        <div className="absolute left-6 md:left-1/2 top-4 -bottom-4 w-1 -translate-x-1/2 bg-gray-200 dark:bg-brand-dark-blue"></div>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="space-y-16"
-        >
-          {approachData.map((step, i) => (
-            <motion.div
-              key={i}
-              variants={itemVariants}
-              className="relative flex items-start md:grid md:grid-cols-2 md:gap-10"
-            >
-              <div className="absolute left-6 top-1 w-12 h-12 -translate-x-1/2 flex items-center justify-center rounded-full bg-gray-100 dark:bg-brand-dark border-4 border-gray-200 dark:border-brand-dark-blue">
-                <span className="font-display font-bold text-xl text-brand-accent">
-                  {i + 1}
-                </span>
-              </div>
-              <div
-                className={`md:col-start-${i % 2 === 0 ? "2" : "1"} ${
-                  i % 2 === 0 ? "md:text-left" : "md:text-right"
-                } w-full pl-20 md:pl-0 md:pr-0`}
+      <AnimatePresence mode="wait">
+        {!result ? (
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+          >
+            <h3 className="text-4xl md:text-7xl font-bold tracking-tighter mb-16 text-center uppercase">
+              {questions[step].question}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {questions[step].answers.map((ans) => (
+                <button
+                  key={ans.key}
+                  onClick={() => handleChoice(ans.key)}
+                  className="group p-10 border border-white/10 bg-white/5 rounded-[2.5rem] hover:bg-brand-accent hover:text-brand-dark transition-all text-left"
+                >
+                  <ans.icon
+                    size={32}
+                    className="mb-6 group-hover:scale-110 transition-transform text-brand-accent group-hover:text-brand-dark"
+                  />
+                  <span className="text-2xl font-black uppercase block tracking-tighter">
+                    {ans.text}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-10"
+          >
+            <span className="text-brand-accent font-mono uppercase tracking-[0.3em] mb-4 block">
+              Recommended Config
+            </span>
+            <h3 className="text-6xl md:text-9xl font-black uppercase italic mb-8 tracking-tighter">
+              {result.title}
+            </h3>
+            <p className="text-xl opacity-60 max-w-xl mx-auto mb-12 leading-relaxed">
+              {result.desc}
+            </p>
+            <div className="flex flex-col md:flex-row justify-center gap-6">
+              <Link
+                to={result.link}
+                className="px-12 py-5 bg-white text-brand-dark font-black rounded-full uppercase tracking-widest text-sm"
               >
-                <h3 className="font-display text-2xl font-bold text-brand-dark dark:text-white mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-base text-brand-light-blue dark:text-brand-gray">
-                  {step.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+                Access Strategy
+              </Link>
+              <button
+                onClick={() => {
+                  setStep(0);
+                  setResult(null);
+                }}
+                className="px-12 py-5 border border-white/20 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-brand-dark transition-all"
+              >
+                Restart
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  </section>
-);
-
-const FinalCta = () => (
-  <section className="py-20 sm:py-28 px-6 bg-gray-50 dark:bg-black">
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.7 }}
-      className="container mx-auto max-w-3xl text-center"
-    >
-      <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter mb-6">
-        Ready to Connect Your Digital Landscape?
-      </h2>
-      <p className="text-lg text-brand-light-blue dark:text-brand-gray mb-8">
-        Let's discuss how seamless API integrations can transform your business
-        workflows.
-      </p>
-      <Link
-        to="/contact"
-        className="group relative inline-flex items-center justify-center gap-2 px-10 py-5 text-xl font-bold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
-      >
-        <motion.span
-          className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-          initial={{ x: "-150%" }}
-          whileHover={{ x: "150%" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        />
-        <span className="relative">Get a Free Consultation</span>
-      </Link>
-    </motion.div>
-  </section>
-);
+  );
+};
 
 export default ApiIntegration;

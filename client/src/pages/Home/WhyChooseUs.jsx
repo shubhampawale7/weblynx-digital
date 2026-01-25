@@ -1,6 +1,6 @@
 // client/src/components/Home/WhyChooseUs.jsx
 import React from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FiZap,
   FiUsers,
@@ -8,173 +8,147 @@ import {
   FiLayers,
   FiShield,
   FiClock,
+  FiCpu,
+  FiActivity,
 } from "react-icons/fi";
 
 const features = [
   {
+    id: "01",
     Icon: FiZap,
-    title: "Innovative Solutions",
+    title: "AGILE_INNOVATION",
     description:
-      "We bring fresh perspectives and cutting-edge technologies to solve your unique challenges.",
+      "Deploying cutting-edge tech stacks to solve complex business logic with fresh architectural perspectives.",
   },
   {
+    id: "02",
     Icon: FiUsers,
-    title: "Client-Centric Approach",
+    title: "CLIENT_SYNERGY",
     description:
-      "Your vision is our priority. We collaborate closely to ensure your digital product reflects your goals.",
+      "Close-proximity collaboration ensuring every digital pixel aligns with your primary business objectives.",
   },
   {
+    id: "03",
     Icon: FiBarChart2,
-    title: "Performance & Scalability",
+    title: "SCALABLE_INFRA",
     description:
-      "We build fast, robust, and scalable solutions designed to grow with your business.",
+      "Engineering robust, high-throughput systems designed to scale from MVP to enterprise global traffic.",
   },
   {
+    id: "04",
     Icon: FiLayers,
-    title: "Pixel-Perfect Design",
+    title: "PIXEL_PERFECTION",
     description:
-      "We craft stunning, intuitive user interfaces that captivate and engage your audience.",
+      "Surgical precision in UI/UX design, creating high-fidelity interfaces that drive user engagement.",
   },
   {
+    id: "05",
     Icon: FiShield,
-    title: "Security & Reliability",
+    title: "HARDENED_SECURITY",
     description:
-      "We adhere to best practices for secure development, ensuring your data and applications are safe.",
+      "End-to-end encryption and security-first development protocols to protect high-stakes data assets.",
   },
   {
+    id: "06",
     Icon: FiClock,
-    title: "Timely Delivery",
+    title: "ZERO_LATENCY_DELIVERY",
     description:
-      "We respect deadlines and deliver high-quality projects on time, every time, without compromise.",
+      "Respecting critical launch windows with a streamlined development pipeline and on-time deployment.",
   },
 ];
 
 const WhyChooseUs = () => {
   return (
-    <section className="bg-gray-50 dark:bg-black py-20 sm:py-28">
+    <section className="bg-white dark:bg-brand-dark py-24 md:py-40 border-t border-gray-100 dark:border-white/5">
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16 max-w-3xl mx-auto"
-        >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-            The Weblynx Advantage
-          </h2>
-          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
-            We're more than just developers. We're your dedicated partners in
-            digital growth, committed to excellence at every step.
-          </p>
-        </motion.div>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-[2px] w-12 bg-brand-accent"></span>
+              <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
+                System Differentiators
+              </span>
+            </div>
+            <h2 className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85]">
+              The Weblynx <br />{" "}
+              <span className="text-brand-accent italic font-light">Edge.</span>
+            </h2>
+          </motion.div>
 
-        {/* Responsive Grid of Awesome 3D Feature Cards */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-          }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {features.map((feature) => (
-            <FeatureCard key={feature.title} feature={feature} />
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-right hidden lg:block"
+          >
+            <div className="flex items-center gap-3 text-[10px] font-mono opacity-20 uppercase tracking-widest mb-2">
+              <FiCpu className="text-brand-accent animate-pulse" />{" "}
+              Processing_Advantage
+            </div>
+            <p className="text-sm text-brand-light-blue dark:text-brand-gray max-w-[200px] leading-tight opacity-40">
+              Optimizing for results across every layer of the digital stack.
+            </p>
+          </motion.div>
+        </div>
+
+        {/* The Blueprint Schematic Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-100 dark:bg-white/5 border border-gray-100 dark:border-white/5 overflow-hidden rounded-[2.5rem]">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.id}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative bg-white dark:bg-brand-dark p-12 transition-all duration-500 hover:bg-brand-accent/5 overflow-hidden"
+            >
+              {/* Card Metadata */}
+              <div className="flex justify-between items-start mb-16 relative z-10">
+                <span className="font-mono text-[10px] opacity-20 group-hover:opacity-100 group-hover:text-brand-accent transition-all">
+                  [ SPEC_ID_0{feature.id} ]
+                </span>
+                <div className="text-brand-accent opacity-30 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+                  <feature.Icon size={24} />
+                </div>
+              </div>
+
+              {/* Card Content */}
+              <div className="relative z-10">
+                <h3 className="font-mono font-black text-xl text-brand-dark dark:text-white tracking-tighter mb-4 group-hover:translate-x-2 transition-transform duration-500">
+                  {feature.title}
+                </h3>
+                <p className="text-base text-brand-light-blue dark:text-brand-gray leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity">
+                  {feature.description}
+                </p>
+              </div>
+
+              {/* Background Watermark */}
+              <div className="absolute -bottom-10 -right-10 opacity-[0.01] dark:opacity-[0.02] group-hover:opacity-[0.05] group-hover:scale-110 transition-all duration-700 pointer-events-none">
+                <feature.Icon size={220} />
+              </div>
+
+              {/* Surgical Border Accent */}
+              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-brand-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
+
+        {/* Tactical Footnote */}
+        <div className="mt-16 flex justify-center">
+          <div className="flex items-center gap-4 px-6 py-2 rounded-full border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
+            <FiActivity className="text-brand-accent text-xs animate-pulse" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] opacity-40">
+              Engineering_Excellence_Verified
+            </span>
+          </div>
+        </div>
       </div>
     </section>
-  );
-};
-
-// The new, more awesome FeatureCard component
-const FeatureCard = ({ feature }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // For the 3D tilt
-  const rotateX = useTransform(mouseY, [-150, 150], [15, -15]);
-  const rotateY = useTransform(mouseX, [-150, 150], [-15, 15]);
-
-  // For the content parallax
-  const parallaxX = useTransform(mouseX, [-150, 150], [-10, 10]);
-  const parallaxY = useTransform(mouseY, [-150, 150], [-10, 10]);
-
-  const springConfig = { stiffness: 400, damping: 25 };
-  const springRotateX = useSpring(rotateX, springConfig);
-  const springRotateY = useSpring(rotateY, springConfig);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const { width, height } = rect;
-    const mouseXVal = e.clientX - rect.left - width / 2;
-    const mouseYVal = e.clientY - rect.top - height / 2;
-    mouseX.set(mouseXVal);
-    mouseY.set(mouseYVal);
-
-    // Update CSS variables for the aurora spotlight
-    e.currentTarget.style.setProperty(
-      "--mouse-x",
-      `${e.clientX - rect.left}px`
-    );
-    e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
-  return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX: springRotateX,
-        rotateY: springRotateY,
-        transformStyle: "preserve-3d",
-      }}
-      variants={{
-        hidden: { opacity: 0, scale: 0.9 },
-        visible: {
-          opacity: 1,
-          scale: 1,
-          transition: { duration: 0.5, ease: "easeOut" },
-        },
-      }}
-      className="group relative p-8 h-full bg-white dark:bg-brand-dark-blue/30 rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 shadow-lg overflow-hidden"
-    >
-      {/* Aurora Spotlight Effect */}
-      <div
-        className="absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-        style={{
-          background: `radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), hsla(169, 100%, 50%, 0.15), transparent 80%)`,
-        }}
-      />
-
-      <motion.div
-        style={{
-          transform: "translateZ(50px)",
-          transformStyle: "preserve-3d",
-          x: parallaxX,
-          y: parallaxY,
-        }}
-        className="relative text-center"
-      >
-        <motion.div className="inline-block p-4 bg-gray-100 dark:bg-brand-dark rounded-full mb-4 transition-shadow duration-300 shadow-sm group-hover:shadow-[0_0_20px_hsla(169,100%,50%,0.5)]">
-          <feature.Icon className="w-8 h-8 text-brand-accent" />
-        </motion.div>
-        <h3 className="font-display text-xl font-bold text-brand-dark dark:text-white mb-2">
-          {feature.title}
-        </h3>
-        <p className="text-md text-brand-light-blue dark:text-brand-gray">
-          {feature.description}
-        </p>
-      </motion.div>
-    </motion.div>
   );
 };
 

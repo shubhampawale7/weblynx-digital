@@ -12,40 +12,30 @@ import {
   FiLoader,
   FiMessageSquare,
   FiShare2,
+  FiActivity,
+  FiTerminal,
+  FiShield,
 } from "react-icons/fi";
-
-// --- Framer Motion Variants (Moved to top level for global scope within the file) ---
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
-  },
-};
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-};
 
 const contactMethods = [
   {
     Icon: FaPhoneAlt,
-    title: "Call Us",
+    title: "VOICE_CHANNEL",
     content: "+91 95183 64400",
     href: "tel:+919518364400",
   },
   {
     Icon: FaEnvelope,
-    title: "Email Us",
+    title: "DATA_INBOX",
     content: "weblynxinfotech@gmail.com",
     href: "mailto:weblynxinfotech@gmail.com",
   },
   {
     Icon: FaWhatsapp,
-    title: "WhatsApp Us",
-    content: "+91 95183 64400",
+    title: "ENCRYPTED_CHAT",
+    content: "WhatsApp Dispatch",
     href: `https://wa.me/+919518364400?text=${encodeURIComponent(
-      "Hello Weblynx Infotech! I'm interested in discussing a project."
+      "Hello Weblynx Infotech! I'm interested in discussing a project.",
     )}`,
   },
 ];
@@ -56,93 +46,109 @@ const Contact = () => {
   return (
     <>
       <Seo
-        title="Contact Weblynx Infotech - Get a Free Consultation"
-        description="Reach out to Weblynx Infotech for a free consultation. Contact us for custom web applications, mobile app development, SEO, WordPress, and more."
+        title="Initialize Project | Weblynx Infotech"
+        description="Connect with Weblynx Infotech for a technical consultation. Deploy your vision with Pune's premier engineering firm."
       />
-      <main className="pt-[104px] md:pt-24 bg-white dark:bg-brand-dark">
-        <header className="py-20 sm:py-24 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="container mx-auto px-6"
-          >
-            <h1 className="font-display text-5xl md:text-7xl font-bold text-brand-dark dark:text-white tracking-tighter">
-              Let's Build Your Vision
-            </h1>
-            <p className="text-lg md:text-xl mt-4 max-w-3xl mx-auto text-brand-light-blue dark:text-brand-gray">
-              Ready to turn your ideas into reality? We're excited to hear from
-              you. Choose your preferred method to connect below.
-            </p>
-          </motion.div>
+      <main className="pt-32 pb-20 bg-white dark:bg-brand-dark min-h-screen selection:bg-brand-accent selection:text-brand-dark">
+        {/* --- HEADER: Tactical Dossier --- */}
+        <header className="container mx-auto px-6 mb-16">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-gray-100 dark:border-white/5 pb-12">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <span className="h-[2px] w-12 bg-brand-accent"></span>
+                <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
+                  Project_Initialization
+                </span>
+              </div>
+              <h1 className="text-[10vw] md:text-[8rem] font-black leading-[0.8] tracking-tighter uppercase dark:text-white">
+                The <br />{" "}
+                <span className="text-[10vw] md:text-[8rem] font-black leading-[0.8] tracking-tighter uppercase dark:text-white">
+                  Connect.
+                </span>
+              </h1>
+            </motion.div>
+
+            <div className="flex flex-col items-end opacity-20 font-mono text-[10px] uppercase tracking-widest hidden md:flex">
+              <div className="flex items-center gap-2">
+                <FiTerminal /> awaiting_input
+              </div>
+              <div className="flex items-center gap-2">
+                <FiShield /> 256-bit encrypted
+              </div>
+            </div>
+          </div>
         </header>
 
-        <section className="container mx-auto px-6 pb-20 sm:pb-28">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="relative max-w-4xl mx-auto p-8 rounded-2xl bg-white/80 dark:bg-brand-dark-blue/40 backdrop-blur-md border border-gray-200 dark:border-brand-light-blue/20 shadow-2xl"
-          >
-            <div className="flex justify-center border-b border-gray-200 dark:border-brand-light-blue/20 mb-8">
-              <TabButton
-                title="Send a Message"
-                icon={FiMessageSquare}
-                isActive={activeView === "form"}
-                onClick={() => setActiveView("form")}
-              />
-              <TabButton
-                title="Direct Channels"
-                icon={FiShare2}
-                isActive={activeView === "direct"}
-                onClick={() => setActiveView("direct")}
-              />
-            </div>
+        <section className="container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-gray-100 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[3rem] overflow-hidden shadow-2xl">
+            {/* --- Sidebar Controller --- */}
+            <aside className="lg:col-span-4 bg-white dark:bg-brand-dark p-8 md:p-12 flex flex-col justify-between border-r border-gray-100 dark:border-white/5">
+              <div>
+                <div className="mb-12">
+                  <h3 className="font-mono text-[10px] uppercase tracking-[0.4em] opacity-30 mb-8 text-center lg:text-left">
+                    Select_Protocol
+                  </h3>
+                  <div className="flex flex-col gap-4">
+                    <button
+                      onClick={() => setActiveView("form")}
+                      className={`flex items-center gap-4 p-5 rounded-2xl transition-all duration-500 uppercase font-bold tracking-widest text-xs
+                        ${activeView === "form" ? "bg-brand-accent text-brand-dark shadow-lg shadow-brand-accent/20" : "hover:bg-gray-50 dark:hover:bg-white/5 dark:text-white opacity-40 hover:opacity-100"}`}
+                    >
+                      <FiMessageSquare /> Transmission
+                    </button>
+                    <button
+                      onClick={() => setActiveView("direct")}
+                      className={`flex items-center gap-4 p-5 rounded-2xl transition-all duration-500 uppercase font-bold tracking-widest text-xs
+                        ${activeView === "direct" ? "bg-brand-accent text-brand-dark shadow-lg shadow-brand-accent/20" : "hover:bg-gray-50 dark:hover:bg-white/5 dark:text-white opacity-40 hover:opacity-100"}`}
+                    >
+                      <FiShare2 /> Direct_Channels
+                    </button>
+                  </div>
+                </div>
 
-            <AnimatePresence mode="wait">
-              {activeView === "form" && <ContactForm key="form" />}
-              {activeView === "direct" && <DirectChannels key="direct" />}
-            </AnimatePresence>
-          </motion.div>
+                <div className="hidden lg:block space-y-6 opacity-30 mt-20">
+                  <p className="text-[10px] font-mono leading-relaxed uppercase tracking-widest border-t border-gray-100 dark:border-white/5 pt-8">
+                    Our engineers will review your inquiry within a 24-hour
+                    window. Prepare technical requirements for faster
+                    onboarding.
+                  </p>
+                  <FiActivity className="text-brand-accent animate-pulse" />
+                </div>
+              </div>
+            </aside>
+
+            {/* --- Interaction Field --- */}
+            <div className="lg:col-span-8 bg-gray-50/30 dark:bg-brand-dark-blue/10 backdrop-blur-3xl p-8 md:p-20 relative min-h-[600px]">
+              <AnimatePresence mode="wait">
+                {activeView === "form" ? (
+                  <ContactForm key="form" />
+                ) : (
+                  <DirectChannels key="direct" />
+                )}
+              </AnimatePresence>
+              {/* Background ID */}
+              <FiTerminal className="absolute -bottom-20 -right-20 text-[30rem] opacity-[0.02] dark:opacity-[0.05] pointer-events-none" />
+            </div>
+          </div>
         </section>
       </main>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1.5px currentColor;
+          color: transparent;
+        }
+      `}</style>
     </>
   );
 };
 
-const TabButton = ({ title, icon: Icon, isActive, onClick }) => (
-  <button
-    onClick={onClick}
-    className="relative w-1/2 flex items-center justify-center gap-3 pb-4 font-display font-semibold transition-colors"
-  >
-    <Icon
-      className={`w-5 h-5 ${
-        isActive
-          ? "text-brand-accent"
-          : "text-brand-light-blue dark:text-brand-gray"
-      }`}
-    />
-    <span
-      className={
-        isActive
-          ? "text-brand-dark dark:text-white"
-          : "text-brand-light-blue dark:text-brand-gray"
-      }
-    >
-      {title}
-    </span>
-    {isActive && (
-      <motion.div
-        layoutId="contact-hub-indicator"
-        className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-brand-accent"
-      />
-    )}
-  </button>
-);
-
 const ContactForm = () => {
+  // --- FUNCTIONALITY PRESERVED ---
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -152,13 +158,13 @@ const ContactForm = () => {
   const [status, setStatus] = useState("idle");
   const [errors, setErrors] = useState({});
   const projectTypes = [
-    "Custom Web Applications",
-    "Mobile App Development",
-    "WordPress Site Creation",
+    "Custom Web Apps",
+    "Mobile Apps",
+    "WordPress Site",
     "SEO Optimization",
-    "API Integration",
-    "Full Stack Development",
-    "Support & Management Services",
+    "API Systems",
+    "Full Stack",
+    "Support & Ops",
     "Other",
   ];
 
@@ -170,13 +176,12 @@ const ContactForm = () => {
 
   const validateForm = () => {
     let newErrors = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required.";
+    if (!formData.name.trim()) newErrors.name = "ID required.";
     if (!/\S+@\S+\.\S+/.test(formData.email))
-      newErrors.email = "Email address is invalid.";
-    if (!formData.projectType)
-      newErrors.projectType = "Please select a project type.";
+      newErrors.email = "Invalid gateway.";
+    if (!formData.projectType) newErrors.projectType = "Define system.";
     if (formData.message.trim().length < 10)
-      newErrors.message = "Message must be at least 10 characters long.";
+      newErrors.message = "Min 10 chars.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -191,7 +196,7 @@ const ContactForm = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/contact`,
-        formData
+        formData,
       );
       if (res.data.success) {
         setStatus("success");
@@ -202,24 +207,22 @@ const ContactForm = () => {
       }
     } catch (err) {
       setStatus("error");
-      setErrors({
-        form: err.response?.data?.message || "A network error occurred.",
-      });
+      setErrors({ form: err.response?.data?.message || "Network error." });
     }
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
+      exit={{ opacity: 0, y: -10 }}
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <FormInput
             id="name"
             name="name"
-            label="Your Name"
+            label="OPERATOR_NAME"
             value={formData.name}
             onChange={handleChange}
             error={errors.name}
@@ -228,18 +231,18 @@ const ContactForm = () => {
           <FormInput
             id="email"
             name="email"
-            label="Your Email"
+            label="COMM_GATEWAY"
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
-            placeholder="john.doe@example.com"
+            placeholder="john@example.com"
             type="email"
           />
         </div>
         <FormSelect
           id="projectType"
           name="projectType"
-          label="Type of Project"
+          label="SYSTEM_TARGET"
           value={formData.projectType}
           onChange={handleChange}
           error={errors.projectType}
@@ -248,55 +251,46 @@ const ContactForm = () => {
         <FormTextarea
           id="message"
           name="message"
-          label="Your Message"
+          label="OBJECTIVE_DETAILS"
           value={formData.message}
           onChange={handleChange}
           error={errors.message}
-          placeholder="Tell us about your project..."
+          placeholder="Describe project parameters..."
         />
 
-        <div className="h-6">
+        <div className="h-8 flex items-center">
           <AnimatePresence>
             {status === "success" && (
-              <StatusMessage
-                type="success"
-                message="Message sent successfully!"
-              />
+              <StatusMessage type="success" message="Transmission Delivered." />
             )}
             {status === "error" && (
               <StatusMessage
                 type="error"
                 message={
-                  Object.values(errors).find((e) => e) || "An error occurred."
+                  Object.values(errors).find((e) => e) || "System Error."
                 }
               />
             )}
           </AnimatePresence>
         </div>
 
-        <motion.button
+        <button
           type="submit"
           disabled={status === "submitting"}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="group relative w-full inline-flex items-center justify-center gap-2 px-8 py-3 text-lg font-semibold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 disabled:opacity-50"
+          className="group relative w-full p-6 bg-brand-accent text-brand-dark font-black uppercase tracking-[0.3em] rounded-2xl shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 flex items-center justify-center gap-4 overflow-hidden"
         >
-          <motion.span
-            className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-            initial={{ x: "-150%" }}
-            whileHover={{ x: "150%" }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          />
-          <span className="relative flex items-center justify-center gap-2">
-            {status === "submitting" ? (
-              <>
-                <FiLoader className="animate-spin" /> Sending...
-              </>
-            ) : (
-              "Send Inquiry"
-            )}
-          </span>
-        </motion.button>
+          {status === "submitting" ? (
+            <>
+              <FiLoader className="animate-spin" /> Uplinking...
+            </>
+          ) : (
+            <>
+              Execute Dispatch{" "}
+              <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+            </>
+          )}
+          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+        </button>
       </form>
     </motion.div>
   );
@@ -304,15 +298,18 @@ const ContactForm = () => {
 
 const DirectChannels = () => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0, transition: { staggerChildren: 0.1 } }}
-    exit={{ opacity: 0, y: -20 }}
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    className="space-y-6"
   >
-    <p className="text-center text-brand-light-blue dark:text-brand-gray mb-8">
-      Prefer a more direct approach? Reach out to us through any of these
-      channels.
-    </p>
-    <div className="space-y-6">
+    <div className="flex items-center gap-4 mb-12">
+      <div className="w-8 h-[1px] bg-brand-accent"></div>
+      <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
+        Alternative_Protocols
+      </span>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {contactMethods.map((method) => (
         <ContactMethodCard key={method.title} {...method} />
       ))}
@@ -320,12 +317,12 @@ const DirectChannels = () => (
   </motion.div>
 );
 
-// --- Reusable Form & Card Components ---
+// --- FORM UI MODULES ---
 const FormInput = ({ id, name, label, error, ...props }) => (
   <div className="space-y-2">
     <label
       htmlFor={id}
-      className="block text-sm font-medium text-brand-dark dark:text-brand-gray"
+      className="block font-mono text-[10px] font-bold text-brand-accent uppercase tracking-widest"
     >
       {label}
     </label>
@@ -333,19 +330,17 @@ const FormInput = ({ id, name, label, error, ...props }) => (
       id={id}
       name={name}
       {...props}
-      className={`w-full p-3 border rounded-lg focus:ring-2 transition-colors bg-white/50 dark:bg-brand-dark-blue/50 ${
-        error
-          ? "border-red-500 ring-red-500"
-          : "border-gray-200 dark:border-brand-light-blue/20 focus:ring-brand-accent focus:border-brand-accent"
-      }`}
+      className={`w-full p-4 bg-white dark:bg-brand-dark border rounded-xl transition-all font-light dark:text-white
+        ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent ring-0 outline-none"}`}
     />
   </div>
 );
+
 const FormSelect = ({ id, name, label, error, options, ...props }) => (
   <div className="space-y-2">
     <label
       htmlFor={id}
-      className="block text-sm font-medium text-brand-dark dark:text-brand-gray"
+      className="block font-mono text-[10px] font-bold text-brand-accent uppercase tracking-widest"
     >
       {label}
     </label>
@@ -353,13 +348,10 @@ const FormSelect = ({ id, name, label, error, options, ...props }) => (
       id={id}
       name={name}
       {...props}
-      className={`w-full p-3 border rounded-lg appearance-none focus:ring-2 transition-colors bg-white/50 dark:bg-brand-dark-blue/50 ${
-        error
-          ? "border-red-500 ring-red-500"
-          : "border-gray-200 dark:border-brand-light-blue/20 focus:ring-brand-accent focus:border-brand-accent"
-      }`}
+      className={`w-full p-4 bg-white dark:bg-brand-dark border rounded-xl appearance-none transition-all dark:text-white
+        ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent ring-0 outline-none"}`}
     >
-      <option value="">Select a service...</option>
+      <option value="">Select_Type</option>
       {options.map((type) => (
         <option key={type} value={type}>
           {type}
@@ -368,60 +360,56 @@ const FormSelect = ({ id, name, label, error, options, ...props }) => (
     </select>
   </div>
 );
+
 const FormTextarea = ({ id, name, label, error, ...props }) => (
   <div className="space-y-2">
     <label
       htmlFor={id}
-      className="block text-sm font-medium text-brand-dark dark:text-brand-gray"
+      className="block font-mono text-[10px] font-bold text-brand-accent uppercase tracking-widest"
     >
       {label}
     </label>
     <textarea
       id={id}
       name={name}
-      rows="5"
+      rows="4"
       {...props}
-      className={`w-full p-3 border rounded-lg focus:ring-2 transition-colors bg-white/50 dark:bg-brand-dark-blue/50 resize-none ${
-        error
-          ? "border-red-500 ring-red-500"
-          : "border-gray-200 dark:border-brand-light-blue/20 focus:ring-brand-accent focus:border-brand-accent"
-      }`}
-    ></textarea>
+      className={`w-full p-4 bg-white dark:bg-brand-dark border rounded-xl transition-all resize-none dark:text-white
+        ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent ring-0 outline-none"}`}
+    />
   </div>
 );
+
 const StatusMessage = ({ type, message }) => (
   <motion.p
-    initial={{ opacity: 0, y: -10 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: 10 }}
-    className={`text-center font-semibold flex items-center justify-center gap-2 ${
-      type === "success"
-        ? "text-green-600 dark:text-green-400"
-        : "text-red-500 dark:text-red-400"
-    }`}
+    initial={{ opacity: 0, x: -10 }}
+    animate={{ opacity: 1, x: 0 }}
+    className={`font-mono text-[10px] uppercase tracking-widest flex items-center gap-2 ${type === "success" ? "text-green-500" : "text-red-500"}`}
   >
     {type === "success" ? <FiCheckCircle /> : <FiAlertTriangle />} {message}
   </motion.p>
 );
+
 const ContactMethodCard = ({ Icon, title, content, href }) => (
   <motion.a
     href={href}
-    target={href.startsWith("http") ? "_blank" : "_self"}
+    target="_blank"
     rel="noopener noreferrer"
-    variants={itemVariants}
-    whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
-    className="p-6 rounded-2xl flex items-center gap-6 group transition-all duration-300 bg-gray-50 dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 hover:border-brand-accent hover:shadow-lg"
+    whileHover={{ y: -5 }}
+    className="p-8 rounded-[2rem] bg-white dark:bg-brand-dark border border-gray-100 dark:border-white/5 hover:border-brand-accent/50 transition-all group overflow-hidden relative"
   >
-    <div className="p-4 rounded-lg bg-brand-accent/20 text-brand-accent">
-      <Icon className="w-6 h-6" />
+    <div className="relative z-10">
+      <div className="text-brand-accent mb-6 opacity-40 group-hover:opacity-100 transition-opacity">
+        <Icon size={24} />
+      </div>
+      <h4 className="font-mono text-[10px] opacity-40 mb-2">{title}</h4>
+      <p className="font-bold dark:text-white uppercase tracking-tighter text-xl">
+        {content}
+      </p>
     </div>
-    <div>
-      <h4 className="font-display font-bold text-lg text-brand-dark dark:text-white">
-        {title}
-      </h4>
-      <p className="text-brand-light-blue dark:text-brand-gray">{content}</p>
+    <div className="absolute -bottom-4 -right-4 opacity-[0.02] group-hover:opacity-[0.08] transition-opacity">
+      <Icon size={120} />
     </div>
-    <FiArrowRight className="ml-auto w-6 h-6 text-brand-gray opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
   </motion.a>
 );
 

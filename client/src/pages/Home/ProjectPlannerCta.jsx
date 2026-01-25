@@ -1,28 +1,25 @@
 // client/src/components/Home/ProjectPlannerCta.jsx
-
 import React from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiActivity, FiTerminal, FiShield } from "react-icons/fi";
 
 const ProjectPlannerCta = () => {
-  // Hooks for the interactive parallax effect on the globe
+  // Parallax constraints for the internal visual logic
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const rotateX = useTransform(mouseY, [-200, 200], [10, -10]);
-  const rotateY = useTransform(mouseX, [-200, 200], [-10, 10]);
+  const rotateX = useTransform(mouseY, [-300, 300], [15, -15]);
+  const rotateY = useTransform(mouseX, [-300, 300], [-15, 15]);
 
-  const springConfig = { stiffness: 300, damping: 20 };
+  const springConfig = { stiffness: 150, damping: 20 };
   const springRotateX = useSpring(rotateX, springConfig);
   const springRotateY = useSpring(rotateY, springConfig);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const mouseXVal = e.clientX - rect.left - rect.width / 2;
-    const mouseYVal = e.clientY - rect.top - rect.height / 2;
-    mouseX.set(mouseXVal);
-    mouseY.set(mouseYVal);
+    mouseX.set(e.clientX - rect.left - rect.width / 2);
+    mouseY.set(e.clientY - rect.top - rect.height / 2);
   };
 
   const handleMouseLeave = () => {
@@ -31,95 +28,131 @@ const ProjectPlannerCta = () => {
   };
 
   return (
-    <section className="bg-white dark:bg-brand-dark py-20 sm:py-28">
-      <div className="container mx-auto px-6">
+    <section className="relative bg-white dark:bg-brand-dark py-24 md:py-40 overflow-hidden">
+      <div className="container mx-auto px-6 relative">
+        {/* Surgical Frame Component */}
         <motion.div
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative max-w-5xl mx-auto bg-gray-50 dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 rounded-2xl shadow-lg overflow-hidden"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="relative max-w-6xl mx-auto bg-brand-dark rounded-[4rem] border border-white/10 p-12 md:p-24 overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)]"
         >
-          {/* Background Abstract Globe */}
-          <motion.div
-            style={{
-              rotateX: springRotateX,
-              rotateY: springRotateY,
-              transformStyle: "preserve-3d",
-            }}
-            className="absolute inset-0 z-0 opacity-40 dark:opacity-100"
-          >
-            <div className="absolute inset-0 [mask-image:radial-gradient(400px_at_center,white,transparent)]">
-              <DigitalOrb />
-            </div>
-          </motion.div>
+          {/* Background Technical Visuals */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <motion.div
+              style={{
+                rotateX: springRotateX,
+                rotateY: springRotateY,
+                perspective: "1000px",
+              }}
+              className="w-full h-full flex items-center justify-center opacity-30 dark:opacity-60"
+            >
+              <LogicCoreVisual />
+            </motion.div>
+
+            {/* Scanline and Grid Overlays */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-brand-dark via-transparent to-brand-dark" />
+          </div>
 
           {/* Content Layer */}
-          <div className="relative z-10 text-center py-16 px-8">
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-brand-dark dark:text-white mb-4 tracking-tighter">
-              Let's Build Something Remarkable.
+          <div className="relative z-10 flex flex-col items-center text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-4 mb-10 px-4 py-2 rounded-full border border-brand-accent/20 bg-brand-accent/5"
+            >
+              <FiActivity className="text-brand-accent animate-pulse" />
+              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-brand-accent">
+                Awaiting_Instructions // Project_V1.0
+              </span>
+            </motion.div>
+
+            <h2 className="font-display text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.85] uppercase italic">
+              Initialize <br />{" "}
+              <span className="font-display text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.85] uppercase italic">
+                Ascension.
+              </span>
             </h2>
-            <p className="text-lg md:text-xl text-brand-light-blue dark:text-brand-gray max-w-2xl mx-auto mb-10">
-              Have an idea that could change your business? We have the
-              engineering expertise to bring it to life. Let's talk.
+
+            <p className="text-xl md:text-2xl text-brand-gray/60 max-w-2xl mx-auto mb-16 font-light leading-relaxed">
+              Your business requires a proprietary digital edge. We provide the
+              architecture to achieve it.
             </p>
 
-            {/* Redesigned Shimmer Button */}
-            <Link
-              to="/contact"
-              className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
-            >
-              {/* Shimmer Effect */}
-              <motion.span
-                className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-                initial={{ x: "-150%" }}
-                whileHover={{ x: "150%" }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-              />
-              <span className="relative">Schedule a Free Consultation</span>
-              <FiArrowRight className="relative transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center gap-8">
+              <Link
+                to="/contact"
+                className="group relative inline-flex items-center justify-center gap-4 px-12 py-6 text-xl font-black text-brand-dark bg-brand-accent rounded-full transition-all duration-500 hover:scale-110 hover:shadow-[0_0_50px_rgba(0,245,212,0.4)]"
+              >
+                <span>DEPLOY PROJECT</span>
+                <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+              </Link>
+
+              <div className="hidden md:flex flex-col items-start text-left opacity-30">
+                <div className="flex items-center gap-2 text-[10px] font-mono text-white uppercase tracking-widest">
+                  <FiTerminal /> Ready for input
+                </div>
+                <div className="flex items-center gap-2 text-[10px] font-mono text-white uppercase tracking-widest">
+                  <FiShield /> 128-bit Encrypted
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Decorative Corner Labels */}
+          <div className="absolute top-10 left-10 font-mono text-[10px] text-white/10 uppercase tracking-widest hidden md:block">
+            Blueprint_ID: WBX-99
+          </div>
+          <div className="absolute bottom-10 right-10 font-mono text-[10px] text-white/10 uppercase tracking-widest hidden md:block">
+            Weblynx Infotech // Pune_Operations
           </div>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1.5px #00f5d4;
+          color: transparent;
+        }
+      `}</style>
     </section>
   );
 };
 
-// Component for the animated abstract orb
-const DigitalOrb = () => (
-  <div className="absolute inset-0 w-full h-full">
-    {/* Concentric rings */}
+// High-fidelity Technical Visual Core
+const LogicCoreVisual = () => (
+  <div className="relative w-[600px] h-[600px] flex items-center justify-center">
+    {/* Geometric Logic Gates */}
     {[...Array(3)].map((_, i) => (
       <motion.div
         key={i}
-        className="absolute inset-0 border-2 border-brand-accent/20 rounded-full"
+        className="absolute border border-brand-accent/20"
         style={{
-          width: `${100 + i * 150}px`,
-          height: `${100 + i * 150}px`,
-          top: "50%",
-          left: "50%",
-          x: "-50%",
-          y: "-50%",
+          width: `${200 + i * 150}px`,
+          height: `${200 + i * 150}px`,
+          borderRadius: i % 2 === 0 ? "40%" : "50%",
         }}
-        animate={{ rotate: 360 }}
+        animate={{
+          rotate: i % 2 === 0 ? 360 : -360,
+          scale: [1, 1.05, 1],
+          opacity: [0.1, 0.3, 0.1],
+        }}
         transition={{
-          duration: 15 + i * 10,
+          duration: 20 + i * 5,
           repeat: Infinity,
           ease: "linear",
-          delay: i * -2,
         }}
       />
     ))}
-    {/* Horizontal rotating ring */}
-    <motion.div
-      className="absolute top-1/2 left-1/2 w-[400px] h-[400px] -translate-x-1/2 -translate-y-1/2 border-t-2 border-b-2 border-brand-accent/20 rounded-full"
-      style={{ transformStyle: "preserve-3d" }}
-      animate={{ rotateX: 75, rotateZ: 360 }}
-      transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: -4 }}
-    />
+
+    {/* Pulsing Core */}
+    <div className="w-32 h-32 bg-brand-accent/10 rounded-full blur-3xl animate-pulse" />
+    <div className="absolute p-8 border border-brand-accent/40 rounded-[2rem] bg-brand-dark shadow-[0_0_30px_rgba(0,245,212,0.1)]">
+      <FiTerminal className="text-brand-accent text-5xl opacity-20" />
+    </div>
   </div>
 );
 

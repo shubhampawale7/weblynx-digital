@@ -1,13 +1,6 @@
 // client/src/components/Home/IndustriesWeServe.jsx
-
-import React, { useState, useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useSpring,
-  AnimatePresence,
-} from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FiShoppingCart,
   FiHeart,
@@ -15,171 +8,188 @@ import {
   FiCloud,
   FiHome,
   FiTrendingUp,
+  FiChevronRight,
+  FiActivity,
 } from "react-icons/fi";
 
 const industriesData = [
   {
-    name: "E-Commerce",
+    id: "01",
+    name: "E_COMMERCE",
     Icon: FiShoppingCart,
-    description:
-      "Building high-conversion online stores with seamless user experiences and secure payment gateways.",
+    desc: "High-conversion MERN engines for headless commerce and secure global scale.",
   },
   {
-    name: "SaaS & Tech",
+    id: "02",
+    name: "SAAS_SYSTEMS",
     Icon: FiCloud,
-    description:
-      "Engineering scalable and secure SaaS platforms with robust architecture and user-centric design.",
+    desc: "Multi-tenant cloud architectures engineered for massive data throughput.",
   },
   {
-    name: "Corporate",
+    id: "03",
+    name: "CORP_INFRA",
     Icon: FiBriefcase,
-    description:
-      "Crafting professional, responsive websites that serve as a powerful digital headquarters for your brand.",
+    desc: "Surgical digital headquarters for enterprise entities requiring zero-latency performance.",
   },
   {
-    name: "Non-Profit",
+    id: "04",
+    name: "NON_PROFIT",
     Icon: FiHeart,
-    description:
-      "Empowering organizations with digital tools to amplify their message and engage communities.",
+    desc: "High-impact toolsets for organizations requiring secure, mission-critical digital reach.",
   },
   {
-    name: "FinTech",
+    id: "05",
+    name: "FIN_TECH",
     Icon: FiTrendingUp,
-    description:
-      "Developing cutting-edge financial applications with a focus on data integrity and security.",
+    desc: "Hardened financial applications with end-to-end encryption and audit-ready architecture.",
   },
   {
-    name: "Real Estate",
+    id: "06",
+    name: "REAL_ESTATE",
     Icon: FiHome,
-    description:
-      "Creating engaging property platforms and management tools for the modern real estate market.",
+    desc: "Dynamic asset management platforms with integrated geolocation and data-rich filtering.",
   },
 ];
 
 const IndustriesWeServe = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeIndustry = industriesData[activeIndex];
 
   return (
-    <section className="bg-white dark:bg-brand-dark py-20 sm:py-28">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16 max-w-3xl mx-auto"
-        >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-            Versatility in Our DNA
-          </h2>
-          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
-            Our expertise isn't confined to a single box. We adapt and innovate
-            to deliver exceptional results across a diverse range of industries.
-          </p>
-        </motion.div>
+    <section className="relative bg-white dark:bg-brand-dark py-24 md:py-40 overflow-hidden border-t border-gray-100 dark:border-white/5">
+      {/* Background Section Title */}
+      <div className="absolute top-0 left-0 p-10 opacity-[0.02] dark:opacity-[0.05] pointer-events-none select-none">
+        <span className="font-black text-[15rem] leading-none uppercase">
+          INDUSTRIES
+        </span>
+      </div>
 
-        {/* Main interactive container */}
-        <div className="max-w-4xl mx-auto">
-          {/* Content Viewport */}
-          <div className="relative w-full h-[300px] mb-8 bg-gray-50 dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 rounded-2xl overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndustry.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="w-full h-full flex flex-col justify-center items-center text-center p-8"
-              >
-                <activeIndustry.Icon className="w-12 h-12 text-brand-accent mb-4" />
-                <h3 className="font-display text-2xl md:text-3xl font-bold text-brand-dark dark:text-white mb-3">
-                  {activeIndustry.name}
-                </h3>
-                <p className="text-base text-brand-light-blue dark:text-brand-gray max-w-lg">
-                  {activeIndustry.description}
-                </p>
-              </motion.div>
-            </AnimatePresence>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+          {/* Left: Tactical Info Column */}
+          <div className="lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="max-w-xl"
+            >
+              <div className="flex items-center gap-3 mb-8">
+                <span className="h-[2px] w-12 bg-brand-accent"></span>
+                <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
+                  Market Verticals
+                </span>
+              </div>
+
+              <h2 className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] mb-10">
+                Surgical <br />{" "}
+                <span className="text-brand-accent italic font-light">
+                  Versatility.
+                </span>
+              </h2>
+
+              <div className="relative p-10 bg-gray-50 dark:bg-brand-dark-blue/20 rounded-[3rem] border border-gray-100 dark:border-white/5 overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="relative z-10"
+                  >
+                    <div className="flex items-center gap-4 mb-6">
+                      <span className="text-brand-accent font-mono text-sm">
+                        [{industriesData[activeIndex].id}]
+                      </span>
+                      <div className="h-px flex-grow bg-brand-accent/20"></div>
+                      <FiActivity className="text-brand-accent animate-pulse" />
+                    </div>
+                    <h3 className="text-3xl font-bold dark:text-white mb-4 uppercase tracking-tighter">
+                      {industriesData[activeIndex].name}
+                    </h3>
+                    <p className="text-lg text-brand-light-blue dark:text-brand-gray font-light leading-relaxed">
+                      {industriesData[activeIndex].desc}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+                {/* Visual Watermark Icon */}
+                <div className="absolute -bottom-10 -right-10 opacity-[0.03] dark:opacity-[0.08]">
+                  {React.createElement(industriesData[activeIndex].Icon, {
+                    size: 200,
+                  })}
+                </div>
+              </div>
+            </motion.div>
           </div>
 
-          {/* Interactive Dock */}
-          <Dock activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+          {/* Right: Technical Industry Selector */}
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {industriesData.map((industry, index) => (
+                <IndustryTile
+                  key={industry.id}
+                  industry={industry}
+                  isActive={activeIndex === index}
+                  onSelect={() => setActiveIndex(index)}
+                />
+              ))}
+            </div>
+
+            {/* System Status Footnote */}
+            <div className="mt-12 flex justify-end">
+              <div className="flex items-center gap-4 text-[10px] font-mono opacity-20 uppercase tracking-[0.2em]">
+                <span>Protocol: Multi_Sector_Integration</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_10px_green]" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-// --- The Interactive Dock Component ---
-const Dock = ({ activeIndex, setActiveIndex }) => {
-  const dockRef = useRef(null);
-  const mouseX = useMotionValue(Infinity);
+const IndustryTile = ({ industry, isActive, onSelect }) => (
+  <motion.div
+    onClick={onSelect}
+    whileHover={{ y: -5, scale: 1.02 }}
+    className={`relative p-8 rounded-[2rem] border cursor-pointer transition-all duration-500 group overflow-hidden ${
+      isActive
+        ? "bg-brand-accent border-brand-accent text-brand-dark shadow-2xl shadow-brand-accent/20"
+        : "bg-white dark:bg-brand-dark-blue/10 border-gray-100 dark:border-white/5 text-brand-dark dark:text-white hover:border-brand-accent/50"
+    }`}
+  >
+    <div className="relative z-10 flex flex-col gap-6">
+      <div
+        className={`text-3xl transition-colors duration-500 ${isActive ? "text-brand-dark" : "text-brand-accent"}`}
+      >
+        <industry.Icon />
+      </div>
+      <div>
+        <span className="font-mono text-[10px] opacity-40 uppercase block mb-1">
+          ID_{industry.id}
+        </span>
+        <h4 className="font-display text-xl font-black tracking-tighter uppercase">
+          {industry.name.replace("_", " ")}
+        </h4>
+      </div>
+    </div>
 
-  return (
-    <nav
-      ref={dockRef}
-      onMouseMove={(e) => {
-        if (dockRef.current) {
-          const { left } = dockRef.current.getBoundingClientRect();
-          mouseX.set(e.clientX - left);
-        }
-      }}
-      onMouseLeave={() => mouseX.set(Infinity)}
-      className="flex justify-center items-end gap-4 h-20 p-3 bg-gray-100 dark:bg-brand-dark-blue/50 rounded-2xl border border-gray-200 dark:border-brand-light-blue/20"
+    {/* Geometric background element */}
+    <div
+      className={`absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 rounded-full blur-3xl transition-opacity duration-500 ${
+        isActive
+          ? "bg-white/30 opacity-100"
+          : "bg-brand-accent/5 opacity-0 group-hover:opacity-100"
+      }`}
+    />
+
+    {/* Detail Indicator */}
+    <div
+      className={`absolute bottom-8 right-8 transition-transform duration-500 ${isActive ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"}`}
     >
-      {industriesData.map((industry, index) => (
-        <DockIcon
-          key={industry.name}
-          mouseX={mouseX}
-          isActive={activeIndex === index}
-          onClick={() => setActiveIndex(index)}
-        >
-          <industry.Icon className="w-7 h-7" />
-        </DockIcon>
-      ))}
-    </nav>
-  );
-};
-
-// --- The Dock Icon with Magnetic Effect ---
-const DockIcon = ({ mouseX, isActive, onClick, children }) => {
-  const ref = useRef(null);
-
-  const distance = useTransform(mouseX, (val) => {
-    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
-    return val - bounds.x - bounds.width / 2;
-  });
-
-  const scale = useTransform(distance, [-150, 0, 150], [1, 1.75, 1]);
-  const scaleSpring = useSpring(scale, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
-  });
-
-  return (
-    <motion.button
-      ref={ref}
-      style={{ scale: scaleSpring }}
-      onClick={onClick}
-      className={`relative p-4 rounded-full transition-colors duration-200
-                  ${
-                    isActive
-                      ? "text-brand-accent bg-gray-200 dark:bg-brand-dark"
-                      : "text-brand-light-blue dark:text-brand-gray hover:text-brand-accent"
-                  }`}
-      aria-label={`Select ${children.props.name}`}
-    >
-      {children}
-      {isActive && (
-        <motion.div
-          layoutId="active-industry-indicator"
-          className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-2 h-2 bg-brand-accent rounded-full"
-        />
-      )}
-    </motion.button>
-  );
-};
+      <FiChevronRight size={20} />
+    </div>
+  </motion.div>
+);
 
 export default IndustriesWeServe;

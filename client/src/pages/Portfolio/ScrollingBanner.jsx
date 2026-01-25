@@ -1,57 +1,73 @@
 // client/src/components/Portfolio/ScrollingBanner.jsx
 import React from "react";
 import { motion } from "framer-motion";
-import { FiZap } from "react-icons/fi"; // Using a more on-brand separator icon
+import { FiZap } from "react-icons/fi";
 
-// Define the content for the banner
 const bannerItems = [
-  "Intuitive",
+  "MERN Stack",
   "Scalable",
+  "Precision",
+  "Intuitive UI",
   "Performant",
-  "Accessible",
-  "User-Centric",
   "Clean Code",
+  "User-Centric",
 ];
 
 const ScrollingBanner = () => {
-  // We repeat the items to create a seamless, infinite loop
-  const repeatedItems = [...bannerItems, ...bannerItems];
+  // Triple items for infinite seamless flow
+  const repeatedItems = [...bannerItems, ...bannerItems, ...bannerItems];
 
   return (
-    <section className="bg-white dark:bg-black w-full overflow-hidden">
-      {/* The main container is a group to enable pause-on-hover */}
-      <div className="group flex flex-col justify-center h-40 md:h-48 bg-brand-dark">
-        {/* Background Decorative Elements */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <motion.div
-            className="absolute inset-0 opacity-20"
-            style={{
-              background: `radial-gradient(circle at 50% 50%, hsla(169, 100%, 50%, 0.5), transparent 70%)`,
-            }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              repeatType: "mirror",
-              ease: "easeInOut",
-            }}
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:36px_36px]"></div>
-        </div>
+    <section className="relative w-full py-12 md:py-20 bg-white dark:bg-brand-dark overflow-hidden">
+      {/* Soft Background Gradient */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-accent/10 blur-[120px] rounded-full" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-brand-light-blue/10 blur-[120px] rounded-full" />
+      </div>
 
-        {/* The scrolling content itself */}
-        <div className="relative flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused]">
-          {repeatedItems.map((item, index) => (
-            <div key={index} className="flex items-center gap-12 mx-6">
-              <span className="font-display text-5xl md:text-7xl font-bold tracking-tighter text-white">
-                {item}
-              </span>
-              {/* This is the visual separator */}
-              <FiZap className="text-4xl md:text-5xl text-brand-accent flex-shrink-0" />
-            </div>
-          ))}
+      {/* The Banner Container */}
+      <div className="relative border-y border-gray-100 dark:border-white/5 bg-white/50 dark:bg-black/20 backdrop-blur-sm py-8 md:py-12 transform -rotate-1 scale-105">
+        <div className="flex whitespace-nowrap overflow-hidden">
+          <motion.div
+            className="flex items-center gap-12 md:gap-24 pr-12 md:pr-24"
+            animate={{ x: [0, "-33.33%"] }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 20,
+                ease: "linear",
+              },
+            }}
+          >
+            {repeatedItems.map((item, index) => (
+              <div key={index} className="flex items-center gap-12 md:gap-24">
+                <span className="font-display text-5xl md:text-8xl font-black tracking-[0.15em] uppercase text-transparent stroke-text dark:text-white/10 dark:hover:text-brand-accent transition-all duration-500 cursor-default">
+                  {item}
+                </span>
+                <div className="relative">
+                  <FiZap className="text-3xl md:text-5xl text-brand-accent opacity-50" />
+                  <div className="absolute inset-0 text-brand-accent blur-md opacity-40 animate-pulse">
+                    <FiZap size="100%" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
+
+      {/* CSS for the Stroke Text Effect */}
+      <style jsx>{`
+        .stroke-text {
+          -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+        }
+        @media (prefers-color-scheme: dark) {
+          .stroke-text {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+          }
+        }
+      `}</style>
     </section>
   );
 };

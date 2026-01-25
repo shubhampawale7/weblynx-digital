@@ -7,53 +7,91 @@ import {
   FiZap,
   FiMessageSquare,
   FiBarChart2,
+  FiShield,
+  FiCpu,
+  FiMaximize2,
 } from "react-icons/fi";
 
 const principles = [
-  { text: "Pixel-Perfect Design", Icon: FiLayers },
-  { text: "User-Centric Philosophy", Icon: FiUsers },
-  { text: "Innovative Solutions", Icon: FiZap },
-  { text: "Transparent Communication", Icon: FiMessageSquare },
-  { text: "Scalable Architecture", Icon: FiBarChart2 },
+  { text: "PIXEL_PERFECT_DESIGN", Icon: FiLayers, code: "PX-01" },
+  { text: "USER_CENTRIC_UI", Icon: FiUsers, code: "UX-02" },
+  { text: "INNOVATIVE_LOGIC", Icon: FiZap, code: "LG-03" },
+  { text: "HARDENED_INFRA", Icon: FiShield, code: "SC-04" },
+  { text: "SCALABLE_MERN", Icon: FiBarChart2, code: "DB-05" },
+  { text: "ZERO_LATENCY_OPS", Icon: FiCpu, code: "OP-06" },
 ];
 
 const AngledPraiseBanner = () => {
-  const marqueeContent = [...principles, ...principles];
+  // Triple buffered content for infinite smoothness
+  const marqueeContent = [...principles, ...principles, ...principles];
 
   return (
-    // The outer section is now simpler
-    <section className="bg-brand-dark w-full overflow-hidden group">
-      {/* The inner container is no longer rotated or scaled */}
-      <div className="relative flex items-center h-32 md:h-40">
-        {/* Background Aurora & Grid */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <motion.div
-            className="absolute inset-0 opacity-20"
-            style={{
-              background: `radial-gradient(circle at 50% 50%, hsla(169, 100%, 50%, 0.5), transparent 70%)`,
-            }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              repeatType: "mirror",
-              ease: "easeInOut",
-            }}
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:36px_36px]"></div>
-        </div>
+    <section className="relative w-full overflow-hidden bg-white dark:bg-brand-dark border-y border-gray-100 dark:border-white/5 py-12 md:py-16">
+      {/* Background Micro-Grid */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+      </div>
 
-        {/* Scrolling Content - now pauses on hover via CSS */}
-        <div className="absolute flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused]">
-          {marqueeContent.map((item, index) => (
-            <div key={index} className="flex items-center text-gray-300 mx-10">
-              <item.Icon className="w-8 h-8 mr-4 text-brand-accent flex-shrink-0" />
-              <span className="font-display text-2xl md:text-4xl font-bold tracking-tight text-white">
-                {item.text}
-              </span>
-            </div>
-          ))}
+      {/* Flat Technical Ribbon */}
+      <div className="relative z-10 flex items-center">
+        <div className="flex whitespace-nowrap overflow-hidden">
+          <motion.div
+            className="flex items-center gap-12 md:gap-24"
+            animate={{ x: [0, "-33.33%"] }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 40, // Slower, steady "monitoring" speed
+                ease: "linear",
+              },
+            }}
+          >
+            {marqueeContent.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center group cursor-default"
+              >
+                {/* Technical Meta Card */}
+                <div className="flex items-center gap-6">
+                  <div className="flex flex-col items-center">
+                    <span className="font-mono text-[9px] text-brand-accent mb-1 tracking-tighter font-bold">
+                      {item.code}
+                    </span>
+                    <div className="h-6 w-[1px] bg-gray-200 dark:bg-white/10 group-hover:bg-brand-accent transition-colors duration-500" />
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 group-hover:border-brand-accent transition-all duration-500">
+                      <item.Icon className="w-5 h-5 text-brand-light-blue dark:text-brand-gray group-hover:text-brand-accent" />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <span className="font-display text-2xl md:text-3xl font-black tracking-tighter text-brand-dark dark:text-white uppercase">
+                        {item.text.replace("_", " ")}
+                      </span>
+                      <span className="font-mono text-[8px] opacity-20 uppercase tracking-[0.3em] mt-1 group-hover:opacity-100 group-hover:text-brand-accent transition-all">
+                        Verified_Protocol
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Surgical Separator */}
+                <div className="ml-12 md:ml-24 flex items-center gap-3 opacity-10">
+                  <FiMaximize2 className="rotate-45 text-xs" />
+                  <div className="w-12 h-px bg-current" />
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
+      </div>
+
+      {/* Absolute Corner Marker */}
+      <div className="absolute bottom-4 right-6 hidden md:flex items-center gap-2 opacity-10 font-mono text-[8px] uppercase tracking-widest">
+        <div className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse" />
+        System_Flow: Nominal
       </div>
     </section>
   );

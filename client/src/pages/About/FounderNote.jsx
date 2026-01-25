@@ -2,125 +2,188 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Seo from "../../components/common/Seo.jsx";
+import {
+  FiTerminal,
+  FiCpu,
+  FiCommand,
+  FiActivity,
+  FiCode,
+} from "react-icons/fi";
 
 const signatureVariants = {
   hidden: { pathLength: 0, opacity: 0 },
   visible: {
     pathLength: 1,
     opacity: 1,
-    transition: { duration: 2, ease: "easeInOut", delay: 0.5 },
+    transition: { duration: 2.5, ease: [0.22, 1, 0.36, 1], delay: 0.8 },
   },
 };
 
 const FounderNote = () => {
   return (
-    <section className="relative bg-white dark:bg-brand-dark py-24 sm:py-32 overflow-hidden">
+    <section className="relative bg-white dark:bg-brand-dark py-24 md:py-40 overflow-hidden border-t border-gray-100 dark:border-white/5">
       <Seo
-        title="A Word from Our Founder - Shubham Pawale | Weblynx Infotech"
-        description="Read a personal message from Shubham Pawale, Founder and Lead Developer of Weblynx Infotech, sharing his vision and dedication to crafting impactful digital experiences."
+        title="Technical Directive - Shubham Pawale | Weblynx Infotech"
+        description="A technical directive from the Lead Developer & Founder of Weblynx Infotech on the engineering philosophy driving our digital solutions."
       />
 
-      {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-brand-accent/10 rounded-full blur-3xl -z-0" />
+      {/* Background Architectural Layer */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none select-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
+        <span className="absolute top-1/2 left-0 -translate-y-1/2 font-black text-[20vw] leading-none uppercase rotate-90 origin-left">
+          ENGINEERING
+        </span>
+      </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative max-w-5xl mx-auto bg-white/80 dark:bg-brand-dark-blue/40 backdrop-blur-md rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 shadow-xl"
+          viewport={{ once: true }}
+          className="max-w-6xl mx-auto"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-3 items-center gap-8 lg:gap-0">
-            {/* Left Column: Image */}
-            <div className="lg:col-span-1 flex justify-center lg:justify-start p-8 lg:p-0">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative w-56 h-72 md:w-64 md:h-80 lg:-ml-12 rounded-xl overflow-hidden shadow-2xl"
-              >
-                <img
-                  src="/founder-avatar.jpg"
-                  alt="Shubham Pawale, Founder of Weblynx Infotech"
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+            {/* Left: Technical Core Module (Replaces Image) */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative p-12 rounded-[3rem] border border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-brand-dark-blue/20 backdrop-blur-xl overflow-hidden group">
+                <div className="relative z-10 flex flex-col items-center text-center">
+                  <div className="p-6 rounded-2xl bg-brand-accent text-brand-dark mb-8 shadow-2xl">
+                    <FiCpu size={48} className="animate-spin-slow" />
+                  </div>
+                  <h3 className="font-mono text-xs font-bold text-brand-accent uppercase tracking-[0.4em] mb-4">
+                    Core_Logic_Center
+                  </h3>
+                  <div className="w-full space-y-3 opacity-40">
+                    <div className="h-1 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "90%" }}
+                        transition={{ duration: 2 }}
+                        className="h-full bg-brand-accent"
+                      />
+                    </div>
+                    <div className="h-1 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "75%" }}
+                        transition={{ duration: 2, delay: 0.2 }}
+                        className="h-full bg-brand-accent"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Status Metadata */}
+                <div className="mt-12 space-y-4 font-mono text-[9px] uppercase tracking-widest opacity-30">
+                  <div className="flex justify-between border-b border-white/5 pb-2">
+                    <span>Authority</span>
+                    <span>Lead_Developer</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-2">
+                    <span>Access_Key</span>
+                    <span>Founder_01</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-2">
+                    <span>Protocol</span>
+                    <span>Clean_Code_V4</span>
+                  </div>
+                </div>
+
+                {/* Decorative Icon */}
+                <FiCode className="absolute -bottom-10 -right-10 text-[12rem] opacity-[0.02] dark:opacity-[0.05]" />
+              </div>
             </div>
 
-            {/* Right Column: Text Content */}
-            <div className="lg:col-span-2 p-8 pt-0 lg:py-12 lg:pr-12">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.8 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="font-display text-3xl md:text-4xl font-bold text-brand-dark dark:text-white mb-6 tracking-tighter"
-              >
-                A Word from Our Founder
-              </motion.h2>
+            {/* Right: The Technical Directive */}
+            <div className="lg:col-span-7">
+              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
+                <div className="flex items-center gap-3 mb-8">
+                  <span className="h-[1px] w-12 bg-brand-accent"></span>
+                  <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
+                    Founding Directive
+                  </span>
+                </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.8 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="space-y-4 text-base md:text-lg text-brand-light-blue dark:text-brand-gray leading-relaxed"
-              >
-                <p>
-                  When I started Weblynx Infotech, my core philosophy was
-                  simple: to create digital experiences that truly matter. I
-                  believe that technology should be a seamless bridge between a
-                  business's vision and its audience, empowering growth and
-                  fostering genuine connections.
-                </p>
-                <p>
-                  My journey, driven by a passion for clean code and intuitive
-                  design, has taught me the profound impact a well-crafted
-                  digital presence can have. We don't just build websites; we
-                  craft solutions that solve real problems.
-                </p>
-                <p>
-                  Thank you for considering us as your digital partner. We're
-                  excited about the possibility of building something
-                  exceptional together.
-                </p>
-              </motion.div>
+                <h2 className="text-5xl md:text-7xl font-black text-brand-dark dark:text-white tracking-tighter uppercase leading-[0.85] mb-12 italic">
+                  Architecting <br />{" "}
+                  <span className="text-5xl md:text-7xl font-black text-brand-dark dark:text-white tracking-tighter uppercase leading-[0.85] mb-12 italic">
+                    Excellence.
+                  </span>
+                </h2>
 
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.8 }}
-                className="mt-8 flex flex-col items-start"
-              >
-                <svg
-                  className="w-48 h-20"
-                  viewBox="0 0 200 60"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <motion.path
-                    d="M 5.62,39.52 C 10.54,34.94 18.2,29.35 25.1,28.24 33.32,26.91 38.99,32.22 44.22,36.56 50.9,42.11 58.74,44.97 66.8,42.61 74.96,40.22 81.42,32.74 86.63,27.24 93.38,19.98 102.39,17.21 111.4,19.28 120.59,21.39 126.34,29.31 132.3,35.25 137.91,40.85 145.42,44.91 153.2,42.61 161.73,40.09 167.36,32.3 172.9,26.47 178.69,20.37 186.2,16.92 193.3,19.28"
-                    stroke="var(--brand-accent)"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    fill="transparent"
-                    variants={signatureVariants}
-                  />
-                </svg>
-                <div className="text-left -mt-4">
-                  <p className="font-display text-xl font-bold text-brand-dark dark:text-white">
-                    Shubham Pawale
+                <div className="space-y-8 text-xl text-brand-light-blue dark:text-brand-gray font-light leading-relaxed">
+                  <p>
+                    Weblynx was established on a simple engineering premise:
+                    that
+                    <span className="text-brand-dark dark:text-white font-medium">
+                      {" "}
+                      precision architecture{" "}
+                    </span>
+                    is the only path to sustainable digital growth.
                   </p>
-                  <p className="text-md text-brand-light-blue dark:text-brand-gray">
-                    Founder & Lead Developer
+                  <p>
+                    As a Lead Developer, my obsession is with the underlying
+                    logic. We don't just build interfaces; we engineer
+                    high-stakes systems that solve real problems through
+                    clean-room code and scalable performance.
                   </p>
+                </div>
+
+                {/* Signature Block */}
+                <div className="mt-16 flex flex-col items-start relative">
+                  <svg
+                    className="w-64 h-24 absolute -top-12 -left-4 pointer-events-none opacity-40 dark:opacity-60"
+                    viewBox="0 0 200 60"
+                  >
+                    <motion.path
+                      d="M 5,40 C 15,35 25,25 35,28 45,31 50,40 60,42 70,44 80,35 85,28 95,18 105,18 115,22 125,26 130,35 140,40 150,45 160,40 170,30 180,20 190,18 195,22"
+                      stroke="var(--brand-accent)"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      fill="transparent"
+                      variants={signatureVariants}
+                    />
+                  </svg>
+
+                  <div className="relative z-10 pt-4">
+                    <h3 className="text-3xl font-bold dark:text-white uppercase tracking-tighter">
+                      Shubham Pawale
+                    </h3>
+                    <p className="text-xs font-mono text-brand-accent uppercase tracking-[0.4em] mt-2">
+                      Lead Developer & Founder
+                    </p>
+                  </div>
+
+                  <div className="mt-8 flex items-center gap-4 opacity-20">
+                    <FiTerminal size={14} />
+                    <span className="text-[9px] font-mono uppercase tracking-widest italic">
+                      Commit: initial_architectural_vision
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             </div>
           </div>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1.5px currentColor;
+          color: transparent;
+        }
+        .animate-spin-slow {
+          animation: spin 8s linear infinite;
+        }
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
     </section>
   );
 };

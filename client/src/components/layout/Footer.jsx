@@ -1,234 +1,225 @@
 // client/src/components/layout/Footer.jsx
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaLinkedinIn, FaGithub, FaInstagram } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { FiArrowRight } from "react-icons/fi";
+import {
+  FiArrowRight,
+  FiActivity,
+  FiTerminal,
+  FiShield,
+  FiCpu,
+} from "react-icons/fi";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const serviceLinks = [
     { to: "/services/custom-web-applications", label: "Web Applications" },
-    { to: "/services/full-stack-development", label: "Full-Stack Development" },
+    { to: "/services/full-stack-development", label: "Full-Stack Dev" },
     { to: "/services/mobile-app-development", label: "Mobile Apps" },
-    { to: "/services/seo-optimization", label: "SEO Optimization" },
+    { to: "/services/seo-optimization", label: "SEO Systems" },
   ];
 
   const companyLinks = [
-    { to: "/about", label: "About Us" },
-    { to: "/our-work", label: "Our Work" },
-    { to: "/packages", label: "Packages" },
-    { to: "/blog", label: "Blog" },
+    { to: "/about", label: "The_Origin" },
+    { to: "/our-work", label: "Our_Work" },
+    { to: "/packages", label: "Bundles" },
+    { to: "/blog", label: "Archive" },
   ];
 
   const socialLinks = [
     {
       href: "https://www.linkedin.com/in/shubhampawale/",
-      label: "LinkedIn",
+      label: "LI",
       Icon: FaLinkedinIn,
     },
-    {
-      href: "https://github.com/shubhampawale7",
-      label: "GitHub",
-      Icon: FaGithub,
-    },
+    { href: "https://github.com/shubhampawale7", label: "GH", Icon: FaGithub },
     {
       href: "https://www.instagram.com/weblynxinfotech/",
-      label: "Instagram",
+      label: "IG",
       Icon: FaInstagram,
     },
   ];
 
-  const FooterLinkColumn = ({ title, links }) => (
-    <div>
-      <h3 className="font-display font-semibold text-white mb-4 tracking-wider uppercase">
-        {title}
-      </h3>
-      <ul className="space-y-3">
-        {links.map((link) => (
-          <li key={link.to}>
-            <Link
-              to={link.to}
-              className="text-brand-gray hover:text-brand-accent transition-colors duration-300"
-            >
-              {link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-
   return (
-    <footer className="relative bg-brand-dark text-brand-bg pt-48 pb-8 overflow-hidden">
-      {/* Background SVG Landscape */}
-      <div className="absolute top-0 left-0 w-full h-auto pointer-events-none z-0">
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 1440 320"
-          preserveAspectRatio="xMidYMin slice"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <linearGradient id="footer-glow" x1="0.5" y1="0" x2="0.5" y2="1">
-              <stop
-                offset="0%"
-                stopColor="var(--brand-accent)"
-                stopOpacity="0.3"
-              />
-              <stop
-                offset="100%"
-                stopColor="var(--brand-accent)"
-                stopOpacity="0"
-              />
-            </linearGradient>
-          </defs>
-          <path
-            fill="url(#footer-glow)"
-            d="M0,160L48,181.3C96,203,192,245,288,256C384,267,480,245,576,208C672,171,768,117,864,117.3C960,117,1056,171,1152,192C1248,213,1344,203,1392,197.3L1440,192L1440,320L0,320Z"
-          ></path>
-          <path
-            fill="var(--brand-dark-blue)"
-            d="M0,224L48,218.7C96,213,192,203,288,186.7C384,171,480,149,576,160C672,171,768,213,864,240C960,267,1056,277,1152,261.3C1248,245,1344,203,1392,181.3L1440,160L1440,320L0,320Z"
-          ></path>
-        </svg>
+    <footer className="relative bg-brand-dark text-white pt-32 pb-12 overflow-hidden border-t border-white/5 selection:bg-brand-accent selection:text-brand-dark">
+      {/* Background Architectural Layer */}
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
+        <div className="absolute bottom-0 left-0 w-full h-96 bg-gradient-to-t from-brand-accent/5 to-transparent" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Top CTA Section (now integrated into the footer start) */}
-        <div className="text-center mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="font-display text-4xl md:text-6xl font-bold text-white tracking-tighter mb-4"
-          >
-            Let's Build the Future.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-lg text-brand-gray max-w-2xl mx-auto mb-8"
-          >
-            Have a project in mind or a problem to solve? We're here to help you
-            engineer the perfect digital solution.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-          >
+        {/* --- TOP CTA: The Mission Call --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-32">
+          <div className="lg:col-span-8">
+            <div className="flex items-center gap-3 mb-8">
+              <span className="h-[1px] w-12 bg-brand-accent"></span>
+              <span className="text-brand-accent font-mono text-[10px] uppercase tracking-[0.4em]">
+                Final_Directive
+              </span>
+            </div>
+            <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-[0.85] italic">
+              Initialize <br />{" "}
+              <span className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-[0.85] italic">
+                Expansion.
+              </span>
+            </h2>
+          </div>
+          <div className="lg:col-span-4 flex justify-start lg:justify-end pb-4">
             <Link
               to="/contact"
-              className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-brand-dark bg-brand-accent rounded-full shadow-lg shadow-brand-accent/20 overflow-hidden transition-all duration-300 hover:scale-105"
+              className="group relative inline-flex items-center justify-center gap-6 px-12 py-6 text-xl font-black text-brand-dark bg-brand-accent rounded-full transition-all duration-500 hover:scale-110 hover:shadow-[0_0_50px_rgba(0,245,212,0.4)]"
             >
-              <motion.span
-                className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-                initial={{ x: "-150%" }}
-                whileHover={{ x: "150%" }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-              />
-              <span className="relative">Start a Project</span>
-              <FiArrowRight className="relative transition-transform duration-300 group-hover:translate-x-1" />
+              <span>DEPLOY PROJECT</span>
+              <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
             </Link>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Links Section */}
-        <div className="border-t border-brand-light-blue/20 pt-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-            {/* Column 1: Brand & Socials */}
-            <div className="md:col-span-2 lg:col-span-1">
-              <Link
-                to="/"
-                className="flex items-center gap-2 text-xl font-bold font-display text-white mb-4"
-              >
+        {/* --- MAIN GRID: Technical Directory --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 pb-20 border-b border-white/5">
+          {/* Brand Identity & Official Logo */}
+          <div className="space-y-8">
+            <Link to="/" className="flex flex-col items-start gap-6 group">
+              <div className="relative">
                 <img
                   src="/weblynxlogo.png"
-                  alt="Weblynx Infotech Logo"
-                  className="h-16 rounded-full"
+                  alt="Weblynx Infotech Official Logo"
+                  className="h-16 w-auto rounded-full group-hover:scale-105 transition-transform duration-500"
                 />
-                <span>Weblynx Infotech</span>
-              </Link>
-              <p className="text-brand-gray max-w-xs mb-6">
-                Engineering innovative digital solutions that drive growth and
-                success for your business.
-              </p>
-              <div className="flex items-center gap-5 text-xl">
-                {socialLinks.map(({ href, label, Icon }) => (
-                  <motion.a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="text-brand-gray hover:text-brand-accent"
-                    whileHover={{ y: -3, scale: 1.1 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <Icon />
-                  </motion.a>
-                ))}
+                {/* Logo Aura */}
+                <div className="absolute inset-0 rounded-full bg-brand-accent/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-            </div>
-
-            <FooterLinkColumn title="Services" links={serviceLinks} />
-            <FooterLinkColumn title="Company" links={companyLinks} />
-            <div>
-              <h3 className="font-display font-semibold text-white mb-4 tracking-wider uppercase">
-                Get in Touch
-              </h3>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="mailto:weblynxinfotech@gmail.com"
-                    className="text-brand-gray hover:text-brand-accent transition-colors duration-300"
-                  >
-                    weblynxinfotech@gmail.com
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="tel:+919518364400"
-                    className="text-brand-gray hover:text-brand-accent transition-colors duration-300"
-                  >
-                    +91 951-836-4400
-                  </a>
-                </li>
-                <li className="text-brand-gray">Pune, Maharashtra, India</li>
-              </ul>
+              <div className="flex flex-col">
+                <span className="text-xl font-black tracking-tighter uppercase">
+                  Weblynx{" "}
+                  <span className="italic font-light text-brand-accent">
+                    Infotech
+                  </span>
+                </span>
+                <span className="font-mono text-[8px] opacity-30 tracking-[0.5em] uppercase mt-1">
+                  Digital_Engineering_Firm
+                </span>
+              </div>
+            </Link>
+            <p className="text-sm text-brand-gray font-light leading-relaxed max-w-xs">
+              Engineering high-stakes digital ecosystems with surgical
+              precision. MERN stack excellence from Pune to the world.
+            </p>
+            <div className="flex gap-4">
+              {socialLinks.map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-brand-gray hover:text-brand-accent hover:border-brand-accent transition-all"
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="border-t border-brand-light-blue/20 pt-8 mt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-brand-gray">
-            <p>&copy; {currentYear} Weblynx Infotech. All Rights Reserved.</p>
-            <div className="flex gap-4 mt-4 sm:mt-0">
+          <FooterColumn title="Engineering" links={serviceLinks} />
+          <FooterColumn title="Directory" links={companyLinks} />
+
+          {/* Contact Node */}
+          <div className="space-y-8">
+            <h3 className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
+              Node_Uplink
+            </h3>
+            <div className="space-y-4">
+              <a
+                href="mailto:weblynxinfotech@gmail.com"
+                className="block text-lg font-bold hover:text-brand-accent transition-colors"
+              >
+                weblynxinfotech@gmail.com
+              </a>
+              <a
+                href="tel:+919518364400"
+                className="block text-lg font-bold hover:text-brand-accent transition-colors"
+              >
+                +91 95183 64400
+              </a>
+              <div className="pt-4 flex items-center gap-3 opacity-30 font-mono text-[10px] uppercase tracking-widest">
+                <FiTerminal /> Sector: Pune_MH_IN
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* --- BOTTOM BAR: System Status --- */}
+        <div className="pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-8 text-[10px] font-mono opacity-20 uppercase tracking-widest">
+            <p>&copy; {currentYear} Weblynx_OS // V4.0.2</p>
+            <div className="hidden md:flex items-center gap-4">
+              <span className="flex items-center gap-2">
+                <FiShield /> Secure
+              </span>
+              <span className="flex items-center gap-2">
+                <FiCpu /> Optimized
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-8">
+            <div className="flex gap-6 text-[10px] font-mono opacity-40 uppercase tracking-widest">
               <Link
                 to="/privacy-policy"
-                className="hover:text-white transition-colors"
+                className="hover:text-brand-accent transition-colors"
               >
-                Privacy Policy
+                Privacy_Protocol
               </Link>
               <Link
                 to="/terms-of-service"
-                className="hover:text-white transition-colors"
+                className="hover:text-brand-accent transition-colors"
               >
-                Terms of Service
+                Service_Terms
               </Link>
+            </div>
+            {/* Live Pulse Indicator */}
+            <div className="flex items-center gap-3 px-4 py-2 rounded-full border border-green-500/20 bg-green-500/5">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_green]" />
+              <span className="text-[10px] font-mono text-green-500 uppercase font-bold tracking-tighter">
+                System_Online
+              </span>
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1.5px currentColor;
+          color: transparent;
+        }
+      `}</style>
     </footer>
   );
 };
+
+const FooterColumn = ({ title, links }) => (
+  <div className="space-y-8">
+    <h3 className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
+      {title}_Manifest
+    </h3>
+    <ul className="space-y-4">
+      {links.map((link) => (
+        <li key={link.to}>
+          <Link
+            to={link.to}
+            className="group flex items-center gap-2 text-brand-gray hover:text-white transition-all"
+          >
+            <span className="w-0 h-px bg-brand-accent group-hover:w-4 transition-all duration-300" />
+            <span className="font-medium">{link.label}</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 
 export default Footer;

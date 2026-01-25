@@ -1,138 +1,144 @@
 // client/src/components/About/Story.jsx
 import React from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import Seo from "../../components/common/Seo.jsx";
-import { FiZap, FiTrendingUp, FiAward } from "react-icons/fi";
+import {
+  FiZap,
+  FiTrendingUp,
+  FiAward,
+  FiActivity,
+  FiLayers,
+} from "react-icons/fi";
 
-// Data is now enriched with icons for the cards
 const storyPoints = [
   {
+    id: "PHASE_01",
     Icon: FiZap,
-    title: "The Spark of an Idea",
+    title: "The Initial Spark",
     description:
-      "Our journey began with a passion for the MERN stack and a vision to bridge the gap between complex digital needs and seamless user experiences.",
+      "Our journey began with a singular obsession: mastering the MERN stack to bridge the gap between vision and execution.",
+    tech: "Kernel_Initialization",
   },
   {
+    id: "PHASE_02",
     Icon: FiTrendingUp,
-    title: "Growth & Adaptation",
+    title: "Operational Growth",
     description:
-      "Driven by the belief that every business deserves a powerful online presence, we evolved into a dedicated agency, constantly adapting in the ever-changing tech landscape.",
+      "We evolved into a dedicated engineering firm, adapting to high-stakes requirements and complex infrastructure needs.",
+    tech: "System_Scaling",
   },
   {
+    id: "PHASE_03",
     Icon: FiAward,
-    title: "Our Commitment Today",
+    title: "Global Excellence",
     description:
-      "Weblynx Infotech is a testament to innovation and a client-first approach. We craft digital solutions that perform exceptionally, helping our clients achieve their goals.",
+      "Today, Weblynx Infotech stands as a beacon of technical precision, delivering bespoke software at a global scale.",
+    tech: "Peak_Optimization",
   },
 ];
 
 const Story = () => {
   return (
-    <section className="bg-white dark:bg-brand-dark py-20 sm:py-28">
-      <Seo
-        title="Our Story - The Journey of Weblynx Infotech"
-        description="Discover the inspiring story behind Weblynx Infotech, our passion for digital innovation, and our journey to becoming a leading web development agency focused on client success."
-      />
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16 max-w-3xl mx-auto"
-        >
-          <h1 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-            Our Journey of Innovation
-          </h1>
-          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
-            From a simple idea to a powerhouse of digital engineering, discover
-            the story behind our passion.
-          </p>
-        </motion.div>
+    <section className="bg-white dark:bg-brand-dark py-24 md:py-40 border-t border-gray-100 dark:border-white/5 overflow-hidden">
+      <Seo title="System History | Weblynx Infotech" />
 
-        {/* The Bento Box Grid */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            visible: { transition: { staggerChildren: 0.15 } },
-          }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-        >
-          {storyPoints.map((point) => (
-            <StoryCard key={point.title} point={point} />
+      <div className="container mx-auto px-6">
+        {/* Technical Header */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-[2px] w-12 bg-brand-accent"></span>
+              <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
+                Operational Timeline
+              </span>
+            </div>
+            <h2 className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] uppercase italic">
+              History of <br />{" "}
+              <span className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] uppercase italic">
+                Innovation.
+              </span>
+            </h2>
+          </motion.div>
+
+          <div className="hidden lg:flex items-center gap-4 text-[10px] font-mono opacity-20 uppercase tracking-[0.2em]">
+            <FiLayers className="text-brand-accent" />
+            <span>Sequence_Verified // 2026_Edition</span>
+          </div>
+        </div>
+
+        {/* The Timeline Blueprint Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-gray-100 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[2.5rem] overflow-hidden">
+          {storyPoints.map((point, index) => (
+            <StoryPhase key={point.id} point={point} index={index} />
           ))}
-        </motion.div>
+        </div>
       </div>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1.5px currentColor;
+          color: transparent;
+        }
+      `}</style>
     </section>
   );
 };
 
-// Reusing the successful Aurora Card component logic
-const StoryCard = ({ point }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const rotateX = useTransform(mouseY, [-200, 200], [15, -15]);
-  const rotateY = useTransform(mouseX, [-200, 200], [-15, 15]);
-
-  const springConfig = { stiffness: 300, damping: 20 };
-  const springRotateX = useSpring(rotateX, springConfig);
-  const springRotateY = useSpring(rotateY, springConfig);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left - rect.width / 2);
-    mouseY.set(e.clientY - rect.top - rect.height / 2);
-    e.currentTarget.style.setProperty(
-      "--mouse-x",
-      `${e.clientX - rect.left}px`
-    );
-    e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
+const StoryPhase = ({ point, index }) => {
   return (
     <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX: springRotateX,
-        rotateY: springRotateY,
-        transformStyle: "preserve-d",
-      }}
-      variants={{
-        hidden: { opacity: 0, y: 50 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.5, ease: "easeOut" },
-        },
-      }}
-      className="group relative h-full p-8 bg-white dark:bg-brand-dark-blue/30 rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 shadow-lg overflow-hidden"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.2 }}
+      className="bg-white dark:bg-brand-dark p-12 md:p-16 group relative overflow-hidden transition-all duration-500 hover:bg-brand-accent/5"
     >
-      <div
-        className="absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-        style={{
-          background: `radial-gradient(350px circle at var(--mouse-x) var(--mouse-y), hsla(169, 100%, 50%, 0.15), transparent 80%)`,
-        }}
-      />
-      <div
-        style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
-      >
-        <point.Icon className="w-10 h-10 text-brand-accent mb-4" />
-        <h3 className="font-display text-2xl font-bold text-brand-dark dark:text-white mb-3">
-          {point.title}
-        </h3>
-        <p className="text-base text-brand-light-blue dark:text-brand-gray">
-          {point.description}
-        </p>
+      {/* Background Index Marker */}
+      <div className="absolute top-10 right-10 font-mono text-8xl font-black opacity-[0.02] dark:opacity-[0.05] group-hover:opacity-[0.1] transition-opacity duration-700">
+        0{index + 1}
       </div>
+
+      <div className="relative z-10 h-full flex flex-col justify-between">
+        <div>
+          <div className="flex items-center gap-4 mb-10">
+            <div className="p-4 rounded-2xl bg-gray-50 dark:bg-white/5 text-brand-dark dark:text-white group-hover:bg-brand-accent group-hover:text-brand-dark transition-all duration-500 shadow-xl">
+              <point.Icon size={24} />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-mono text-brand-accent uppercase tracking-[0.3em]">
+                {point.tech}
+              </span>
+              <h3 className="text-2xl font-bold dark:text-white tracking-tighter uppercase">
+                {point.id}
+              </h3>
+            </div>
+          </div>
+
+          <h4 className="text-2xl font-bold dark:text-white mb-4 group-hover:text-brand-accent transition-colors">
+            {point.title}
+          </h4>
+          <p className="text-lg text-brand-light-blue dark:text-brand-gray leading-relaxed font-light mb-12">
+            {point.description}
+          </p>
+        </div>
+
+        {/* Surgical Step Indicator */}
+        <div className="flex items-center gap-4 opacity-20 group-hover:opacity-100 transition-opacity">
+          <div
+            className={`w-3 h-3 rounded-full border border-current ${index === 2 ? "bg-brand-accent border-brand-accent" : ""}`}
+          />
+          <div className="flex-grow h-px bg-current" />
+          <FiActivity className="text-xs" />
+        </div>
+      </div>
+
+      {/* Hover Background Light */}
+      <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-brand-accent/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
     </motion.div>
   );
 };

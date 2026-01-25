@@ -11,45 +11,87 @@ const Seo = ({
   ogImage,
   ogUrl,
   canonical,
+  type = "website",
 }) => {
-  const defaultTitle = "Weblynx Infotech - Your Digital Services Agency"; // UPDATED
+  const baseDomain = "https://www.weblynxinfotech.com";
+  const defaultTitle = "Weblynx Infotech | Digital Systems Engineering";
   const defaultDescription =
-    "Weblynx Infotech offers expert MERN stack development, WordPress solutions, SEO optimization, and mobile app development to elevate your digital presence."; // UPDATED
+    "Pune's premier digital engineering firm specializing in high-stakes MERN stack development, surgical SEO, and scalable architectural solutions.";
   const defaultKeywords =
-    "Weblynx Infotech, digital services, web development, MERN stack, React, Node.js, Express.js, MongoDB, WordPress, SEO, API integration, full stack development, mobile app development, iOS, Android, custom web applications, web solutions, digital agency, support and management"; // UPDATED
-  const defaultOgImage = "https://www.weblynxinfotech.com/weblynx-logo.png"; // UPDATED: Use your new domain's URL
-  const baseDomain = "https://www.weblynxinfotech.com"; // New variable for the base domain
+    "Weblynx Infotech, MERN Stack, React Developer Pune, Node.js Engineering, Custom Web Applications, Digital Systems, SaaS Architecture, SEO Systems, Shubham Pawale";
+  const defaultOgImage = `${baseDomain}/weblynx-logo.png`;
 
-  const finalTitle = title ? `${title} | Weblynx Infotech` : defaultTitle; // UPDATED
+  const finalTitle = title ? `${title} | Weblynx Infotech` : defaultTitle;
+  const finalDescription = description || defaultDescription;
+  const finalUrl = ogUrl || canonical || baseDomain;
+
+  // --- Schema.org Structured Data (JSON-LD) ---
+  // This tells Google exactly who you are in a technical format.
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "Weblynx Infotech",
+    url: baseDomain,
+    logo: defaultOgImage,
+    founder: {
+      "@type": "Person",
+      name: "Shubham Pawale",
+      jobTitle: "Lead Developer & Founder",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Pune",
+      addressRegion: "MH",
+      addressCountry: "IN",
+    },
+    sameAs: [
+      "https://www.linkedin.com/in/shubhampawale/",
+      "https://github.com/shubhampawale7",
+      "https://www.instagram.com/weblynxinfotech/",
+    ],
+  };
 
   return (
     <Helmet>
-      {/* Primary Meta Tags */}
+      {/* --- PRIMARY METADATA --- */}
       <title>{finalTitle}</title>
-      <meta name="description" content={description || defaultDescription} />
+      <meta name="description" content={finalDescription} />
       <meta name="keywords" content={keywords || defaultKeywords} />
-      <link rel="canonical" href={canonical || ogUrl || baseDomain} />{" "}
-      {/* UPDATED to use baseDomain */}
-      {/* Open Graph / Facebook Meta Tags (for social sharing) */}
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={ogUrl || baseDomain} />{" "}
-      {/* UPDATED to use baseDomain */}
+      <link rel="canonical" href={finalUrl} />
+      <meta name="author" content="Shubham Pawale" />
+
+      {/* --- OPEN GRAPH / SOCIAL LAYER --- */}
+      <meta property="og:type" content={type} />
+      <meta property="og:url" content={finalUrl} />
       <meta property="og:title" content={ogTitle || finalTitle} />
       <meta
         property="og:description"
-        content={ogDescription || description || defaultDescription}
+        content={ogDescription || finalDescription}
       />
       <meta property="og:image" content={ogImage || defaultOgImage} />
-      {/* Twitter Meta Tags */}
+      <meta property="og:site_name" content="Weblynx Infotech" />
+
+      {/* --- TWITTER / X LAYER --- */}
       <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={ogUrl || baseDomain} />{" "}
-      {/* UPDATED to use baseDomain */}
+      <meta property="twitter:url" content={finalUrl} />
       <meta property="twitter:title" content={ogTitle || finalTitle} />
       <meta
         property="twitter:description"
-        content={ogDescription || description || defaultDescription}
+        content={ogDescription || finalDescription}
       />
       <meta property="twitter:image" content={ogImage || defaultOgImage} />
+
+      {/* --- SYSTEM PREFERENCE & THEME --- */}
+      <meta name="theme-color" content="#0D1B2A" />
+      <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+      />
+
+      {/* --- STRUCTURED DATA INJECTION --- */}
+      <script type="application/ld+json">
+        {JSON.stringify(organizationSchema)}
+      </script>
     </Helmet>
   );
 };

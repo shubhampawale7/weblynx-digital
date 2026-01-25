@@ -1,41 +1,58 @@
 // client/src/components/common/TechStackTicker.jsx
 import React from "react";
+import { motion } from "framer-motion";
 import {
   FaReact,
   FaNodeJs,
   FaWordpress,
   FaShopify,
   FaFigma,
+  FaAws,
 } from "react-icons/fa";
 import {
   SiMongodb,
   SiExpress,
   SiTailwindcss,
   SiJavascript,
+  SiTypescript,
+  SiFirebase,
 } from "react-icons/si";
-import { motion } from "framer-motion";
 
 const techStack = [
-  { name: "React", Icon: FaReact, color: "#61DAFB" },
-  { name: "Node.js", Icon: FaNodeJs, color: "#8CC84B" },
-  { name: "MongoDB", Icon: SiMongodb, color: "#4DB33D" },
-  { name: "Express.js", Icon: SiExpress, color: "#FFFFFF" },
-  { name: "JavaScript", Icon: SiJavascript, color: "#F7DF1E" },
-  { name: "WordPress", Icon: FaWordpress, color: "#21759B" },
-  { name: "Shopify", Icon: FaShopify, color: "#95BF47" },
-  { name: "Tailwind CSS", Icon: SiTailwindcss, color: "#38BDF8" },
-  { name: "Figma", Icon: FaFigma, color: "#F24E1E" },
+  { name: "React", Icon: FaReact, color: "#61DAFB", category: "FRONTEND" },
+  { name: "Node.js", Icon: FaNodeJs, color: "#8CC84B", category: "BACKEND" },
+  { name: "MongoDB", Icon: SiMongodb, color: "#4DB33D", category: "DATABASE" },
+  {
+    name: "TypeScript",
+    Icon: SiTypescript,
+    color: "#3178C6",
+    category: "LANGUAGE",
+  },
+  {
+    name: "JavaScript",
+    Icon: SiJavascript,
+    color: "#F7DF1E",
+    category: "LANGUAGE",
+  },
+  { name: "WordPress", Icon: FaWordpress, color: "#21759B", category: "CMS" },
+  { name: "AWS", Icon: FaAws, color: "#FF9900", category: "INFRA" },
+  {
+    name: "Tailwind",
+    Icon: SiTailwindcss,
+    color: "#38BDF8",
+    category: "STYLING",
+  },
+  { name: "Firebase", Icon: SiFirebase, color: "#FFCA28", category: "CLOUD" },
 ];
 
-// Animation variant for a smooth, continuous loop
 const tickerVariants = {
   animate: {
-    x: ["0%", "-100%"],
+    x: ["0%", "-50%"], // Adjusted for perfect seamless loop
     transition: {
       x: {
         repeat: Infinity,
         repeatType: "loop",
-        duration: 50, // Adjust duration for speed
+        duration: 40,
         ease: "linear",
       },
     },
@@ -44,62 +61,83 @@ const tickerVariants = {
 
 const TechStackTicker = () => {
   return (
-    <section className="bg-white dark:bg-brand-dark py-20 sm:py-24">
-      <div className="container mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-            Technologies We Master
-          </h2>
-          <p className="text-lg mt-4 max-w-2xl mx-auto text-brand-light-blue dark:text-brand-gray">
-            Leveraging a modern, powerful, and scalable tech stack to bring your
-            vision to life.
-          </p>
-        </motion.div>
-
-        {/* Scrolling banner using Framer Motion */}
-        <div className="mt-16 w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+    <section className="bg-white dark:bg-brand-dark py-24 border-y border-gray-100 dark:border-white/5 overflow-hidden">
+      <div className="container mx-auto px-6 mb-16">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6">
           <motion.div
-            className="flex gap-8" // Increased gap for better spacing
-            variants={tickerVariants}
-            animate="animate"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
           >
-            {/* Render the list twice for a seamless loop */}
-            {[...techStack, ...techStack].map((tech, index) => (
-              <TechPill key={index} {...tech} />
-            ))}
+            <span className="text-brand-accent font-mono text-xs uppercase tracking-[0.3em] mb-4 block">
+              Hardware_Software_Stack
+            </span>
+            <h2 className="font-display text-5xl md:text-7xl font-black text-brand-dark dark:text-white tracking-tighter leading-none">
+              The{" "}
+              <span className="text-brand-accent italic font-light">
+                Engine.
+              </span>
+            </h2>
           </motion.div>
+          <p className="text-sm font-mono opacity-30 uppercase tracking-widest max-w-[250px] text-right hidden md:block">
+            Vetted Tools // Scalable Architecture // V4.0.2
+          </p>
         </div>
+      </div>
+
+      {/* Ticker Belt */}
+      <div className="relative w-full flex items-center">
+        {/* Surgical Fades */}
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-brand-dark to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white dark:from-brand-dark to-transparent z-10" />
+
+        <motion.div
+          className="flex gap-4 md:gap-6"
+          variants={tickerVariants}
+          animate="animate"
+        >
+          {/* Tripled list for absolute seamless transition at all widths */}
+          {[...techStack, ...techStack, ...techStack].map((tech, index) => (
+            <TechModule key={index} {...tech} />
+          ))}
+        </motion.div>
       </div>
     </section>
   );
 };
 
-// Refactored "Pill" component using a declarative approach
-const TechPill = ({ name, Icon, color }) => (
+const TechModule = ({ name, Icon, color, category }) => (
   <motion.div
-    // Use Framer Motion's whileHover for all hover effects
-    whileHover={{
-      y: -6,
-      boxShadow: `0 10px 25px -5px ${color}50`, // Hex code with alpha for transparency
-    }}
-    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-    // The 'group' class allows us to style child elements on hover
-    className="group flex-shrink-0 flex items-center gap-3 px-6 py-3 bg-white dark:bg-brand-dark-blue/50 border border-gray-200 dark:border-brand-light-blue/20 rounded-full cursor-pointer"
-    // We pass the unique color as a CSS variable for the icon to use
-    style={{ "--tech-color": color }}
+    whileHover={{ y: -4, backgroundColor: "rgba(var(--accent-rgb), 0.05)" }}
+    className="group flex-shrink-0 relative w-48 md:w-56 p-6 border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-white/5 transition-all duration-500 overflow-hidden"
   >
-    <Icon
-      className="w-7 h-7 text-brand-light-blue dark:text-brand-gray transition-colors duration-300
-                 group-hover:text-[var(--tech-color)]" // Icon color changes on parent hover
-    />
-    <span className="text-xl font-semibold text-brand-dark dark:text-white whitespace-nowrap">
-      {name}
+    {/* Identification Metadata */}
+    <div className="flex justify-between items-center mb-8">
+      <span className="font-mono text-[8px] opacity-20 tracking-widest uppercase">
+        {category}
+      </span>
+      <div className="w-1 h-1 rounded-full bg-brand-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+    </div>
+
+    {/* The Icon & Label */}
+    <div className="flex flex-col gap-4">
+      <Icon
+        size={32}
+        className="text-brand-dark dark:text-white opacity-20 group-hover:opacity-100 transition-all duration-500"
+        style={{ color: "initial" }} // Keeps it mono until hover
+      />
+      <span className="font-display text-xl font-bold tracking-tighter text-brand-dark dark:text-white uppercase">
+        {name}
+      </span>
+    </div>
+
+    {/* Decorative Background ID */}
+    <span className="absolute -bottom-2 -right-2 font-mono text-[40px] font-black opacity-[0.02] select-none uppercase">
+      {name.substring(0, 2)}
     </span>
+
+    {/* Animated Bottom Line */}
+    <div className="absolute bottom-0 left-0 h-0.5 bg-brand-accent w-0 group-hover:w-full transition-all duration-500" />
   </motion.div>
 );
 

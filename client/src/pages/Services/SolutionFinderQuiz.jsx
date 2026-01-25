@@ -1,6 +1,13 @@
 // client/src/components/Services/SolutionFinderQuiz.jsx
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  motion,
+  AnimatePresence,
+  useSpring,
+  useTransform,
+  useMotionValue,
+} from "framer-motion";
 import {
   FiArrowRight,
   FiRefreshCw,
@@ -10,269 +17,259 @@ import {
   FiTrendingUp,
   FiClock,
   FiCalendar,
-  FiDollarSign,
+  FiSettings,
 } from "react-icons/fi";
 
-// --- Enriched Quiz Data ---
+// --- Quiz Data ---
 const questions = [
   {
-    question: "What is the primary goal of your project?",
+    id: 1,
+    question: "What is your primary objective?",
+    key: "goal",
     answers: [
       {
-        text: "Launch a new business or idea",
+        text: "Launch New Venture",
         key: "new_business",
         icon: FiRocket,
+        sub: "I'm starting from scratch.",
       },
       {
-        text: "Grow my existing business",
+        text: "Scale Operations",
         key: "grow_business",
         icon: FiTrendingUp,
+        sub: "I need better infrastructure.",
       },
       {
-        text: "Sell products or services online",
+        text: "Digital Commerce",
         key: "ecommerce",
         icon: FiShoppingCart,
+        sub: "I want to sell online.",
       },
     ],
-    key: "goal",
   },
   {
-    question: "How quickly do you need to see results?",
+    id: 2,
+    question: "What's the desired timeline?",
+    key: "speed",
     answers: [
-      { text: "ASAP (1-3 months)", key: "fast", icon: FiZap },
-      { text: "Standard (3-6 months)", key: "medium", icon: FiClock },
       {
-        text: "Long-term growth (6+ months)",
+        text: "MVP Sprint",
+        key: "fast",
+        icon: FiZap,
+        sub: "1-3 months launch.",
+      },
+      {
+        text: "Balanced Build",
+        key: "medium",
+        icon: FiClock,
+        sub: "3-6 months delivery.",
+      },
+      {
+        text: "Strategic Growth",
         key: "long_term",
         icon: FiCalendar,
+        sub: "Long-term partnership.",
       },
     ],
-    key: "speed",
   },
 ];
+
 const resultMapping = {
   ecommerce: {
-    title: "E-commerce Accelerator",
+    title: "Commerce Accelerator",
     description:
-      "Our comprehensive e-commerce package is tailored to build, optimize, and scale your online store.",
+      "A high-conversion MERN architecture designed for Stripe payments and massive product scaling.",
     link: "/services/ecommerce-development",
-    buttonText: "Explore E-commerce",
     icon: FiShoppingCart,
+    color: "bg-emerald-500",
   },
   new_business_fast: {
     title: "Startup Launchpad",
     description:
-      "Perfect for new ventures needing a quick, impactful online presence to validate ideas and attract customers.",
+      "Our rapid-deployment framework to get your MVP live and collecting data within 90 days.",
     link: "/packages",
-    buttonText: "See Packages",
     icon: FiRocket,
+    color: "bg-brand-accent",
   },
   grow_business_medium: {
-    title: "Business Growth Engine",
+    title: "Enterprise Engine",
     description:
-      "Designed for established businesses looking to expand their market reach and enhance user engagement.",
+      "Deep-stack infrastructure optimized for security, reliability, and complex data management.",
     link: "/services/full-stack-development",
-    buttonText: "Explore Full-Stack",
     icon: FiTrendingUp,
+    color: "bg-blue-600",
   },
   default: {
-    title: "Custom Digital Strategy",
+    title: "Bespoke Strategy",
     description:
-      "Based on your unique responses, we recommend a bespoke solution. Let's discuss your vision.",
+      "Your vision requires a surgical approach. Let's design a custom technical blueprint.",
     link: "/contact",
-    buttonText: "Schedule a Consultation",
-    icon: FiZap,
+    icon: FiSettings,
+    color: "bg-purple-600",
   },
-};
-
-// --- Framer Motion Variants ---
-const questionVariants = {
-  enter: { opacity: 0, y: 30 },
-  center: {
-    opacity: 1,
-    y: 0,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-  },
-  exit: { opacity: 0, y: -30, transition: { duration: 0.3 } },
-};
-const answerVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1 },
 };
 
 const SolutionFinderQuiz = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [resultKey, setResultKey] = useState(null);
+  const [result, setResult] = useState(null);
 
-  const handleAnswer = (answerKey) => {
-    const currentQuestion = questions[step];
-    const newAnswers = { ...answers, [currentQuestion.key]: answerKey };
-    setAnswers(newAnswers);
+  // Progress tracking for the background path
+  const progress = useMotionValue(0);
+
+  const handleChoice = (key) => {
+    const currentKey = questions[step].key;
+    const updatedAnswers = { ...answers, [currentKey]: key };
+    setAnswers(updatedAnswers);
+
+    const nextStep = step + 1;
+    progress.set(nextStep / questions.length);
 
     if (step < questions.length - 1) {
-      setStep(step + 1);
+      setStep(nextStep);
     } else {
-      calculateResult(newAnswers);
+      // Logic for Result Calculation
+      const { goal, speed } = updatedAnswers;
+      let finalKey = "default";
+      if (goal === "ecommerce") finalKey = "ecommerce";
+      else if (goal === "new_business" && speed === "fast")
+        finalKey = "new_business_fast";
+      else if (goal === "grow_business" && speed === "medium")
+        finalKey = "grow_business_medium";
+
+      setResult(resultMapping[finalKey] || resultMapping.default);
     }
   };
 
-  const calculateResult = (finalAnswers) => {
-    const { goal, speed } = finalAnswers;
-    let key = "default";
-    if (goal === "ecommerce") key = "ecommerce";
-    else if (goal === "new_business" && speed === "fast")
-      key = "new_business_fast";
-    else if (goal === "grow_business" && speed === "medium")
-      key = "grow_business_medium";
-
-    setResultKey(key);
-    setStep(step + 1);
-  };
-
-  const handleReset = () => {
+  const reset = () => {
     setStep(0);
     setAnswers({});
-    setResultKey(null);
+    setResult(null);
+    progress.set(0);
   };
 
-  const currentProgress = step / questions.length;
-  const currentResult = resultKey
-    ? resultMapping[resultKey] || resultMapping.default
-    : null;
-  const ResultIcon = currentResult?.icon;
-
   return (
-    <section className="bg-white dark:bg-black py-20 sm:py-28 relative min-h-[90vh] flex flex-col justify-center items-center">
-      <div className="absolute inset-0 z-0 opacity-10 dark:opacity-20">
-        <JourneyPath progress={currentProgress} />
+    <section className="bg-white dark:bg-brand-dark py-24 relative min-h-[80vh] flex items-center overflow-hidden">
+      {/* Dynamic Background Journey */}
+      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+        <JourneyPath progress={progress} />
       </div>
 
-      <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
-        <AnimatePresence mode="wait">
-          {step < questions.length && (
-            <motion.div
-              key={step}
-              variants={questionVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="w-full"
-            >
-              <motion.h2
-                variants={answerVariants}
-                className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter mb-12"
-              >
-                {questions[step].question}
-              </motion.h2>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-5xl mx-auto">
+          <AnimatePresence mode="wait">
+            {!result ? (
               <motion.div
-                variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                key={step}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.5, ease: "circOut" }}
               >
-                {questions[step].answers.map((answer) => (
-                  <AnswerCard
-                    key={answer.key}
-                    answer={answer}
-                    onAnswer={() => handleAnswer(answer.key)}
-                  />
-                ))}
-              </motion.div>
-            </motion.div>
-          )}
+                {/* Progress Indicators */}
+                <div className="flex gap-3 mb-12 justify-center">
+                  {questions.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-1.5 w-16 rounded-full transition-all duration-700 ${
+                        i <= step
+                          ? "bg-brand-accent shadow-[0_0_15px_rgba(var(--accent-rgb),0.5)]"
+                          : "bg-gray-200 dark:bg-white/10"
+                      }`}
+                    />
+                  ))}
+                </div>
 
-          {currentResult && (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="text-center flex flex-col justify-center items-center"
-            >
-              <ResultIcon className="w-16 h-16 text-brand-accent mb-6" />
-              <p className="text-lg text-brand-light-blue dark:text-brand-gray">
-                Our Recommendation:
-              </p>
-              <h3 className="font-display text-5xl md:text-6xl font-bold my-4 text-brand-dark dark:text-white leading-tight">
-                {currentResult.title}
-              </h3>
-              <p className="mb-8 text-lg text-brand-light-blue dark:text-brand-gray max-w-md mx-auto">
-                {currentResult.description}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to={currentResult.link}
-                  className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
+                <h2 className="text-4xl md:text-7xl font-bold text-brand-dark dark:text-white text-center tracking-tighter mb-16 leading-tight">
+                  {questions[step].question}
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {questions[step].answers.map((ans) => (
+                    <button
+                      key={ans.key}
+                      onClick={() => handleChoice(ans.key)}
+                      className="group relative p-8 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[2.5rem] hover:border-brand-accent transition-all duration-500 text-left"
+                    >
+                      <ans.icon className="text-3xl text-brand-accent mb-6 group-hover:scale-110 transition-transform" />
+                      <h4 className="text-2xl font-bold text-brand-dark dark:text-white mb-2">
+                        {ans.text}
+                      </h4>
+                      <p className="text-sm text-brand-light-blue dark:text-brand-gray opacity-60 leading-relaxed">
+                        {ans.sub}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="result"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-10"
+              >
+                <motion.div
+                  initial={{ rotate: -10, scale: 0 }}
+                  animate={{ rotate: 0, scale: 1 }}
+                  className={`inline-flex p-8 rounded-[2.5rem] ${result.color} text-brand-dark mb-8 shadow-2xl`}
                 >
-                  <motion.span
-                    className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-                    initial={{ x: "-150%" }}
-                    whileHover={{ x: "150%" }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                  />
-                  <span className="relative">{currentResult.buttonText}</span>
-                  <FiArrowRight className="relative" />
-                </Link>
-                <button
-                  onClick={handleReset}
-                  className="group inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-brand-light-blue dark:text-brand-gray hover:bg-gray-100 dark:hover:bg-brand-dark-blue/50 rounded-full transition-colors duration-300"
-                >
-                  <FiRefreshCw className="transition-transform duration-300 group-hover:rotate-180" />
-                  <span>Start Over</span>
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  <result.icon size={54} />
+                </motion.div>
+
+                <h3 className="text-6xl md:text-9xl font-black text-brand-dark dark:text-white tracking-tighter mb-6 uppercase italic">
+                  Matched.
+                </h3>
+                <h4 className="text-3xl md:text-5xl font-bold text-brand-accent mb-8 leading-none">
+                  {result.title}
+                </h4>
+                <p className="text-xl text-brand-light-blue dark:text-brand-gray max-w-2xl mx-auto mb-16 font-light leading-relaxed">
+                  {result.description}
+                </p>
+
+                <div className="flex flex-col md:flex-row justify-center gap-6 items-center">
+                  <Link
+                    to={result.link}
+                    className="group px-12 py-6 bg-brand-dark dark:bg-white text-white dark:text-brand-dark font-black rounded-full text-xl hover:scale-105 transition-all shadow-xl flex items-center gap-3"
+                  >
+                    View Strategy{" "}
+                    <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+                  </Link>
+                  <button
+                    onClick={reset}
+                    className="text-brand-light-blue dark:text-brand-gray/50 hover:text-brand-accent flex items-center gap-2 font-mono uppercase tracking-widest text-xs transition-colors"
+                  >
+                    <FiRefreshCw /> Run Again
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );
 };
 
-const AnswerCard = ({ answer, onAnswer }) => {
-  const { icon: Icon, text } = answer;
-  return (
-    <motion.button
-      onClick={onAnswer}
-      variants={answerVariants}
-      whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
-      className="group relative h-full p-6 text-center rounded-2xl border transition-all duration-300
-                       bg-white/80 dark:bg-brand-dark-blue/30 backdrop-blur-md
-                       border-gray-200 dark:border-brand-light-blue/20
-                       hover:border-brand-accent hover:shadow-2xl hover:shadow-brand-accent/10"
-    >
-      <Icon className="w-10 h-10 mx-auto mb-4 text-brand-accent" />
-      <span className="font-display text-xl font-semibold text-brand-dark dark:text-white">
-        {text}
-      </span>
-    </motion.button>
-  );
-};
-
+// --- Journey Path Helper Component ---
 const JourneyPath = ({ progress }) => {
-  const ref = useRef(null);
   const pathLength = useSpring(useTransform(progress, [0, 1], [0, 1]), {
-    stiffness: 400,
-    damping: 90,
+    stiffness: 40,
+    damping: 20,
   });
+
   return (
-    <svg
-      ref={ref}
-      className="w-full h-full"
-      viewBox="0 0 500 500"
-      preserveAspectRatio="xMidYMid meet"
-    >
-      <motion.path
-        d="M 50 250 C 150 50, 350 450, 450 250"
-        fill="none"
+    <svg className="w-full h-full" viewBox="0 0 1000 1000" fill="none">
+      <path
+        d="M -100 500 C 200 200, 800 800, 1100 500"
+        stroke="currentColor"
         strokeWidth="2"
-        className="stroke-gray-200 dark:stroke-brand-dark-blue"
+        className="text-gray-200 dark:text-white/5"
       />
       <motion.path
-        d="M 50 250 C 150 50, 350 450, 450 250"
-        fill="none"
-        strokeWidth="2"
-        className="stroke-brand-accent"
+        d="M -100 500 C 200 200, 800 800, 1100 500"
+        stroke="var(--brand-accent, #00f5d4)"
+        strokeWidth="3"
         style={{ pathLength }}
       />
     </svg>

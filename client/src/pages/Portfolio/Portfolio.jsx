@@ -1,456 +1,235 @@
 // client/src/pages/Portfolio/Portfolio.jsx
-import React, { useState } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useTransform,
-  useSpring,
-} from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Seo from "../../components/common/Seo.jsx";
 import {
-  FiGithub,
+  FiArrowRight,
+  FiArrowDown,
   FiExternalLink,
-  FiSearch,
-  FiLayout,
-  FiCode,
-  FiUploadCloud,
-  FiZap,
+  FiLayers,
+  FiTerminal,
+  FiActivity,
+  FiMaximize2,
 } from "react-icons/fi";
 
-// --- Data for Project Showcase ---
 const projectsData = [
   {
-    id: 1,
-    title: "Ninad's Pottery",
+    id: "PRJ-001",
+    title: "UNITED_ENGINEERS",
+    image: "/projects/united_engineers.png",
+    description:
+      "Industrial MERN architecture engineered for precision manufacturing data and global corporate identity.",
+    tags: ["MERN", "NODE_JS", "INDUSTRIAL"],
+    demoUrl: "https://united-engineers.in",
+    category: "INDUSTRIAL_CORE",
+    size: "large",
+  },
+  {
+    id: "PRJ-002",
+    title: "NINADS_POTTERY",
     image: "/projects/project1.png",
     description:
-      "A bespoke e-commerce platform for artisans, featuring a clean user interface and secure payment integration with Stripe.",
-    tags: ["React", "Node.js", "MongoDB", "Stripe"],
+      "Bespoke e-commerce node with secure Stripe-layer integration and artisan-first UI.",
+    tags: ["REACT", "STRIPE", "MONGODB"],
     demoUrl: "https://ninad-s-pottery.vercel.app/",
-    githubUrl: "https://github.com/shubhampawale7/Ninad-s-Pottery",
+    category: "COMMERCE_NODE",
+    size: "small",
   },
   {
-    id: 2,
-    title: "Prani Seva Ashram",
-    image: "/projects/project2.png",
-    description:
-      "A digital hub for a compassionate non-profit, designed to increase outreach and streamline donations.",
-    tags: ["React.js", "Node.js", "Express.js"],
-    demoUrl: "https://prani-seva-ashram-2-0.onrender.com/",
-    githubUrl: "https://github.com/shubhampawale7/Prani-Seva-Ashram-2.0",
-  },
-  {
-    id: 3,
-    title: "BRB Art Fusion",
-    image: "/projects/project6.png",
-    description:
-      "A full-stack e-commerce solution with a powerful admin panel for managing products, orders, and customers.",
-    tags: ["React", "Node.js", "Fullstack"],
-    demoUrl: "https://brb-art-fusion-mern.vercel.app/",
-    githubUrl: "https://github.com/shubhampawale7/brb-art-fusion-MERN",
-  },
-  {
-    id: 4,
-    title: "Trishha Mines",
-    image: "/projects/project3.png",
-    description:
-      "Crafting a modern and professional corporate identity for an industry leader in mining and minerals.",
-    tags: ["React.js", "Node.js", "Corporate"],
-    demoUrl: "https://www.trishhaminesandminerals.com/",
-    githubUrl: "https://github.com/shubhampawale7",
-  },
-  {
-    id: 5,
-    title: "Walnut Hotel",
-    image: "/projects/project4.png",
-    description:
-      "A sleek, high-performance, and visually appealing landing page designed to increase direct bookings.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    demoUrl: "https://walnut-hotel.vercel.app/",
-    githubUrl: "https://github.com/shubhampawale7",
-  },
-  {
-    id: 6,
-    title: "FlowBit",
+    id: "PRJ-003",
+    title: "FLOWBIT_SAAS",
     image: "/projects/flowbit_cover.png",
     description:
-      "A full-featured SaaS subscription manager to help businesses track and control their software expenses.",
-    tags: ["React", "Node.js", "SaaS"],
+      "Subscription management system with real-time financial telemetry and analytics.",
+    tags: ["SaaS", "ANALYTICS", "CLOUD"],
     demoUrl: "https://flow-bit-fcnw.vercel.app/",
-    githubUrl: "https://github.com/shubhampawale7/FlowBit",
-  },
-];
-
-// --- Data for Scrolling Banner ---
-const bannerItems = [
-  "Intuitive",
-  "Scalable",
-  "Performant",
-  "Accessible",
-  "User-Centric",
-  "Clean Code",
-];
-
-// --- Data for Animated Path Section ---
-const milestones = [
-  {
-    id: 1,
-    title: "01. Concept & Discovery",
-    description:
-      "We dive deep into your vision, goals, and audience to establish a strong foundation.",
+    category: "PLATFORM_SYSTEM",
+    size: "small",
   },
   {
-    id: 2,
-    title: "02. Design & Prototype",
+    id: "PRJ-004",
+    title: "PRANI_SEVA",
+    image: "/projects/project2.png",
     description:
-      "Crafting wireframes and high-fidelity designs that are both beautiful and user-friendly.",
+      "Digital outreach hub optimized for impact-scaling and donation-layer management.",
+    tags: ["REACT", "EXPRESS", "IMPACT"],
+    demoUrl: "https://prani-seva-ashram-2-0.onrender.com/",
+    category: "SOCIAL_LAYER",
+    size: "medium",
   },
   {
-    id: 3,
-    title: "03. Develop & Iterate",
+    id: "PRJ-005",
+    title: "BRB_ART_FUSION",
+    image: "/projects/project6.png",
     description:
-      "Bringing designs to life with clean, efficient code and rigorous testing.",
+      "Advanced commerce engine featuring high-fidelity order tracking and administrative logic.",
+    tags: ["FULLSTACK", "ADMIN_UI", "LOGISTICS"],
+    demoUrl: "https://brb-art-fusion-mern.vercel.app/",
+    category: "COMMERCE_NODE",
+    size: "medium",
   },
   {
-    id: 4,
-    title: "04. Launch & Support",
+    id: "PRJ-006",
+    title: "TRISHHA_MINES",
+    image: "/projects/project3.png",
     description:
-      "Deploying the project seamlessly and providing ongoing support for growth.",
+      "Global mining corporate identity system focused on resource-sector digital leadership.",
+    tags: ["CORPORATE", "UX_LOGIC", "REACT"],
+    demoUrl: "https://www.trishhaminesandminerals.com/",
+    category: "CORPORATE_SYSTEM",
+    size: "small",
   },
 ];
 
 const Portfolio = () => {
   return (
     <>
-      <Seo
-        title="Weblynx Infotech Portfolio - Our Creative Work"
-        description="Explore a gallery of creative and impactful web development projects by Weblynx Infotech. See our expertise in creating unique digital experiences."
-      />
-      <main className="pt-[104px] md:pt-24 bg-white dark:bg-brand-dark">
-        <ProjectShowcase />
-        <ScrollingBanner />
-        <AnimatedPathSection />
-        <FinalCta />
+      <Seo title="Labs Archive | Weblynx Digital Engineering" />
+
+      <main className="bg-brand-dark min-h-screen pt-32 selection:bg-brand-accent selection:text-brand-dark">
+        {/* --- Header: Tactical Briefing --- */}
+        <section className="container mx-auto px-6 mb-24">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-12 border-b border-white/5 pb-16">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              <div className="flex items-center gap-3 mb-8">
+                <span className="h-[2px] w-12 bg-brand-accent"></span>
+                <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.4em]">
+                  Project_Dossier_v4.0
+                </span>
+              </div>
+              <h1 className="text-6xl md:text-[10rem] font-black leading-[0.8] tracking-tighter uppercase text-white">
+                The{" "}
+                <span className="text-brand-accent italic font-light text-outline">
+                  Arsenal.
+                </span>
+              </h1>
+            </motion.div>
+
+            <div className="flex flex-col items-end opacity-20 font-mono text-[10px] uppercase tracking-widest text-white">
+              <div className="flex items-center gap-2">
+                <FiTerminal /> repo_status: stable
+              </div>
+              <div className="flex items-center gap-2">
+                <FiActivity /> data_integrity: 100%
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* --- The Arsenal Grid --- */}
+        <section className="container mx-auto px-6 pb-40">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-white/5 border border-white/5 rounded-[3rem] overflow-hidden">
+            {projectsData.map((project, index) => (
+              <ProjectModule key={project.id} project={project} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* --- Deployment CTA --- */}
+        <section className="py-40 bg-brand-dark-blue/10 border-t border-white/5 text-center relative overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black text-white/[0.02] pointer-events-none uppercase">
+            BUILD
+          </div>
+          <div className="container mx-auto px-6 relative z-10">
+            <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase mb-12">
+              Ready for <br />{" "}
+              <span className="text-brand-accent italic">Deployment?</span>
+            </h2>
+            <Link
+              to="/contact"
+              className="group relative inline-flex items-center gap-6 px-12 py-6 bg-brand-accent text-brand-dark font-black text-xl rounded-full transition-all hover:scale-110 hover:shadow-[0_0_50px_rgba(0,245,212,0.4)]"
+            >
+              INITIALIZE PROJECT
+              <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+            </Link>
+          </div>
+        </section>
       </main>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1.5px currentColor;
+          color: transparent;
+        }
+      `}</style>
     </>
   );
 };
 
-// --- Main Showcase Component ---
-const ProjectShowcase = () => {
-  const [activeProjectId, setActiveProjectId] = useState(projectsData[0].id);
-  const activeProject = projectsData.find((p) => p.id === activeProjectId);
+const ProjectModule = ({ project, index }) => {
+  const gridClasses = {
+    large: "md:col-span-12 lg:col-span-8",
+    medium: "md:col-span-6",
+    small: "md:col-span-12 lg:col-span-4",
+  };
 
   return (
-    <section className="container mx-auto min-h-screen px-6 py-16 md:py-24 flex flex-col justify-center">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
-        className="text-center md:text-left mb-12 md:mb-16"
-      >
-        <h1 className="font-display text-5xl md:text-7xl font-bold text-brand-dark dark:text-white tracking-tighter">
-          Selected Works
-        </h1>
-        <p className="text-lg md:text-xl text-brand-light-blue dark:text-brand-gray mt-4 max-w-2xl mx-auto md:mx-0">
-          From full-stack e-commerce to sleek corporate sites, our work is
-          diverse and purpose-driven.
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="w-full"
-        >
-          {projectsData.map((project) => (
-            <ProjectListItem
-              key={project.id}
-              project={project}
-              isActive={activeProjectId === project.id}
-              setActive={setActiveProjectId}
-            />
-          ))}
-        </motion.div>
-
-        <div className="hidden lg:block sticky top-32">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="h-[60vh] rounded-2xl overflow-hidden shadow-2xl bg-brand-dark-blue/30 border border-brand-light-blue/20"
-          >
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={activeProject?.id}
-                src={activeProject?.image}
-                alt={activeProject?.title}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="absolute inset-0 w-full h-full object-fill"
-              />
-            </AnimatePresence>
-          </motion.div>
-        </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      className={`${gridClasses[project.size] || gridClasses.small} group relative bg-brand-dark p-10 border-white/5 overflow-hidden transition-all duration-700 hover:bg-brand-accent/[0.02]`}
+    >
+      {/* Background ID Watermark */}
+      <div className="absolute top-10 right-10 font-mono text-8xl font-black opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+        {project.id.split("-")[1]}
       </div>
-    </section>
-  );
-};
 
-const ProjectListItem = ({ project, isActive, setActive }) => (
-  <div
-    className="border-b border-gray-200 dark:border-brand-light-blue/20 cursor-pointer"
-    onMouseEnter={() => setActive(project.id)}
-    onClick={() => setActive(isActive ? null : project.id)}
-  >
-    <div className="py-6 flex justify-between items-center">
-      <h2
-        className={`font-display text-2xl md:text-4xl font-bold tracking-tight transition-colors ${
-          isActive
-            ? "text-brand-dark dark:text-white"
-            : "text-brand-light-blue dark:text-brand-gray"
-        }`}
-      >
-        {project.title}
-      </h2>
-      <span
-        className={`text-xl md:text-2xl font-mono transition-colors ${
-          isActive
-            ? "text-brand-accent"
-            : "text-brand-light-blue/50 dark:text-brand-gray/50"
-        }`}
-      >
-        0{project.id}
-      </span>
-    </div>
-    <AnimatePresence>
-      {isActive && (
-        <motion.div
-          initial={{ opacity: 0, height: 0, y: -10 }}
-          animate={{ opacity: 1, height: "auto", y: 0 }}
-          exit={{ opacity: 0, height: 0, y: -10 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          className="overflow-hidden"
-        >
+      <div className="relative z-10 h-full flex flex-col">
+        {/* Project Visual Module */}
+        <div className="relative aspect-video rounded-[2rem] overflow-hidden border border-white/5 mb-10 group/img">
           <img
             src={project.image}
             alt={project.title}
-            className="lg:hidden w-full h-auto object-cover rounded-lg mb-4"
+            className="w-full h-full object-cover grayscale group-hover/img:grayscale-0 transition-all duration-1000 scale-105 group-hover/img:scale-100"
           />
-          <p className="pb-4 text-base text-brand-light-blue dark:text-brand-gray">
+          <a
+            href={project.demoUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="absolute top-6 right-6 p-4 bg-brand-accent text-brand-dark rounded-xl opacity-0 translate-y-4 group-hover/img:opacity-100 group-hover/img:translate-y-0 transition-all duration-500 shadow-2xl"
+          >
+            <FiMaximize2 size={24} />
+          </a>
+        </div>
+
+        {/* Technical Briefing */}
+        <div className="flex flex-col flex-grow">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-mono text-[10px] text-brand-accent border border-brand-accent/30 px-2 py-0.5 rounded tracking-widest uppercase">
+              {project.category}
+            </span>
+            <span className="font-mono text-[9px] text-white/20 uppercase tracking-widest italic">
+              {project.id}
+            </span>
+          </div>
+
+          <h3 className="text-4xl font-bold text-white mb-6 uppercase tracking-tighter group-hover:text-brand-accent transition-colors">
+            {project.title.replace("_", " ")}
+          </h3>
+
+          <p className="text-brand-gray text-lg font-light leading-relaxed mb-10 flex-grow opacity-60 group-hover:opacity-100 transition-opacity">
             {project.description}
           </p>
-          <div className="flex flex-wrap gap-2 pb-4">
+
+          <div className="flex flex-wrap gap-2">
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 dark:bg-brand-dark-blue text-brand-light-blue dark:text-brand-accent"
+                className="px-4 py-1.5 rounded-lg text-[9px] font-bold border border-white/10 text-white/40 uppercase tracking-[0.2em] group-hover:border-brand-accent/20 transition-all"
               >
                 {tag}
               </span>
             ))}
           </div>
-          <div className="flex items-center gap-4 pb-6">
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors bg-brand-accent text-brand-dark hover:bg-brand-accent-hover"
-            >
-              <FiExternalLink /> Live Demo
-            </a>
-            {/* --- GITHUB BUTTON REMOVED --- */}
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-);
-
-// --- Scrolling Banner Component ---
-const ScrollingBanner = () => {
-  const repeatedItems = [...bannerItems, ...bannerItems];
-  return (
-    <section className="bg-white dark:bg-black w-full overflow-hidden">
-      <div className="group flex flex-col justify-center h-40 md:h-48 bg-brand-dark">
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <motion.div
-            className="absolute inset-0 opacity-20"
-            style={{
-              background: `radial-gradient(circle at 50% 50%, hsla(169, 100%, 50%, 0.5), transparent 70%)`,
-            }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              repeatType: "mirror",
-              ease: "easeInOut",
-            }}
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:36px_36px]"></div>
         </div>
-        <div className="relative flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused]">
-          {repeatedItems.map((item, index) => (
-            <div key={index} className="flex items-center gap-12 mx-6">
-              <span className="font-display text-5xl md:text-7xl font-bold tracking-tighter text-white">
-                {item}
-              </span>
-              <FiZap className="text-4xl md:text-5xl text-brand-accent flex-shrink-0" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// --- Animated Path / Process Section Component ---
-const AnimatedPathSection = () => (
-  <section className="bg-white dark:bg-brand-dark py-20 md:py-32">
-    <div className="container mx-auto px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.7 }}
-        className="text-center mb-16"
-      >
-        <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-          Our Streamlined Process
-        </h2>
-        <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray max-w-2xl mx-auto">
-          Every project is a partnership and a path we walk together, from
-          initial spark to final launch.
-        </p>
-      </motion.div>
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
-        className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto"
-      >
-        {milestones.map((milestone) => (
-          <MilestoneCard key={milestone.id} milestone={milestone} />
-        ))}
-      </motion.div>
-    </div>
-  </section>
-);
-
-const MilestoneCard = ({ milestone }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useTransform(mouseY, [-150, 150], [10, -10]);
-  const rotateY = useTransform(mouseX, [-150, 150], [-10, 10]);
-  const springConfig = { stiffness: 300, damping: 20 };
-  const springRotateX = useSpring(rotateX, springConfig);
-  const springRotateY = useSpring(rotateY, springConfig);
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left - rect.width / 2);
-    mouseY.set(e.clientY - rect.top - rect.height / 2);
-    e.currentTarget.style.setProperty(
-      "--mouse-x",
-      `${e.clientX - rect.left}px`
-    );
-    e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
-  };
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-  return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX: springRotateX,
-        rotateY: springRotateY,
-        transformStyle: "preserve-3d",
-      }}
-      variants={{
-        hidden: { opacity: 0, y: 50 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.5, ease: "easeOut" },
-        },
-      }}
-      className="group relative h-full p-8 bg-white dark:bg-brand-dark-blue/30 rounded-2xl border border-gray-200 dark:border-brand-light-blue/20 shadow-lg overflow-hidden"
-    >
-      <div
-        className="absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-        style={{
-          background: `radial-gradient(350px circle at var(--mouse-x) var(--mouse-y), hsla(169, 100%, 50%, 0.15), transparent 80%)`,
-        }}
-      />
-      <div
-        style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}
-      >
-        <h3 className="font-display text-2xl font-bold text-brand-accent mb-3">
-          {milestone.title}
-        </h3>
-        <p className="text-base text-brand-light-blue dark:text-brand-gray">
-          {milestone.description}
-        </p>
       </div>
     </motion.div>
   );
 };
-
-// --- Final CTA Component ---
-const FinalCta = () => (
-  <section className="py-20 md:py-28 text-center">
-    <div className="container mx-auto px-6">
-      <motion.h2
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        className="font-display text-4xl md:text-6xl font-bold tracking-tighter text-brand-dark dark:text-white mb-6"
-      >
-        Have a project in mind?
-      </motion.h2>
-      <motion.p
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ delay: 0.1 }}
-        className="text-lg md:text-xl text-brand-light-blue dark:text-brand-gray mb-8 max-w-xl mx-auto"
-      >
-        Let's collaborate and build something amazing. We're ready to bring your
-        vision to life.
-      </motion.p>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ delay: 0.2 }}
-      >
-        <Link
-          to="/contact"
-          className="group relative inline-flex items-center justify-center gap-2 px-10 py-4 text-lg font-bold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
-        >
-          <motion.span
-            className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-            initial={{ x: "-150%" }}
-            whileHover={{ x: "150%" }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          />
-          <span className="relative">Let's Talk</span>
-        </Link>
-      </motion.div>
-    </div>
-  </section>
-);
 
 export default Portfolio;

@@ -4,196 +4,163 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Seo from "../../components/common/Seo.jsx";
 import { packagesData } from "../../data/packagesData.js";
-import { FiCheckCircle, FiArrowRight } from "react-icons/fi";
-import Lottie from "lottie-react";
-import { useTheme } from "../../context/ThemeContext.jsx"; // Import useTheme
+import {
+  FiCheckCircle,
+  FiArrowRight,
+  FiTerminal,
+  FiActivity,
+  FiBox,
+  FiCpu,
+  FiCode,
+  FiGlobe,
+} from "react-icons/fi";
 
-// --- Framer Motion Variants ---
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-  },
-};
 const itemVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-};
-
-// --- A Sub-component for each Package Card ---
-const PackageCard = ({ pkg }) => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
-  return (
-    <motion.div
-      variants={itemVariants}
-      whileHover={{ y: -10, transition: { type: "spring", stiffness: 300 } }}
-      className={`relative h-full flex flex-col p-8 rounded-2xl border transition-all duration-300
-        ${
-          pkg.isHighlighted
-            ? isDark
-              ? "bg-brand-dark-blue border-2 border-brand-accent shadow-2xl shadow-brand-accent/10 lg:scale-105" // Dark mode highlight
-              : "bg-gradient-to-br from-brand-accent/10 to-brand-accent/5 border-2 border-brand-accent shadow-2xl shadow-brand-accent/10 lg:scale-105" // Light mode highlight
-            : isDark
-            ? "bg-brand-dark-blue/30 backdrop-blur-md border-brand-light-blue/20 shadow-xl" // Dark mode normal
-            : "bg-white/80 backdrop-blur-md border-gray-200 shadow-lg" // Light mode normal
-        }`}
-    >
-      {pkg.isHighlighted && (
-        <div
-          className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 px-4 py-1 text-sm font-bold bg-brand-accent rounded-full
-          text-brand-dark"
-        >
-          {" "}
-          {/* Ensure text is always dark for contrast on accent background */}
-          MOST POPULAR
-        </div>
-      )}
-
-      <div className="w-full h-48 mb-6 flex items-center justify-center">
-        <Lottie
-          animationData={pkg.lottieAnimation}
-          loop={true}
-          style={{ height: "100%" }}
-        />
-      </div>
-
-      <h2
-        className="font-display text-3xl font-bold mb-3 text-center tracking-tight
-        ${pkg.isHighlighted && !isDark ? 'text-brand-dark' : 'text-brand-dark dark:text-white'}"
-      >
-        {pkg.title}
-      </h2>
-      <p
-        className="mb-8 text-center min-h-[4.5rem]
-        ${pkg.isHighlighted && !isDark ? 'text-brand-dark/80' : 'text-brand-light-blue dark:text-brand-gray'}"
-      >
-        {pkg.description}
-      </p>
-
-      <div
-        className={`flex-grow pt-8 ${
-          pkg.isHighlighted && !isDark
-            ? "border-t border-brand-dark/20"
-            : "border-t border-brand-light-blue/20"
-        }`}
-      >
-        <ul className="space-y-4 mb-10">
-          {pkg.features.map((feature) => (
-            <li key={feature} className="flex items-start gap-3">
-              <FiCheckCircle className="w-6 h-6 text-brand-accent flex-shrink-0 mt-1" />
-              <span
-                className={`font-medium ${
-                  pkg.isHighlighted && !isDark
-                    ? "text-brand-dark"
-                    : "text-brand-dark dark:text-white"
-                }`}
-              >
-                {feature}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <Link
-        to="/contact"
-        className={`group relative mt-auto w-full inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-full shadow-lg overflow-hidden transition-all duration-300
-                    ${
-                      pkg.isHighlighted
-                        ? "text-brand-dark bg-brand-accent hover:scale-105"
-                        : isDark
-                        ? "text-white bg-brand-dark-blue hover:scale-105"
-                        : "text-brand-dark bg-gray-100 hover:bg-gray-200 hover:scale-105"
-                    }`}
-      >
-        <motion.span
-          className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-          initial={{ x: "-150%" }}
-          whileHover={{ x: "150%" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        />
-        <span className="relative">{pkg.ctaText}</span>
-        <FiArrowRight className="relative transition-transform duration-300 group-hover:translate-x-1" />
-      </Link>
-    </motion.div>
-  );
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
 const ServicePackagesPage = () => {
   return (
     <>
-      <Seo
-        title="Service Packages | Weblynx Infotech"
-        description="Explore our tailored service packages designed for startups, growing businesses, and e-commerce platforms. Find the perfect solution for your digital needs."
-      />
-      <main className="pt-[104px] md:pt-24 bg-white dark:bg-brand-dark">
-        <header className="py-20 sm:py-24 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="container mx-auto px-6"
-          >
-            <h1 className="font-display text-5xl md:text-7xl font-bold text-brand-dark dark:text-white tracking-tighter">
-              Solutions For Your Goals
+      <Seo title="Service Configurations | Weblynx Digital Engineering" />
+      <main className="pt-32 pb-20 bg-white dark:bg-brand-dark min-h-screen selection:bg-brand-accent selection:text-brand-dark">
+        {/* Compact Header */}
+        <header className="container mx-auto px-6 mb-16">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="h-[1px] w-8 bg-brand-accent"></span>
+              <span className="text-brand-accent font-mono text-[10px] uppercase tracking-[0.4em]">
+                Resource_Index_2026
+              </span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black dark:text-white uppercase tracking-tighter leading-none mb-6">
+              Engineering{" "}
+              <span className="ttext-5xl md:text-7xl font-black dark:text-white uppercase tracking-tighter leading-none mb-6">
+                Bundles.
+              </span>
             </h1>
-            <p className="text-lg md:text-xl mt-4 max-w-3xl mx-auto text-brand-light-blue dark:text-brand-gray">
-              We've bundled our services into clear, value-driven packages to
-              help you achieve your specific business objectives.
+            <p className="text-brand-light-blue dark:text-brand-gray text-base max-w-xl font-light">
+              Structured deployment tiers engineered for scalability,
+              performance, and strategic business growth.
             </p>
-          </motion.div>
+          </div>
         </header>
 
-        <section className="container mx-auto px-6 pb-20 sm:pb-28">
+        {/* Compact Tiers Grid */}
+        <section className="container mx-auto px-6">
           <motion.div
-            variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
-            {packagesData.map((pkg) => (
-              <PackageCard key={pkg.title} pkg={pkg} />
+            {packagesData.map((pkg, index) => (
+              <CompactPackageCard key={pkg.title} pkg={pkg} index={index} />
             ))}
           </motion.div>
         </section>
 
-        <section className="py-20 sm:py-24 text-center bg-gray-50 dark:bg-black">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7 }}
-            className="container mx-auto px-6 max-w-4xl"
-          >
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-dark dark:text-white mb-4 tracking-tight">
-              Don't See a Perfect Fit?
-            </h2>
-            <p className="text-lg text-brand-light-blue dark:text-brand-gray mb-8 max-w-2xl mx-auto">
-              Every project is unique. If our packages don't match your exact
-              needs, we'd love to build a custom proposal tailored specifically
-              to your vision.
-            </p>
+        {/* Custom Terminal Footer */}
+        <section className="mt-24 py-16 bg-gray-50 dark:bg-brand-dark-blue/10 border-t border-gray-100 dark:border-white/5">
+          <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="text-left">
+              <h3 className="text-2xl font-bold dark:text-white uppercase tracking-tight mb-2">
+                Non-Standard Requirements?
+              </h3>
+              <p className="text-sm text-brand-gray opacity-60 font-light">
+                We engineer bespoke proprietary systems for enterprise-scale
+                logic.
+              </p>
+            </div>
             <Link
               to="/contact"
-              className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-brand-dark bg-brand-accent rounded-full shadow-lg overflow-hidden transition-all duration-300 hover:scale-105"
+              className="group flex items-center gap-4 px-8 py-4 bg-brand-accent text-brand-dark font-black uppercase text-[10px] tracking-widest rounded-full transition-all hover:scale-105"
             >
-              <motion.span
-                className="absolute inset-0 block w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
-                initial={{ x: "-150%" }}
-                whileHover={{ x: "150%" }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-              />
-              <span className="relative">Request a Custom Quote</span>
+              REQUEST CUSTOM BUILD{" "}
+              <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
             </Link>
-          </motion.div>
+          </div>
         </section>
       </main>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1px currentColor;
+          color: transparent;
+        }
+      `}</style>
     </>
+  );
+};
+
+const CompactPackageCard = ({ pkg, index }) => {
+  const icons = [FiCode, FiCpu, FiGlobe];
+  const Icon = icons[index] || FiBox;
+
+  return (
+    <motion.div
+      variants={itemVariants}
+      className={`relative flex flex-col p-8 rounded-[2rem] border transition-all duration-500 group
+        ${
+          pkg.isHighlighted
+            ? "bg-brand-accent/[0.03] border-brand-accent shadow-2xl z-10"
+            : "bg-white dark:bg-brand-dark border-gray-100 dark:border-white/5"
+        }`}
+    >
+      {/* Top Meta Row */}
+      <div className="flex justify-between items-start mb-6">
+        <div className="p-3 rounded-xl bg-gray-50 dark:bg-white/5 text-brand-accent group-hover:bg-brand-accent group-hover:text-brand-dark transition-all duration-500">
+          <Icon size={20} />
+        </div>
+        <span className="font-mono text-[9px] opacity-20 group-hover:opacity-100 transition-opacity">
+          ID: 0{index + 1}
+        </span>
+      </div>
+
+      <h2 className="text-2xl font-black dark:text-white uppercase tracking-tighter mb-2 group-hover:text-brand-accent transition-colors">
+        {pkg.title}
+      </h2>
+
+      <p className="text-xs text-brand-gray font-light leading-relaxed mb-8 opacity-60">
+        {pkg.description}
+      </p>
+
+      {/* Surgical Feature List */}
+      <div className="space-y-3 mb-10 flex-grow">
+        {pkg.features.map((feature) => (
+          <div key={feature} className="flex items-center gap-3 group/item">
+            <div className="w-1 h-1 rounded-full bg-brand-accent opacity-40" />
+            <span className="text-[11px] font-medium dark:text-brand-gray group-hover/item:text-white transition-colors">
+              {feature}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Compact Action */}
+      <Link
+        to="/contact"
+        className={`w-full py-4 text-[9px] font-black uppercase tracking-[0.3em] rounded-xl transition-all duration-500 text-center
+          ${
+            pkg.isHighlighted
+              ? "bg-brand-accent text-brand-dark shadow-lg shadow-brand-accent/20"
+              : "bg-gray-100 dark:bg-white/5 dark:text-white hover:bg-brand-accent hover:text-brand-dark"
+          }`}
+      >
+        {pkg.ctaText}
+      </Link>
+
+      {/* Status Bar */}
+      <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/5 flex items-center justify-between opacity-20 group-hover:opacity-100 transition-opacity">
+        <span className="font-mono text-[8px] uppercase tracking-widest">
+          Protocol: Verified
+        </span>
+        <FiActivity
+          className={`text-[10px] ${pkg.isHighlighted ? "text-brand-accent animate-pulse" : ""}`}
+        />
+      </div>
+    </motion.div>
   );
 };
 

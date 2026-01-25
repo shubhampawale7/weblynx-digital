@@ -14,172 +14,224 @@ import {
   SiHtml5,
   SiCss3,
   SiJavascript,
+  SiTypescript,
 } from "react-icons/si";
-import { FaGlobe } from "react-icons/fa";
+import { FiCpu, FiActivity, FiTerminal, FiLayers } from "react-icons/fi";
 
-// Data is now a single array with added descriptions
 const techStackData = [
   {
-    name: "React",
+    name: "React.js",
     Icon: SiReact,
-    description: "For building dynamic, high-performance user interfaces.",
+    cat: "FRONTEND",
+    id: "MOD-01",
+    desc: "Building high-velocity, reactive user interfaces.",
   },
   {
     name: "Node.js",
     Icon: SiNodedotjs,
-    description: "For fast and scalable server-side applications.",
+    cat: "RUNTIME",
+    id: "MOD-02",
+    desc: "Non-blocking I/O for scalable server architectures.",
   },
   {
     name: "MongoDB",
     Icon: SiMongodb,
-    description: "A flexible NoSQL database for modern applications.",
+    cat: "DATABASE",
+    id: "MOD-03",
+    desc: "NoSQL document storage for complex data schemas.",
   },
   {
-    name: "WordPress",
-    Icon: SiWordpress,
-    description: "The world's most popular content management system.",
-  },
-  {
-    name: "Tailwind CSS",
-    Icon: SiTailwindcss,
-    description: "A utility-first CSS framework for rapid UI development.",
-  },
-  {
-    name: "Framer Motion",
-    Icon: SiFramer,
-    description: "A production-ready motion library for React.",
+    name: "TypeScript",
+    Icon: SiTypescript,
+    cat: "LANGUAGE",
+    id: "MOD-04",
+    desc: "Strong typing for bulletproof enterprise code.",
   },
   {
     name: "Express.js",
     Icon: SiExpress,
-    description: "A minimal and flexible Node.js web application framework.",
+    cat: "FRAMEWORK",
+    id: "MOD-05",
+    desc: "Minimalist web framework for surgical API builds.",
   },
   {
-    name: "JavaScript",
-    Icon: SiJavascript,
-    description: "The core language of the web, powering dynamic experiences.",
+    name: "WordPress",
+    Icon: SiWordpress,
+    cat: "CMS",
+    id: "MOD-06",
+    desc: "Enterprise-grade content management systems.",
   },
   {
-    name: "HTML5",
-    Icon: SiHtml5,
-    description: "The standard markup language for creating web pages.",
-  },
-  {
-    name: "CSS3",
-    Icon: SiCss3,
-    description:
-      "The stylesheet language used to describe the presentation of a document.",
+    name: "Tailwind",
+    Icon: SiTailwindcss,
+    cat: "STYLING",
+    id: "MOD-07",
+    desc: "Utility-first design systems for rapid deployment.",
   },
   {
     name: "GSAP",
     Icon: SiGreensock,
-    description: "A professional-grade animation library for the modern web.",
+    cat: "MOTION",
+    id: "MOD-08",
+    desc: "Cinematic performance-based web animations.",
   },
   {
-    name: "REST APIs",
-    Icon: FaGlobe,
-    description:
-      "For building robust and scalable communication between services.",
+    name: "Framer",
+    Icon: SiFramer,
+    cat: "MOTION",
+    id: "MOD-09",
+    desc: "Production-ready declarative motion for React.",
+  },
+  {
+    name: "JavaScript",
+    Icon: SiJavascript,
+    cat: "LANGUAGE",
+    id: "MOD-10",
+    desc: "The core engine of modern digital experiences.",
+  },
+  {
+    name: "HTML5",
+    Icon: SiHtml5,
+    cat: "MARKUP",
+    id: "MOD-11",
+    desc: "Semantic structural layer for accessible web.",
+  },
+  {
+    name: "CSS3",
+    Icon: SiCss3,
+    cat: "STYLING",
+    id: "MOD-12",
+    desc: "Advanced presentation and visual architecture.",
   },
 ];
 
 const TechStack = () => {
-  // Set the first item as the default active tech
   const [activeTech, setActiveTech] = useState(techStackData[0]);
 
   return (
     <section
       id="tech-stack"
-      className="bg-white dark:bg-brand-dark py-20 sm:py-28"
+      className="bg-white dark:bg-brand-dark py-24 md:py-40 border-t border-gray-100 dark:border-white/5 overflow-hidden"
     >
-      <Seo
-        title="Our Tech Stack | Weblynx Infotech - Modern Web Technologies"
-        description="Explore the cutting-edge technologies and frameworks Weblynx Infotech specializes in, including React, Node.js, Express.js, MongoDB, WordPress, and more."
-      />
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16 max-w-3xl mx-auto"
-        >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-            Our Technology Stack
-          </h2>
-          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
-            A curated ecosystem of modern technologies we use to build
-            high-performance applications.
-          </p>
-        </motion.div>
+      <Seo title="System Tech Stack | Weblynx Infotech" />
 
-        <div className="max-w-4xl mx-auto">
-          {/* Information Panel */}
-          <div className="relative h-28 p-6 flex items-center gap-6 bg-gray-50 dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 rounded-2xl overflow-hidden">
+      <div className="container mx-auto px-6">
+        {/* Technical Header */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-[2px] w-12 bg-brand-accent"></span>
+              <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
+                Hardware_Software_Stack
+              </span>
+            </div>
+            <h2 className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] uppercase italic">
+              Core{" "}
+              <span className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] uppercase italic">
+                Engine.
+              </span>
+            </h2>
+          </motion.div>
+
+          <div className="hidden lg:flex flex-col items-end opacity-20 font-mono text-[10px] uppercase tracking-widest">
+            <div className="flex items-center gap-2">
+              <FiCpu /> stack_v4.0.2
+            </div>
+            <div className="flex items-center gap-2">
+              <FiActivity /> optimization: 100%
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          {/* Information Terminal Panel */}
+          <div className="relative mb-12 p-8 md:p-12 bg-gray-50 dark:bg-brand-dark-blue/20 border border-gray-200 dark:border-white/5 rounded-[3rem] overflow-hidden backdrop-blur-xl group">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-accent/30 to-transparent" />
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTech.name}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                className="flex items-center gap-6"
+                className="grid md:grid-cols-12 gap-8 items-center"
               >
-                <activeTech.Icon className="text-5xl text-brand-accent" />
-                <div>
-                  <h3 className="font-display text-2xl font-bold text-brand-dark dark:text-white">
+                <div className="md:col-span-2 flex justify-center">
+                  <div className="p-6 rounded-[2rem] bg-brand-accent text-brand-dark shadow-[0_0_40px_rgba(0,245,212,0.3)]">
+                    <activeTech.Icon size={48} />
+                  </div>
+                </div>
+
+                <div className="md:col-span-10">
+                  <div className="flex items-center gap-4 mb-3">
+                    <span className="font-mono text-[10px] text-brand-accent border border-brand-accent/30 px-2 py-0.5 rounded tracking-widest">
+                      {activeTech.id}
+                    </span>
+                    <span className="font-mono text-[10px] opacity-30 uppercase tracking-[0.4em]">
+                      Type: {activeTech.cat}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-4xl font-bold text-brand-dark dark:text-white uppercase mb-4 tracking-tighter">
                     {activeTech.name}
                   </h3>
-                  <p className="text-brand-light-blue dark:text-brand-gray">
+                  <p className="text-xl text-brand-light-blue dark:text-brand-gray font-light max-w-2xl leading-relaxed">
                     {activeTech.description}
                   </p>
                 </div>
               </motion.div>
             </AnimatePresence>
+
+            {/* Visual background element */}
+            <FiTerminal className="absolute -bottom-10 -right-10 text-[15rem] opacity-[0.02] dark:opacity-[0.05]" />
           </div>
 
-          {/* Icon Grid */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={{
-              visible: { transition: { staggerChildren: 0.05 } },
-            }}
-            className="grid grid-cols-4 sm:grid-cols-6 gap-4 mt-8"
-          >
+          {/* Module Selection Grid */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-px bg-gray-200 dark:bg-white/5 border border-gray-200 dark:border-white/5 rounded-[2.5rem] overflow-hidden">
             {techStackData.map((tech) => (
               <motion.div
                 key={tech.name}
                 onMouseEnter={() => setActiveTech(tech)}
-                variants={{
-                  hidden: { opacity: 0, scale: 0.8 },
-                  visible: { opacity: 1, scale: 1 },
-                }}
-                className="cursor-pointer"
+                className={`group relative bg-white dark:bg-brand-dark aspect-square flex flex-col items-center justify-center cursor-pointer transition-all duration-500 overflow-hidden
+                  ${activeTech.name === tech.name ? "bg-brand-accent/5" : "hover:bg-gray-50 dark:hover:bg-white/5"}`}
               >
+                <tech.Icon
+                  className={`text-4xl transition-all duration-500 z-10 
+                  ${activeTech.name === tech.name ? "text-brand-accent scale-110" : "text-brand-light-blue dark:text-brand-gray opacity-30 group-hover:opacity-100"}`}
+                />
+
+                {/* Micro-ID for the card */}
+                <span className="absolute bottom-4 font-mono text-[8px] opacity-0 group-hover:opacity-20 transition-opacity tracking-widest uppercase">
+                  {tech.id}
+                </span>
+
+                {/* Active Indicator Line */}
                 <div
-                  className={`w-full aspect-square flex items-center justify-center rounded-xl border transition-all duration-300
-                    ${
-                      activeTech.name === tech.name
-                        ? "bg-white/80 dark:bg-brand-dark-blue border-brand-accent/50"
-                        : "bg-gray-50/80 dark:bg-brand-dark-blue/30 border-transparent hover:border-brand-light-blue/20"
-                    }`}
-                >
-                  <tech.Icon
-                    className={`text-4xl transition-colors duration-300
-                      ${
-                        activeTech.name === tech.name
-                          ? "text-brand-accent"
-                          : "text-brand-light-blue dark:text-brand-gray"
-                      }`}
-                  />
-                </div>
+                  className={`absolute bottom-0 left-0 h-1 bg-brand-accent transition-all duration-500 ${activeTech.name === tech.name ? "w-full" : "w-0"}`}
+                />
               </motion.div>
             ))}
-          </motion.div>
+          </div>
+
+          {/* Infrastructure Footnote */}
+          <div className="mt-12 flex justify-center items-center gap-6 opacity-20 font-mono text-[9px] uppercase tracking-[0.4em]">
+            <div className="h-px w-20 bg-current" />
+            <FiLayers /> Stack_Integrity_Verified
+            <div className="h-px w-20 bg-current" />
+          </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1.5px currentColor;
+          color: transparent;
+        }
+      `}</style>
     </section>
   );
 };

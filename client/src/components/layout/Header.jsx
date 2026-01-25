@@ -1,19 +1,10 @@
 // client/src/components/layout/Header.jsx
-
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { useTheme } from "../../context/ThemeContext.jsx";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import { FiSun, FiMoon, FiX, FiMenu } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiX, FiMenu, FiActivity, FiTerminal } from "react-icons/fi";
 
 const Header = () => {
-  const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
@@ -23,240 +14,176 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? "hidden" : "unset";
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isMenuOpen]);
-
-  const closeMenu = () => setIsMenuOpen(false);
-
   const navLinks = [
-    { to: "/", label: "Home" },
-    { to: "/about", label: "About" },
-    { to: "/services", label: "Services" },
-    { to: "/packages", label: "Packages" },
-    { to: "/our-work", label: "Our Work" },
-    { to: "/blog", label: "Blog" },
+    { to: "/", label: "HOME" },
+    { to: "/about", label: "ORIGIN" },
+    { to: "/services", label: "ARSENAL" },
+    { to: "/packages", label: "BUNDLES" },
+    { to: "/our-work", label: "LABS" },
+    { to: "/blog", label: "ARCHIVE" },
   ];
 
   return (
     <>
       <header
-        className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 z-[100] w-full transition-all duration-500 ease-in-out ${
           hasScrolled
-            ? "py-3 shadow-lg bg-white/80 dark:bg-brand-dark/80 backdrop-blur-xl border-b border-gray-200 dark:border-brand-light-blue/20"
-            : "py-5 bg-transparent"
+            ? "py-3 bg-brand-dark/70 backdrop-blur-xl border-b border-white/5 shadow-2xl"
+            : "py-6 bg-transparent"
         }`}
       >
         <nav className="container mx-auto flex justify-between items-center px-6">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-xl font-bold font-display text-brand-dark dark:text-white"
-          >
-            <img
-              src="/weblynxlogo.png"
-              alt="Weblynx Infotech Logo"
-              className="h-16 rounded-full"
-            />
-            <span className="hidden sm:inline">Weblynx Infotech</span>
+          {/* --- BRAND LOGO MODULE --- */}
+          <Link to="/" className="flex items-center gap-4 group">
+            <div className="relative">
+              <img
+                src="/weblynxlogo.png"
+                alt="Weblynx Logo"
+                className="h-12 w-12 rounded-full border border-brand-accent/20 group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute -inset-1 rounded-full bg-brand-accent/20 blur opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="text-lg font-black tracking-tighter uppercase text-white">
+                Weblynx{" "}
+                <span className="text-brand-accent italic font-light">
+                  Infotech
+                </span>
+              </span>
+              <span className="font-mono text-[8px] opacity-30 tracking-[0.4em] uppercase mt-1">
+                System_Nav_v4.0 // Locked
+              </span>
+            </div>
           </Link>
 
-          <ul className="hidden md:flex items-center gap-6">
+          {/* --- DESKTOP NAVIGATION --- */}
+          <ul className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <li key={link.to}>
                 <NavLink
                   to={link.to}
                   className={({ isActive }) =>
-                    `relative text-sm font-medium transition-colors duration-300 ${
+                    `group relative font-mono text-[10px] font-bold tracking-[0.2em] transition-all duration-300 ${
                       isActive
-                        ? "text-brand-dark dark:text-white"
-                        : "text-brand-light-blue hover:text-brand-dark dark:text-brand-gray dark:hover:text-white"
+                        ? "text-brand-accent"
+                        : "text-brand-gray hover:text-white"
                     }`
                   }
                 >
                   {({ isActive }) => (
-                    <>
-                      <motion.span
-                        whileHover={{ y: -2 }}
-                        className="inline-block"
-                      >
-                        {link.label}
-                      </motion.span>
+                    <div className="flex flex-col items-center">
+                      <span className="relative z-10">{link.label}</span>
                       {isActive && (
                         <motion.div
-                          layoutId="active-nav-underline"
-                          className="absolute -bottom-2 left-0 right-0 h-0.5 bg-brand-accent"
+                          layoutId="nav-glow"
+                          className="absolute -inset-x-2 -inset-y-1 bg-brand-accent/5 border-x border-brand-accent/20"
                           transition={{
                             type: "spring",
-                            stiffness: 350,
+                            stiffness: 300,
                             damping: 30,
                           }}
                         />
                       )}
-                    </>
+                      <div
+                        className={`h-[1px] w-0 bg-brand-accent mt-1 transition-all group-hover:w-full ${isActive ? "w-full" : ""}`}
+                      />
+                    </div>
                   )}
                 </NavLink>
               </li>
             ))}
           </ul>
 
-          <div className="hidden md:flex items-center gap-3">
-            <Magnetic>
-              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-            </Magnetic>
-            <Magnetic>
-              <Link
-                to="/contact"
-                className="block px-5 py-2.5 text-sm font-semibold text-brand-dark bg-brand-accent hover:bg-brand-accent-hover rounded-full shadow-lg transition-all duration-300"
-              >
-                Get a Quote
-              </Link>
-            </Magnetic>
+          {/* --- ACTION MODULE --- */}
+          <div className="hidden lg:flex items-center">
+            <Link
+              to="/contact"
+              className="relative px-6 py-3 bg-brand-accent text-brand-dark font-black text-[10px] tracking-[0.3em] uppercase transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(0,245,212,0.4)] overflow-hidden group"
+              style={{
+                clipPath:
+                  "polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)",
+              }}
+            >
+              <div className="relative z-10 flex items-center gap-2">
+                <FiTerminal /> INITIALIZE_PROJECT
+              </div>
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            </Link>
           </div>
 
-          <div className="md:hidden flex items-center gap-3">
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          {/* --- MOBILE TRIGGER --- */}
+          <div className="lg:hidden flex items-center gap-4">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle menu"
+              className="p-3 bg-white/5 rounded-xl border border-white/10"
             >
-              <FiMenu className="w-6 h-6 text-brand-dark dark:text-white" />
+              <FiMenu className="w-6 h-6 text-white" />
             </button>
           </div>
         </nav>
       </header>
 
       <AnimatePresence>
-        {isMenuOpen && <MobileMenu navLinks={navLinks} closeMenu={closeMenu} />}
+        {isMenuOpen && (
+          <MobileMenu
+            navLinks={navLinks}
+            closeMenu={() => setIsMenuOpen(false)}
+          />
+        )}
       </AnimatePresence>
     </>
   );
 };
 
-// --- Full Screen Mobile Menu ---
-const mobileMenuVariants = {
-  open: {
-    y: "0%",
-    transition: {
-      type: "spring",
-      stiffness: 200,
-      damping: 25,
-      when: "beforeChildren",
-      staggerChildren: 0.05,
-    },
-  },
-  closed: {
-    y: "-100%",
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 30,
-      when: "afterChildren",
-      staggerChildren: 0.05,
-      staggerDirection: -1,
-    },
-  },
-};
-
-const mobileLinkVariants = {
-  open: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 200 } },
-  closed: { y: 20, opacity: 0 },
-};
-
 const MobileMenu = ({ navLinks, closeMenu }) => (
   <motion.div
-    variants={mobileMenuVariants}
-    initial="closed"
-    animate="open"
-    exit="closed"
-    className="md:hidden fixed inset-0 z-50 bg-white dark:bg-brand-dark flex flex-col items-center justify-center"
+    initial={{ x: "100%" }}
+    animate={{ x: 0 }}
+    exit={{ x: "100%" }}
+    transition={{ type: "spring", damping: 25, stiffness: 200 }}
+    className="lg:hidden fixed inset-0 z-[110] bg-brand-dark flex flex-col p-8"
   >
-    <button
-      onClick={closeMenu}
-      aria-label="Close menu"
-      className="absolute top-6 right-6"
-    >
-      <FiX className="w-8 h-8 text-brand-dark dark:text-white" />
-    </button>
-    <ul className="flex flex-col items-center gap-8">
-      {[...navLinks, { to: "/contact", label: "Get a Quote" }].map((link) => (
-        <motion.li key={link.to} variants={mobileLinkVariants}>
-          <NavLink
-            to={link.to}
-            onClick={closeMenu}
-            className={({ isActive }) =>
-              `font-display text-4xl font-bold transition-colors ${
-                isActive
-                  ? "text-brand-accent"
-                  : "text-brand-dark dark:text-white"
-              }`
-            }
-          >
-            {link.label}
-          </NavLink>
-        </motion.li>
+    <div className="flex justify-between items-center mb-16">
+      <span className="font-mono text-[10px] text-brand-accent tracking-[0.4em]">
+        SYSTEM_OVERRIDE
+      </span>
+      <button
+        onClick={closeMenu}
+        className="p-4 rounded-full bg-white/5 border border-white/10 text-brand-accent"
+      >
+        <FiX size={24} />
+      </button>
+    </div>
+
+    <div className="flex flex-col gap-8">
+      {navLinks.map((link) => (
+        <NavLink
+          key={link.to}
+          to={link.to}
+          onClick={closeMenu}
+          className="text-5xl font-black text-white uppercase tracking-tighter italic hover:text-brand-accent transition-colors"
+        >
+          {link.label}
+        </NavLink>
       ))}
-    </ul>
+      <Link
+        to="/contact"
+        onClick={closeMenu}
+        className="mt-12 text-3xl font-mono text-brand-accent uppercase tracking-widest border-t border-white/10 pt-8"
+      >
+        [ Initialize_Contact ]
+      </Link>
+    </div>
+
+    <div className="mt-auto flex justify-between items-center opacity-20">
+      <div className="flex items-center gap-2 font-mono text-[8px] text-white">
+        <FiActivity /> SIGNAL: OPTIMAL
+      </div>
+      <span className="font-mono text-[8px] text-white tracking-widest uppercase">
+        Weblynx_OS_v4.0
+      </span>
+    </div>
   </motion.div>
 );
-
-// --- Theme Toggle Button ---
-const ThemeToggle = ({ theme, toggleTheme }) => (
-  <motion.button
-    onClick={toggleTheme}
-    className="p-2 rounded-full text-brand-dark dark:text-brand-bg hover:bg-gray-200 dark:hover:bg-brand-dark-blue transition-colors"
-    whileTap={{ scale: 0.9, rotate: 15 }}
-    aria-label="Toggle theme"
-  >
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={theme}
-        initial={{ y: -15, opacity: 0, rotate: -90 }}
-        animate={{ y: 0, opacity: 1, rotate: 0 }}
-        exit={{ y: 15, opacity: 0, rotate: 90 }}
-        transition={{ duration: 0.25 }}
-      >
-        {theme === "dark" ? (
-          <FiSun className="h-5 w-5" />
-        ) : (
-          <FiMoon className="h-5 w-5" />
-        )}
-      </motion.div>
-    </AnimatePresence>
-  </motion.button>
-);
-
-// --- Magnetic Effect Wrapper Component ---
-const Magnetic = ({ children }) => {
-  const ref = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  const mouseMove = (e) => {
-    const { clientX, clientY } = e;
-    const { width, height, left, top } = ref.current.getBoundingClientRect();
-    const x = clientX - (left + width / 2);
-    const y = clientY - (top + height / 2);
-    setPosition({ x, y });
-  };
-
-  const mouseLeave = () => {
-    setPosition({ x: 0, y: 0 });
-  };
-
-  const { x, y } = position;
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={mouseMove}
-      onMouseLeave={mouseLeave}
-      animate={{ x, y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-    >
-      {children}
-    </motion.div>
-  );
-};
 
 export default Header;

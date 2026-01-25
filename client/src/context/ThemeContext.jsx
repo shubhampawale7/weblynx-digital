@@ -1,27 +1,29 @@
 // client/src/context/ThemeContext.jsx
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useLayoutEffect } from "react";
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  // Initialize theme from localStorage or default to 'dark'
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== "undefined" && window.localStorage) {
-      const storedTheme = localStorage.getItem("theme");
-      return storedTheme ? storedTheme : "dark"; // Default to dark theme
-    }
-    return "dark"; // Default for SSR or initial load without localStorage
-  });
+  // We lock the theme to 'dark' globally
+  const theme = "dark";
 
-  useEffect(() => {
-    const root = window.document.documentElement; // This is the <html> tag
-    root.classList.remove("light", "dark"); // Remove existing theme classes
-    root.classList.add(theme); // Add current theme class
-    localStorage.setItem("theme", theme); // Store theme preference
-  }, [theme]);
+  useLayoutEffect(() => {
+    const root = window.document.documentElement;
 
+    // Hard-reset: Remove any light mode traces and force dark
+    root.classList.remove("light");
+    root.classList.add("dark");
+
+    // Optional: Clear old storage so it doesn't conflict
+    localStorage.removeItem("weblynx_env_theme");
+    localStorage.removeItem("theme");
+  }, []);
+
+  // toggleTheme becomes a no-op to prevent crashes in components that still call it
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
+    console.warn(
+      "Weblynx_OS: Theme is locked to DARK_MODE by system directive.",
+    );
   };
 
   return (
@@ -31,4 +33,10 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme must be used within a ThemeProvider.");
+  }
+  return context;
+};

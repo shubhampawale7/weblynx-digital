@@ -2,188 +2,182 @@
 import React, { useState, useEffect } from "react";
 import Seo from "../../components/common/Seo.jsx";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaQuoteLeft } from "react-icons/fa";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiActivity,
+  FiTerminal,
+} from "react-icons/fi";
 
-// --- Enriched Testimonials Data with Avatars & Colors ---
 const testimonialsData = [
   {
+    id: "01",
     name: "Priya Sharma",
     company: "Aakash Textiles",
     quote:
-      "Working with Weblynx Infotech was a game-changer. Their team understood our vision perfectly and delivered a web application that has streamlined our entire operation.",
+      "Weblynx Infotech was a game-changer. They built a custom architecture that effectively streamlined our entire global operation.",
     avatar: "PS",
-    color: "bg-teal-500",
   },
   {
+    id: "02",
     name: "Vikram Singh",
     company: "Surya Logistics",
     quote:
-      "The professionalism and technical expertise are top-notch. They handled our complex API integrations seamlessly, and their support has been outstanding.",
+      "The technical depth here is unmatched. They handled complex API bridges seamlessly, delivering a zero-latency system.",
     avatar: "VS",
-    color: "bg-sky-500",
   },
   {
+    id: "03",
     name: "Anjali Mehta",
-    company: "The Chai Spot Cafe",
+    company: "The Chai Spot",
     quote:
-      "They built a stunning WordPress site for my cafe that has brought in so much new business. The design is beautiful, and it's so easy for me to update the menu myself.",
+      "They engineered a high-performance CMS engine for us. The design is surgical, and our conversion rates have spiked.",
     avatar: "AM",
-    color: "bg-amber-500",
   },
   {
+    id: "04",
     name: "Rohan Desai",
     company: "NextGen Edu",
     quote:
-      "For scalable, high-performance MERN stack applications, I wouldn't trust anyone else. Weblynx Infotech delivers quality code on time, every time.",
+      "For scalable MERN stack infrastructure, Weblynx is the gold standard. Clean-room code and on-time deployment.",
     avatar: "RD",
-    color: "bg-indigo-500",
   },
 ];
 
-// --- Framer Motion Variants for the carousel ---
-const carouselVariants = {
-  enter: (direction) => ({
-    x: direction > 0 ? "100%" : "-100%",
-    opacity: 0,
-  }),
-  center: {
-    zIndex: 1,
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction) => ({
-    zIndex: 0,
-    x: direction < 0 ? "100%" : "-100%",
-    opacity: 0,
-  }),
-};
-
 const Testimonials = () => {
-  const [[page, direction], setPage] = useState([0, 0]);
-  const [isHovering, setIsHovering] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  const activeIndex =
-    ((page % testimonialsData.length) + testimonialsData.length) %
-    testimonialsData.length;
-
-  const paginate = (newDirection) => {
-    setPage([page + newDirection, newDirection]);
+  const next = () => {
+    setDirection(1);
+    setIndex((prev) => (prev + 1) % testimonialsData.length);
   };
 
-  const goToTestimonial = (newIndex) => {
-    const currentWrappedIndex =
-      ((page % testimonialsData.length) + testimonialsData.length) %
-      testimonialsData.length;
-    const newDirection = newIndex > currentWrappedIndex ? 1 : -1;
-    setPage([newIndex, newDirection]);
+  const prev = () => {
+    setDirection(-1);
+    setIndex(
+      (prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length,
+    );
   };
 
   useEffect(() => {
-    if (isHovering) return;
-    const autoplay = setInterval(() => paginate(1), 5000);
-    return () => clearInterval(autoplay);
-  }, [page, isHovering]);
+    const timer = setInterval(next, 6000);
+    return () => clearInterval(timer);
+  }, [index]);
 
   return (
-    <section className="bg-gray-50 dark:bg-black py-20 sm:py-28">
-      {/* SEO Component */}
-      <Seo
-        title="Home | Weblynx Infotech"
-        description="See what our clients in Pune and beyond are saying about our web development, SEO, and digital marketing services. Real feedback from real partners."
-      />
+    <section className="relative bg-white dark:bg-brand-dark py-24 md:py-40 overflow-hidden border-t border-gray-100 dark:border-white/5">
+      <Seo title="Case Validations | Weblynx Infotech" />
 
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16 max-w-3xl mx-auto"
-        >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-brand-dark dark:text-white tracking-tighter">
-            What Our Partners Say
+      {/* Technical Background Element */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none select-none">
+        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-[25vw] leading-none uppercase">
+          TRUST
+        </span>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header Section */}
+        <div className="max-w-4xl mx-auto mb-20 text-center">
+          <div className="inline-flex items-center gap-4 px-4 py-2 rounded-full border border-brand-accent/20 bg-brand-accent/5 mb-8">
+            <FiActivity className="text-brand-accent animate-pulse" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-brand-accent">
+              Partner_Feedback // Verified_Execution
+            </span>
+          </div>
+          <h2 className="font-display text-5xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-none uppercase italic">
+            Client{" "}
+            <span className="font-display text-5xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-none uppercase italic">
+              Validations.
+            </span>
           </h2>
-          <p className="text-lg mt-4 text-brand-light-blue dark:text-brand-gray">
-            Real feedback from businesses we've helped build and scale.
-          </p>
-        </motion.div>
-
-        <div
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className="relative max-w-3xl mx-auto h-[350px] sm:h-[300px]"
-        >
-          <AnimatePresence initial={false} custom={direction}>
-            <motion.div
-              key={page}
-              custom={direction}
-              variants={carouselVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
-              }}
-              className="absolute w-full h-full p-8 bg-white dark:bg-brand-dark-blue/30 border border-gray-200 dark:border-brand-light-blue/20 rounded-2xl shadow-lg flex flex-col justify-between"
-            >
-              <div>
-                <FaQuoteLeft className="text-3xl text-gray-200 dark:text-brand-dark-blue mb-4" />
-                <blockquote className="text-lg md:text-xl font-medium text-brand-dark dark:text-white leading-relaxed">
-                  {testimonialsData[activeIndex].quote}
-                </blockquote>
-              </div>
-              <div className="flex items-center gap-4 mt-6">
-                <div
-                  className={`w-12 h-12 rounded-full ${testimonialsData[activeIndex].color} flex items-center justify-center text-white font-bold text-lg`}
-                >
-                  {testimonialsData[activeIndex].avatar}
-                </div>
-                <div>
-                  <h3 className="font-display font-semibold text-brand-dark dark:text-white">
-                    {testimonialsData[activeIndex].name}
-                  </h3>
-                  <p className="text-sm text-brand-light-blue dark:text-brand-gray">
-                    {testimonialsData[activeIndex].company}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Prev/Next Buttons */}
-          <button
-            onClick={() => paginate(-1)}
-            className="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-12 p-2 bg-white/50 dark:bg-brand-dark-blue/50 backdrop-blur-sm rounded-full text-brand-dark dark:text-white hover:bg-brand-accent/20 transition-colors z-20"
-          >
-            <FiChevronLeft size={24} />
-          </button>
-          <button
-            onClick={() => paginate(1)}
-            className="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-12 p-2 bg-white/50 dark:bg-brand-dark-blue/50 backdrop-blur-sm rounded-full text-brand-dark dark:text-white hover:bg-brand-accent/20 transition-colors z-20"
-          >
-            <FiChevronRight size={24} />
-          </button>
         </div>
 
-        {/* Dot Indicators */}
-        <div className="flex justify-center gap-3 mt-8">
-          {testimonialsData.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goToTestimonial(i)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300
-                ${
-                  activeIndex === i
-                    ? "w-8 bg-brand-accent"
-                    : "bg-gray-300 dark:bg-brand-dark-blue hover:bg-gray-400"
+        {/* Main Carousel Module */}
+        <div className="relative max-w-5xl mx-auto">
+          <div className="relative aspect-[16/9] md:aspect-[21/9] bg-gray-50 dark:bg-brand-dark-blue/20 rounded-[3rem] border border-gray-100 dark:border-white/5 overflow-hidden backdrop-blur-xl shadow-2xl">
+            {/* Nav Controls */}
+            <div className="absolute top-1/2 -translate-y-1/2 left-6 right-6 flex justify-between z-30 pointer-events-none">
+              <button
+                onClick={prev}
+                className="p-4 rounded-full bg-white/10 border border-white/10 text-white hover:bg-brand-accent hover:text-brand-dark transition-all pointer-events-auto shadow-xl"
+              >
+                <FiChevronLeft size={24} />
+              </button>
+              <button
+                onClick={next}
+                className="p-4 rounded-full bg-white/10 border border-white/10 text-white hover:bg-brand-accent hover:text-brand-dark transition-all pointer-events-auto shadow-xl"
+              >
+                <FiChevronRight size={24} />
+              </button>
+            </div>
+
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={index}
+                custom={direction}
+                initial={{ opacity: 0, x: direction * 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction * -50 }}
+                transition={{ duration: 0.5, ease: "circOut" }}
+                className="absolute inset-0 flex flex-col items-center justify-center p-12 md:p-24 text-center"
+              >
+                <FiTerminal className="text-brand-accent text-3xl mb-8 opacity-20" />
+
+                <blockquote className="text-2xl md:text-4xl font-bold dark:text-white tracking-tight leading-tight mb-12 italic">
+                  "{testimonialsData[index].quote}"
+                </blockquote>
+
+                <div className="flex items-center gap-6 text-left">
+                  <div className="w-16 h-16 rounded-2xl bg-brand-accent flex items-center justify-center text-brand-dark font-black text-xl shadow-lg">
+                    {testimonialsData[index].avatar}
+                  </div>
+                  <div>
+                    <h4 className="font-mono text-xs text-brand-accent uppercase tracking-widest mb-1">
+                      Authenticated Partner
+                    </h4>
+                    <h3 className="text-xl font-bold dark:text-white uppercase">
+                      {testimonialsData[index].name}
+                    </h3>
+                    <p className="text-sm dark:text-brand-gray opacity-40 font-mono uppercase tracking-tighter">
+                      {testimonialsData[index].company}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Corner Decorative Code Snippet */}
+            <div className="absolute bottom-6 right-10 font-mono text-[8px] opacity-10 hidden md:block select-none pointer-events-none">
+              <code>
+                {`{ status: "verified", id: "${testimonialsData[index].id}", type: "partner_review" }`}
+              </code>
+            </div>
+          </div>
+
+          {/* Progress Indicators */}
+          <div className="flex justify-center gap-4 mt-12">
+            {testimonialsData.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setIndex(i)}
+                className={`h-1 rounded-full transition-all duration-700 ${
+                  index === i
+                    ? "w-16 bg-brand-accent shadow-[0_0_10px_rgba(0,245,212,0.5)]"
+                    : "w-8 bg-gray-200 dark:bg-white/10"
                 }`}
-              aria-label={`Go to testimonial ${i + 1}`}
-            />
-          ))}
+              />
+            ))}
+          </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .text-outline {
+          -webkit-text-stroke: 1.5px currentColor;
+          color: transparent;
+        }
+      `}</style>
     </section>
   );
 };
