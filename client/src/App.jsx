@@ -1,9 +1,14 @@
-// client/src/App.jsx
-import React, { Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { Suspense, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { useTheme } from "./context/ThemeContext.jsx";
 import { motion } from "framer-motion";
 import { FiActivity } from "react-icons/fi";
+import ReactGA from "react-ga4";
 
 // Main Pages
 import Home from "./pages/Home/Home.jsx";
@@ -38,6 +43,26 @@ const BlogListingPage = React.lazy(
 );
 const BlogPostPage = React.lazy(() => import("./pages/Blog/BlogPostPage.jsx"));
 
+// Initialize GA4 with your Measurement ID
+// Replace 'G-XXXXXXXXXX' with your actual ID from Google Analytics
+ReactGA.initialize("G-XXXXXXXXXX");
+
+// --- TELEMETRY: SPA Page View Tracker ---
+const AnalyticsTracker = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // This pings GA4 every time the route changes
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: document.title,
+    });
+  }, [location]);
+
+  return null;
+};
+
 // Technical "System Initializing" Spinner
 const LoadingSpinner = () => (
   <div className="flex flex-col h-screen w-full items-center justify-center bg-brand-dark">
@@ -66,6 +91,9 @@ function App() {
       className={`app-container flex flex-col min-h-screen bg-brand-dark selection:bg-brand-accent selection:text-brand-dark`}
     >
       <Router>
+        {/* Tracker must be inside Router to use location hook */}
+        <AnalyticsTracker />
+
         <ScrollToBegin />
         <Header />
 
