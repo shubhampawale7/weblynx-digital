@@ -23,14 +23,15 @@ import {
   FiActivity,
 } from "react-icons/fi";
 
-// --- Service Data (Updated with Support & Management) ---
+// --- 1. DATA STRUCTURES (Must stay at the top or in external files) ---
+
 const services = [
   {
     id: "custom-web-applications",
     title: "Custom Web Apps",
     Icon: FiCode,
-    tags: ["MERN", "Scalable", "Secure"],
-    desc: "Bespoke engines built for high-performance business logic and complex workflows.",
+    tags: ["MERN Stack", "Scalable", "Secure"],
+    desc: "Bespoke engineering solutions built for high-performance business logic and complex enterprise workflows.",
     colSpan: "md:col-span-8",
     bg: "bg-blue-500/5",
     accent: "text-blue-500",
@@ -40,7 +41,7 @@ const services = [
     title: "Mobile Apps",
     Icon: FiSmartphone,
     tags: ["iOS", "Android"],
-    desc: "Seamless native and cross-platform mobile experiences.",
+    desc: "Seamless native and cross-platform mobile experiences engineered for maximum global market reach.",
     colSpan: "md:col-span-4",
     bg: "bg-purple-500/5",
     accent: "text-purple-500",
@@ -50,7 +51,7 @@ const services = [
     title: "API Systems",
     Icon: FiLink,
     tags: ["REST", "Webhooks"],
-    desc: "Connecting your ecosystem with surgical precision and automated data flow.",
+    desc: "Connecting your digital ecosystem with surgical precision and automated, high-security data flow.",
     colSpan: "md:col-span-4",
     bg: "bg-emerald-500/5",
     accent: "text-emerald-500",
@@ -59,8 +60,8 @@ const services = [
     id: "full-stack-development",
     title: "Full Stack Dev",
     Icon: FiLayers,
-    tags: ["End-to-End", "DevOps"],
-    desc: "Frontend mastery meets Backend stability for cohesive digital products.",
+    tags: ["End-to-End", "Cloud Ops"],
+    desc: "Frontend mastery meets Backend architectural stability for cohesive, high-stakes digital products.",
     colSpan: "md:col-span-8",
     bg: "bg-brand-accent/5",
     accent: "text-brand-accent",
@@ -70,7 +71,7 @@ const services = [
     title: "SEO & Growth",
     Icon: FiTrendingUp,
     tags: ["Analytics", "Ranking"],
-    desc: "Data-driven visibility strategies that convert visitors into customers.",
+    desc: "Data-driven organic visibility strategies and technical audits designed to dominate search engine results.",
     colSpan: "md:col-span-6",
     bg: "bg-orange-500/5",
     accent: "text-orange-500",
@@ -79,8 +80,8 @@ const services = [
     id: "wordpress-site-creation",
     title: "WordPress CMS",
     Icon: FiPenTool,
-    tags: ["Custom Themes"],
-    desc: "Elegant, manageable, and lightning-fast WordPress solutions.",
+    tags: ["Custom UI", "Headless"],
+    desc: "Elegant, manageable, and lightning-fast custom WordPress solutions engineered without technical debt.",
     colSpan: "md:col-span-6",
     bg: "bg-red-500/5",
     accent: "text-red-500",
@@ -89,15 +90,14 @@ const services = [
     id: "support-management-services",
     title: "Support & Ops",
     Icon: FiSettings,
-    tags: ["24/7 Monitoring", "Security"],
-    desc: "Proactive maintenance and system vigilance to ensure zero downtime.",
-    colSpan: "md:col-span-12", // Full width to act as a "Managed Services" anchor
+    tags: ["24/7 Monitoring", "Cybersecurity"],
+    desc: "Proactive maintenance, system vigilance, and security patching to ensure zero-latency business continuity.",
+    colSpan: "md:col-span-12",
     bg: "bg-gray-500/5",
     accent: "text-gray-400",
   },
 ];
 
-// --- Quiz Logic Data ---
 const questions = [
   {
     id: 1,
@@ -156,7 +156,7 @@ const resultMapping = {
     title: "Commerce Accelerator",
     description:
       "A high-conversion MERN architecture designed for Stripe payments and massive product scaling.",
-    link: "/services/ecommerce-development",
+    link: "/services/wordpress-site-creation",
     icon: FiShoppingCart,
     color: "bg-emerald-500",
   },
@@ -186,65 +186,11 @@ const resultMapping = {
   },
 };
 
-const Services = () => {
-  return (
-    <>
-      <Seo
-        title="Services | Weblynx Infotech"
-        description="High-end MERN development and digital strategy."
-      />
+// --- 2. SUB-COMPONENTS ---
 
-      <main className="bg-white dark:bg-brand-dark min-h-screen">
-        {/* --- HERO --- */}
-        <section className="container mx-auto px-6 pt-32 pb-20 relative">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-accent/5 blur-[150px] rounded-full -z-10" />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-[12vw] md:text-[10rem] font-black leading-[0.8] tracking-tighter uppercase dark:text-white">
-              The <br /> <span className="text-brand-accent">Arsenal</span>
-            </h1>
-            <p className="mt-8 text-xl md:text-2xl font-light dark:text-brand-gray max-w-2xl">
-              Specialized technical capabilities engineered to solve complex
-              business challenges.
-            </p>
-          </motion.div>
-        </section>
-
-        {/* --- BENTO GRID --- */}
-        <section className="container mx-auto px-6 mb-40">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            {services.map((service, i) => (
-              <ServiceBlock key={service.id} service={service} index={i} />
-            ))}
-          </div>
-        </section>
-
-        {/* --- PROJECT MATCHING SECTION --- */}
-        <ProjectMatchingSection />
-
-        {/* --- FOOTER CTA --- */}
-        <section className="py-40 bg-gray-50 dark:bg-black/20 text-center">
-          <h2 className="text-5xl md:text-8xl font-bold dark:text-white tracking-tighter mb-10">
-            Ready to <span className="text-brand-accent">Execute?</span>
-          </h2>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-4 px-12 py-6 bg-brand-accent text-brand-dark font-black text-xl rounded-full hover:scale-105 transition-transform"
-          >
-            Deploy Now <FiArrowRight />
-          </Link>
-        </section>
-      </main>
-    </>
-  );
-};
-
-// --- ServiceBlock Component ---
 const ServiceBlock = ({ service, index }) => (
-  <motion.div
+  <motion.article
+    role="listitem"
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
@@ -254,10 +200,14 @@ const ServiceBlock = ({ service, index }) => (
     <div className="flex justify-between items-start">
       <div
         className={`p-6 rounded-2xl bg-white dark:bg-brand-dark shadow-xl ${service.accent} group-hover:bg-brand-accent group-hover:text-brand-dark transition-colors duration-500`}
+        aria-hidden="true"
       >
         <service.Icon size={32} />
       </div>
-      <div className="flex flex-wrap justify-end gap-2">
+      <div
+        className="flex flex-wrap justify-end gap-2"
+        aria-label={`Tech tags for ${service.title}`}
+      >
         {service.tags.map((tag) => (
           <span
             key={tag}
@@ -268,8 +218,8 @@ const ServiceBlock = ({ service, index }) => (
         ))}
       </div>
     </div>
-    <div className="mt-12">
-      <h3 className="text-4xl md:text-5xl font-bold dark:text-white tracking-tighter mb-4">
+    <div className="mt-12 relative z-10">
+      <h3 className="text-4xl md:text-5xl font-bold dark:text-white tracking-tighter mb-4 uppercase">
         {service.title}
       </h3>
       <p className="text-lg dark:text-brand-gray leading-tight max-w-sm mb-8">
@@ -277,20 +227,21 @@ const ServiceBlock = ({ service, index }) => (
       </p>
       <Link
         to={`/services/${service.id}`}
+        aria-label={`Learn more about ${service.title} capabilities`}
         className="text-brand-accent font-bold flex items-center gap-2 group-hover:gap-4 transition-all"
       >
-        Explore Capabilities <FiChevronRight />
+        Explore Capabilities <FiChevronRight aria-hidden="true" />
       </Link>
     </div>
-
-    {/* Background Decorative Icon */}
-    <div className="absolute -bottom-10 -right-10 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-700 pointer-events-none">
+    <div
+      className="absolute -bottom-10 -right-10 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-700 pointer-events-none"
+      aria-hidden="true"
+    >
       <service.Icon size={300} />
     </div>
-  </motion.div>
+  </motion.article>
 );
 
-// --- PROJECT MATCHING SECTION ---
 const ProjectMatchingSection = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -311,7 +262,6 @@ const ProjectMatchingSection = () => {
         finalKey = "new_business_fast";
       else if (goal === "grow_business" && speed === "medium")
         finalKey = "grow_business_medium";
-
       setResult(resultMapping[finalKey]);
     }
   };
@@ -323,9 +273,15 @@ const ProjectMatchingSection = () => {
   };
 
   return (
-    <section className="py-32 bg-brand-dark overflow-hidden relative border-y border-white/5">
+    <section
+      aria-label="Service Matching Tool"
+      className="py-32 bg-brand-dark overflow-hidden relative border-y border-white/5"
+    >
       <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto bg-brand-dark-blue/30 rounded-[4rem] border border-white/5 p-8 md:p-20 relative backdrop-blur-xl">
+        <div
+          className="max-w-6xl mx-auto bg-brand-dark-blue/30 rounded-[4rem] border border-white/5 p-8 md:p-20 relative backdrop-blur-xl"
+          aria-live="polite"
+        >
           <AnimatePresence mode="wait">
             {!result ? (
               <motion.div
@@ -334,28 +290,38 @@ const ProjectMatchingSection = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 className="w-full"
+                role="group"
+                aria-labelledby="step-question"
               >
-                <div className="flex gap-2 mb-12 justify-center">
+                <div
+                  className="flex gap-2 mb-12 justify-center"
+                  aria-hidden="true"
+                >
                   {questions.map((_, i) => (
                     <div
                       key={i}
-                      className={`h-1 w-12 rounded-full transition-all duration-500 ${i <= step ? "bg-brand-accent shadow-[0_0_10px_rgba(0,245,212,0.5)]" : "bg-white/10"}`}
+                      className={`h-1 w-12 rounded-full transition-all duration-500 ${i <= step ? "bg-brand-accent" : "bg-white/10"}`}
                     />
                   ))}
                 </div>
-
-                <h2 className="text-4xl md:text-7xl font-bold text-white text-center tracking-tighter mb-16 leading-none">
+                <h2
+                  id="step-question"
+                  className="text-4xl md:text-7xl font-bold text-white text-center tracking-tighter mb-16 leading-none uppercase italic"
+                >
                   {questions[step].question}
                 </h2>
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {questions[step].answers.map((ans) => (
                     <button
                       key={ans.key}
                       onClick={() => handleChoice(ans.key)}
-                      className="group relative p-8 bg-white/5 border border-white/5 rounded-[2.5rem] hover:bg-white/10 hover:border-brand-accent/50 transition-all text-left"
+                      aria-label={`${ans.text}: ${ans.sub}`}
+                      className="group relative p-8 bg-white/5 border border-white/5 rounded-[2.5rem] hover:bg-white/10 hover:border-brand-accent/50 transition-all text-left outline-none focus:ring-2 focus:ring-brand-accent"
                     >
-                      <ans.icon className="text-3xl text-brand-accent mb-6 group-hover:scale-110 transition-transform" />
+                      <ans.icon
+                        className="text-3xl text-brand-accent mb-6 group-hover:scale-110 transition-transform"
+                        aria-hidden="true"
+                      />
                       <h4 className="text-2xl font-bold text-white mb-2">
                         {ans.text}
                       </h4>
@@ -375,6 +341,7 @@ const ProjectMatchingSection = () => {
               >
                 <div
                   className={`inline-flex p-8 rounded-[2rem] ${result.color} text-brand-dark mb-8 shadow-2xl`}
+                  aria-hidden="true"
                 >
                   <result.icon size={54} />
                 </div>
@@ -387,27 +354,106 @@ const ProjectMatchingSection = () => {
                 <p className="text-xl text-brand-gray max-w-xl mx-auto mb-12 font-light leading-relaxed">
                   {result.description}
                 </p>
-
-                <div className="flex flex-col md:flex-row justify-center gap-6 items-center">
+                <nav className="flex flex-col md:flex-row justify-center gap-6 items-center">
                   <Link
                     to={result.link}
-                    className="px-12 py-6 bg-white text-brand-dark font-black rounded-full text-xl hover:scale-105 transition-transform flex items-center gap-3 shadow-xl"
+                    aria-label={`Execute the ${result.title} strategy`}
+                    className="px-12 py-6 bg-white text-brand-dark font-black rounded-full text-xl hover:scale-105 transition-all flex items-center gap-3"
                   >
-                    View Strategy <FiArrowRight />
+                    View Strategy <FiArrowRight aria-hidden="true" />
                   </Link>
                   <button
                     onClick={reset}
                     className="text-brand-gray/50 hover:text-brand-accent flex items-center gap-2 font-mono uppercase tracking-widest text-xs transition-colors"
                   >
-                    <FiRefreshCw /> Run Again
+                    <FiRefreshCw aria-hidden="true" /> Restart Protocol
                   </button>
-                </div>
+                </nav>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
     </section>
+  );
+};
+
+// --- 3. MAIN PAGE COMPONENT ---
+
+const Services = () => {
+  return (
+    <>
+      <Seo
+        title="Technical Arsenal | Elite MERN & Full-Stack Services"
+        description="Explore the surgical technical capabilities of Weblynx Infotech. Specialized in MERN stack development, API architecture, and algorithmic SEO dominance."
+        keywords="Pune software services, React development India, API integration experts, custom web app agency"
+      />
+
+      <main
+        id="main-content"
+        className="bg-white dark:bg-brand-dark min-h-screen selection:bg-brand-accent selection:text-brand-dark"
+      >
+        <section
+          aria-labelledby="arsenal-heading"
+          className="container mx-auto px-6 pt-32 pb-20 relative"
+        >
+          <div
+            className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-accent/5 blur-[150px] rounded-full -z-10"
+            aria-hidden="true"
+          />
+          <motion.header
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1
+              id="arsenal-heading"
+              className="text-[12vw] md:text-[10rem] font-black leading-[0.8] tracking-tighter uppercase dark:text-white"
+            >
+              The <br />{" "}
+              <span className="text-brand-accent italic font-light">
+                Arsenal
+              </span>
+            </h1>
+            <p className="mt-8 text-xl md:text-2xl font-light dark:text-brand-gray max-w-2xl leading-relaxed">
+              Specialized technical capabilities and{" "}
+              <strong className="font-bold">
+                surgical engineering protocols
+              </strong>{" "}
+              developed to solve high-stakes business challenges through
+              technology.
+            </p>
+          </motion.header>
+        </section>
+
+        <section
+          aria-label="Our Service Verticals"
+          className="container mx-auto px-6 mb-40"
+        >
+          <div role="list" className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            {services.map((service, i) => (
+              <ServiceBlock key={service.id} service={service} index={i} />
+            ))}
+          </div>
+        </section>
+
+        <ProjectMatchingSection />
+
+        <footer className="py-40 bg-gray-50 dark:bg-black/20 text-center border-t border-gray-100 dark:border-white/5">
+          <h2 className="text-5xl md:text-8xl font-bold dark:text-white tracking-tighter mb-10">
+            Ready to <span className="text-brand-accent italic">Execute?</span>
+          </h2>
+          <Link
+            to="/contact"
+            aria-label="Contact Weblynx to deploy your project"
+            className="group inline-flex items-center gap-4 px-12 py-6 bg-brand-dark dark:bg-brand-accent text-white dark:text-brand-dark font-black text-xl rounded-full hover:scale-105 transition-all shadow-2xl shadow-brand-accent/20"
+          >
+            Deploy Now{" "}
+            <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+          </Link>
+        </footer>
+      </main>
+    </>
   );
 };
 

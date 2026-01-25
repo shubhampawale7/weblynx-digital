@@ -23,12 +23,14 @@ const contactMethods = [
     title: "VOICE_CHANNEL",
     content: "+91 95183 64400",
     href: "tel:+919518364400",
+    label: "Call Weblynx engineering support",
   },
   {
     Icon: FaEnvelope,
     title: "DATA_INBOX",
     content: "weblynxinfotech@gmail.com",
     href: "mailto:weblynxinfotech@gmail.com",
+    label: "Send project documentation via email",
   },
   {
     Icon: FaWhatsapp,
@@ -37,6 +39,7 @@ const contactMethods = [
     href: `https://wa.me/+919518364400?text=${encodeURIComponent(
       "Hello Weblynx Infotech! I'm interested in discussing a project.",
     )}`,
+    label: "Start an encrypted WhatsApp consultation",
   },
 ];
 
@@ -46,10 +49,13 @@ const Contact = () => {
   return (
     <>
       <Seo
-        title="Initialize Project | Weblynx Infotech"
-        description="Connect with Weblynx Infotech for a technical consultation. Deploy your vision with Pune's premier engineering firm."
+        title="Connect | Initialize Your Digital Project"
+        description="Launch your digital transformation. Contact Weblynx Infotech for surgical MERN stack development and enterprise software consulting in Pune."
       />
-      <main className="pt-32 pb-20 bg-white dark:bg-brand-dark min-h-screen selection:bg-brand-accent selection:text-brand-dark">
+      <main
+        id="contact-uplink"
+        className="pt-32 pb-20 bg-white dark:bg-brand-dark min-h-screen selection:bg-brand-accent selection:text-brand-dark"
+      >
         {/* --- HEADER: Tactical Dossier --- */}
         <header className="container mx-auto px-6 mb-16">
           <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-gray-100 dark:border-white/5 pb-12">
@@ -59,20 +65,26 @@ const Contact = () => {
               transition={{ duration: 0.8 }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <span className="h-[2px] w-12 bg-brand-accent"></span>
+                <span
+                  className="h-[2px] w-12 bg-brand-accent"
+                  aria-hidden="true"
+                ></span>
                 <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
                   Project_Initialization
                 </span>
               </div>
               <h1 className="text-[10vw] md:text-[8rem] font-black leading-[0.8] tracking-tighter uppercase dark:text-white">
                 The <br />{" "}
-                <span className="text-[10vw] md:text-[8rem] font-black leading-[0.8] tracking-tighter uppercase dark:text-white">
+                <span className="text-brand-accent italic font-light">
                   Connect.
                 </span>
               </h1>
             </motion.div>
 
-            <div className="flex flex-col items-end opacity-20 font-mono text-[10px] uppercase tracking-widest hidden md:flex">
+            <div
+              className="flex flex-col items-end opacity-20 font-mono text-[10px] uppercase tracking-widest hidden md:flex"
+              aria-hidden="true"
+            >
               <div className="flex items-center gap-2">
                 <FiTerminal /> awaiting_input
               </div>
@@ -86,40 +98,49 @@ const Contact = () => {
         <section className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-gray-100 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[3rem] overflow-hidden shadow-2xl">
             {/* --- Sidebar Controller --- */}
-            <aside className="lg:col-span-4 bg-white dark:bg-brand-dark p-8 md:p-12 flex flex-col justify-between border-r border-gray-100 dark:border-white/5">
+            <nav
+              className="lg:col-span-4 bg-white dark:bg-brand-dark p-8 md:p-12 flex flex-col justify-between border-r border-gray-100 dark:border-white/5"
+              aria-label="Contact protocol selector"
+            >
               <div>
                 <div className="mb-12">
                   <h3 className="font-mono text-[10px] uppercase tracking-[0.4em] opacity-30 mb-8 text-center lg:text-left">
                     Select_Protocol
                   </h3>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4" role="tablist">
                     <button
+                      role="tab"
+                      aria-selected={activeView === "form"}
                       onClick={() => setActiveView("form")}
                       className={`flex items-center gap-4 p-5 rounded-2xl transition-all duration-500 uppercase font-bold tracking-widest text-xs
                         ${activeView === "form" ? "bg-brand-accent text-brand-dark shadow-lg shadow-brand-accent/20" : "hover:bg-gray-50 dark:hover:bg-white/5 dark:text-white opacity-40 hover:opacity-100"}`}
                     >
-                      <FiMessageSquare /> Transmission
+                      <FiMessageSquare aria-hidden="true" /> Transmission
                     </button>
                     <button
+                      role="tab"
+                      aria-selected={activeView === "direct"}
                       onClick={() => setActiveView("direct")}
                       className={`flex items-center gap-4 p-5 rounded-2xl transition-all duration-500 uppercase font-bold tracking-widest text-xs
                         ${activeView === "direct" ? "bg-brand-accent text-brand-dark shadow-lg shadow-brand-accent/20" : "hover:bg-gray-50 dark:hover:bg-white/5 dark:text-white opacity-40 hover:opacity-100"}`}
                     >
-                      <FiShare2 /> Direct_Channels
+                      <FiShare2 aria-hidden="true" /> Direct_Channels
                     </button>
                   </div>
                 </div>
 
-                <div className="hidden lg:block space-y-6 opacity-30 mt-20">
+                <div
+                  className="hidden lg:block space-y-6 opacity-30 mt-20"
+                  aria-hidden="true"
+                >
                   <p className="text-[10px] font-mono leading-relaxed uppercase tracking-widest border-t border-gray-100 dark:border-white/5 pt-8">
-                    Our engineers will review your inquiry within a 24-hour
-                    window. Prepare technical requirements for faster
-                    onboarding.
+                    Our engineers review all incoming packets within a 24-hour
+                    window.
                   </p>
                   <FiActivity className="text-brand-accent animate-pulse" />
                 </div>
               </div>
-            </aside>
+            </nav>
 
             {/* --- Interaction Field --- */}
             <div className="lg:col-span-8 bg-gray-50/30 dark:bg-brand-dark-blue/10 backdrop-blur-3xl p-8 md:p-20 relative min-h-[600px]">
@@ -130,25 +151,19 @@ const Contact = () => {
                   <DirectChannels key="direct" />
                 )}
               </AnimatePresence>
-              {/* Background ID */}
-              <FiTerminal className="absolute -bottom-20 -right-20 text-[30rem] opacity-[0.02] dark:opacity-[0.05] pointer-events-none" />
+              <FiTerminal
+                className="absolute -bottom-20 -right-20 text-[30rem] opacity-[0.02] dark:opacity-[0.05] pointer-events-none"
+                aria-hidden="true"
+              />
             </div>
           </div>
         </section>
       </main>
-
-      <style jsx>{`
-        .text-outline {
-          -webkit-text-stroke: 1.5px currentColor;
-          color: transparent;
-        }
-      `}</style>
     </>
   );
 };
 
 const ContactForm = () => {
-  // --- FUNCTIONALITY PRESERVED ---
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -176,12 +191,12 @@ const ContactForm = () => {
 
   const validateForm = () => {
     let newErrors = {};
-    if (!formData.name.trim()) newErrors.name = "ID required.";
+    if (!formData.name.trim()) newErrors.name = "Identification required.";
     if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Invalid gateway.";
-    if (!formData.projectType) newErrors.projectType = "Define system.";
+    if (!formData.projectType) newErrors.projectType = "Specify system.";
     if (formData.message.trim().length < 10)
-      newErrors.message = "Min 10 chars.";
+      newErrors.message = "Min 10 characters.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -207,7 +222,9 @@ const ContactForm = () => {
       }
     } catch (err) {
       setStatus("error");
-      setErrors({ form: err.response?.data?.message || "Network error." });
+      setErrors({
+        form: err.response?.data?.message || "Network link failure.",
+      });
     }
   };
 
@@ -216,8 +233,9 @@ const ContactForm = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
+      role="tabpanel"
     >
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-8" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <FormInput
             id="name"
@@ -227,6 +245,7 @@ const ContactForm = () => {
             onChange={handleChange}
             error={errors.name}
             placeholder="John Doe"
+            required
           />
           <FormInput
             id="email"
@@ -237,6 +256,7 @@ const ContactForm = () => {
             error={errors.email}
             placeholder="john@example.com"
             type="email"
+            required
           />
         </div>
         <FormSelect
@@ -247,6 +267,7 @@ const ContactForm = () => {
           onChange={handleChange}
           error={errors.projectType}
           options={projectTypes}
+          required
         />
         <FormTextarea
           id="message"
@@ -256,9 +277,10 @@ const ContactForm = () => {
           onChange={handleChange}
           error={errors.message}
           placeholder="Describe project parameters..."
+          required
         />
 
-        <div className="h-8 flex items-center">
+        <div className="h-8 flex items-center" aria-live="assertive">
           <AnimatePresence>
             {status === "success" && (
               <StatusMessage type="success" message="Transmission Delivered." />
@@ -285,11 +307,14 @@ const ContactForm = () => {
             </>
           ) : (
             <>
-              Execute Dispatch{" "}
-              <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+              <FiArrowRight className="group-hover:translate-x-2 transition-transform" />{" "}
+              Execute Dispatch
             </>
           )}
-          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+          <div
+            className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+            aria-hidden="true"
+          />
         </button>
       </form>
     </motion.div>
@@ -302,9 +327,10 @@ const DirectChannels = () => (
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -10 }}
     className="space-y-6"
+    role="tabpanel"
   >
     <div className="flex items-center gap-4 mb-12">
-      <div className="w-8 h-[1px] bg-brand-accent"></div>
+      <div className="w-8 h-[1px] bg-brand-accent" aria-hidden="true"></div>
       <span className="font-mono text-[10px] text-brand-accent uppercase tracking-[0.4em]">
         Alternative_Protocols
       </span>
@@ -317,7 +343,7 @@ const DirectChannels = () => (
   </motion.div>
 );
 
-// --- FORM UI MODULES ---
+// --- HELPER UI ---
 const FormInput = ({ id, name, label, error, ...props }) => (
   <div className="space-y-2">
     <label
@@ -330,9 +356,16 @@ const FormInput = ({ id, name, label, error, ...props }) => (
       id={id}
       name={name}
       {...props}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${id}-error` : undefined}
       className={`w-full p-4 bg-white dark:bg-brand-dark border rounded-xl transition-all font-light dark:text-white
-        ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent ring-0 outline-none"}`}
+        ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent outline-none"}`}
     />
+    {error && (
+      <span id={`${id}-error`} className="sr-only">
+        {error}
+      </span>
+    )}
   </div>
 );
 
@@ -344,20 +377,23 @@ const FormSelect = ({ id, name, label, error, options, ...props }) => (
     >
       {label}
     </label>
-    <select
-      id={id}
-      name={name}
-      {...props}
-      className={`w-full p-4 bg-white dark:bg-brand-dark border rounded-xl appearance-none transition-all dark:text-white
-        ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent ring-0 outline-none"}`}
-    >
-      <option value="">Select_Type</option>
-      {options.map((type) => (
-        <option key={type} value={type}>
-          {type}
-        </option>
-      ))}
-    </select>
+    <div className="relative">
+      <select
+        id={id}
+        name={name}
+        {...props}
+        aria-invalid={!!error}
+        className={`w-full p-4 bg-white dark:bg-brand-dark border rounded-xl appearance-none transition-all dark:text-white
+          ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent outline-none"}`}
+      >
+        <option value="">Select_Type</option>
+        {options.map((type) => (
+          <option key={type} value={type}>
+            {type}
+          </option>
+        ))}
+      </select>
+    </div>
   </div>
 );
 
@@ -374,8 +410,9 @@ const FormTextarea = ({ id, name, label, error, ...props }) => (
       name={name}
       rows="4"
       {...props}
+      aria-invalid={!!error}
       className={`w-full p-4 bg-white dark:bg-brand-dark border rounded-xl transition-all resize-none dark:text-white
-        ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent ring-0 outline-none"}`}
+        ${error ? "border-red-500" : "border-gray-200 dark:border-white/10 focus:border-brand-accent outline-none"}`}
     />
   </div>
 );
@@ -390,26 +427,29 @@ const StatusMessage = ({ type, message }) => (
   </motion.p>
 );
 
-const ContactMethodCard = ({ Icon, title, content, href }) => (
+const ContactMethodCard = ({ Icon, title, content, href, label }) => (
   <motion.a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
+    aria-label={label}
     whileHover={{ y: -5 }}
     className="p-8 rounded-[2rem] bg-white dark:bg-brand-dark border border-gray-100 dark:border-white/5 hover:border-brand-accent/50 transition-all group overflow-hidden relative"
   >
     <div className="relative z-10">
       <div className="text-brand-accent mb-6 opacity-40 group-hover:opacity-100 transition-opacity">
-        <Icon size={24} />
+        <Icon size={24} aria-hidden="true" />
       </div>
       <h4 className="font-mono text-[10px] opacity-40 mb-2">{title}</h4>
       <p className="font-bold dark:text-white uppercase tracking-tighter text-xl">
         {content}
       </p>
     </div>
-    <div className="absolute -bottom-4 -right-4 opacity-[0.02] group-hover:opacity-[0.08] transition-opacity">
-      <Icon size={120} />
-    </div>
+    <Icon
+      className="absolute -bottom-4 -right-4 opacity-[0.02] group-hover:opacity-[0.08] transition-opacity"
+      size={120}
+      aria-hidden="true"
+    />
   </motion.a>
 );
 

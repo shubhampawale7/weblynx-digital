@@ -20,11 +20,10 @@ import {
   FiSettings,
 } from "react-icons/fi";
 
-// --- Quiz Data ---
 const questions = [
   {
     id: 1,
-    question: "What is your primary objective?",
+    question: "What is your primary project objective?",
     key: "goal",
     answers: [
       {
@@ -49,14 +48,14 @@ const questions = [
   },
   {
     id: 2,
-    question: "What's the desired timeline?",
+    question: "What's the desired deployment timeline?",
     key: "speed",
     answers: [
       {
         text: "MVP Sprint",
         key: "fast",
         icon: FiZap,
-        sub: "1-3 months launch.",
+        sub: "1-3 months launch cycle.",
       },
       {
         text: "Balanced Build",
@@ -113,8 +112,6 @@ const SolutionFinderQuiz = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
-
-  // Progress tracking for the background path
   const progress = useMotionValue(0);
 
   const handleChoice = (key) => {
@@ -128,7 +125,6 @@ const SolutionFinderQuiz = () => {
     if (step < questions.length - 1) {
       setStep(nextStep);
     } else {
-      // Logic for Result Calculation
       const { goal, speed } = updatedAnswers;
       let finalKey = "default";
       if (goal === "ecommerce") finalKey = "ecommerce";
@@ -136,7 +132,6 @@ const SolutionFinderQuiz = () => {
         finalKey = "new_business_fast";
       else if (goal === "grow_business" && speed === "medium")
         finalKey = "grow_business_medium";
-
       setResult(resultMapping[finalKey] || resultMapping.default);
     }
   };
@@ -149,14 +144,20 @@ const SolutionFinderQuiz = () => {
   };
 
   return (
-    <section className="bg-white dark:bg-brand-dark py-24 relative min-h-[80vh] flex items-center overflow-hidden">
-      {/* Dynamic Background Journey */}
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+    <section
+      aria-labelledby="quiz-heading"
+      className="bg-white dark:bg-brand-dark py-24 relative min-h-[80vh] flex items-center overflow-hidden"
+    >
+      {/* Visual Journey - Hidden from assistive tech */}
+      <div
+        className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+        aria-hidden="true"
+      >
         <JourneyPath progress={progress} />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto" aria-live="polite" role="region">
           <AnimatePresence mode="wait">
             {!result ? (
               <motion.div
@@ -167,34 +168,51 @@ const SolutionFinderQuiz = () => {
                 transition={{ duration: 0.5, ease: "circOut" }}
               >
                 {/* Progress Indicators */}
-                <div className="flex gap-3 mb-12 justify-center">
+                <nav
+                  className="flex gap-3 mb-12 justify-center"
+                  aria-label="Quiz Progress"
+                >
                   {questions.map((_, i) => (
                     <div
                       key={i}
+                      aria-hidden="true"
                       className={`h-1.5 w-16 rounded-full transition-all duration-700 ${
                         i <= step
-                          ? "bg-brand-accent shadow-[0_0_15px_rgba(var(--accent-rgb),0.5)]"
+                          ? "bg-brand-accent shadow-[0_0_15px_#00f5d4]"
                           : "bg-gray-200 dark:bg-white/10"
                       }`}
                     />
                   ))}
-                </div>
+                  <span className="sr-only">
+                    Step {step + 1} of {questions.length}
+                  </span>
+                </nav>
 
-                <h2 className="text-4xl md:text-7xl font-bold text-brand-dark dark:text-white text-center tracking-tighter mb-16 leading-tight">
+                <h2
+                  id="quiz-heading"
+                  className="text-4xl md:text-7xl font-bold text-brand-dark dark:text-white text-center tracking-tighter mb-16 leading-tight uppercase"
+                >
                   {questions[step].question}
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                  role="list"
+                >
                   {questions[step].answers.map((ans) => (
                     <button
                       key={ans.key}
                       onClick={() => handleChoice(ans.key)}
-                      className="group relative p-8 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[2.5rem] hover:border-brand-accent transition-all duration-500 text-left"
+                      role="listitem"
+                      className="group relative p-8 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[2.5rem] hover:border-brand-accent transition-all duration-500 text-left outline-none focus:ring-2 focus:ring-brand-accent"
                     >
-                      <ans.icon className="text-3xl text-brand-accent mb-6 group-hover:scale-110 transition-transform" />
-                      <h4 className="text-2xl font-bold text-brand-dark dark:text-white mb-2">
+                      <ans.icon
+                        className="text-3xl text-brand-accent mb-6 group-hover:scale-110 transition-transform"
+                        aria-hidden="true"
+                      />
+                      <h3 className="text-2xl font-bold text-brand-dark dark:text-white mb-2">
                         {ans.text}
-                      </h4>
+                      </h3>
                       <p className="text-sm text-brand-light-blue dark:text-brand-gray opacity-60 leading-relaxed">
                         {ans.sub}
                       </p>
@@ -213,35 +231,44 @@ const SolutionFinderQuiz = () => {
                   initial={{ rotate: -10, scale: 0 }}
                   animate={{ rotate: 0, scale: 1 }}
                   className={`inline-flex p-8 rounded-[2.5rem] ${result.color} text-brand-dark mb-8 shadow-2xl`}
+                  aria-hidden="true"
                 >
                   <result.icon size={54} />
                 </motion.div>
 
-                <h3 className="text-6xl md:text-9xl font-black text-brand-dark dark:text-white tracking-tighter mb-6 uppercase italic">
+                <h2 className="text-6xl md:text-9xl font-black text-brand-dark dark:text-white tracking-tighter mb-6 uppercase italic">
                   Matched.
-                </h3>
-                <h4 className="text-3xl md:text-5xl font-bold text-brand-accent mb-8 leading-none">
+                </h2>
+                <h3 className="text-3xl md:text-5xl font-bold text-brand-accent mb-8 leading-none">
                   {result.title}
-                </h4>
+                </h3>
                 <p className="text-xl text-brand-light-blue dark:text-brand-gray max-w-2xl mx-auto mb-16 font-light leading-relaxed">
                   {result.description}
                 </p>
 
-                <div className="flex flex-col md:flex-row justify-center gap-6 items-center">
+                <nav className="flex flex-col md:flex-row justify-center gap-6 items-center">
                   <Link
                     to={result.link}
+                    aria-label={`Learn more about our ${result.title} strategy`}
                     className="group px-12 py-6 bg-brand-dark dark:bg-white text-white dark:text-brand-dark font-black rounded-full text-xl hover:scale-105 transition-all shadow-xl flex items-center gap-3"
                   >
                     View Strategy{" "}
-                    <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+                    <FiArrowRight
+                      className="group-hover:translate-x-2 transition-transform"
+                      aria-hidden="true"
+                    />
                   </Link>
                   <button
                     onClick={reset}
                     className="text-brand-light-blue dark:text-brand-gray/50 hover:text-brand-accent flex items-center gap-2 font-mono uppercase tracking-widest text-xs transition-colors"
                   >
-                    <FiRefreshCw /> Run Again
+                    <FiRefreshCw
+                      className="animate-spin-hover"
+                      aria-hidden="true"
+                    />{" "}
+                    Run Again
                   </button>
-                </div>
+                </nav>
               </motion.div>
             )}
           </AnimatePresence>
@@ -251,7 +278,6 @@ const SolutionFinderQuiz = () => {
   );
 };
 
-// --- Journey Path Helper Component ---
 const JourneyPath = ({ progress }) => {
   const pathLength = useSpring(useTransform(progress, [0, 1], [0, 1]), {
     stiffness: 40,
@@ -259,7 +285,12 @@ const JourneyPath = ({ progress }) => {
   });
 
   return (
-    <svg className="w-full h-full" viewBox="0 0 1000 1000" fill="none">
+    <svg
+      className="w-full h-full"
+      viewBox="0 0 1000 1000"
+      fill="none"
+      preserveAspectRatio="none"
+    >
       <path
         d="M -100 500 C 200 200, 800 800, 1100 500"
         stroke="currentColor"
