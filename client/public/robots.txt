@@ -1,12 +1,6 @@
-
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
 
-# Disallow specific paths (example - uncomment and modify if needed)
-# Disallow: /admin/
-# Disallow: /private/
-# Disallow: /temp/
-
-# Specify your sitemap location (IMPORTANT for SEO)
-# Replace with your actual sitemap URL once you have one (e.g., from a build process or a CMS like WordPress if headless)
-# Sitemap: https://www.yourdomain.com/sitemap.xml
+Sitemap: https://www.weblynxinfotech.com/sitemap.xml
