@@ -19,7 +19,7 @@ const Seo = ({
     "Pune's premier digital engineering firm specializing in high-stakes MERN stack development, surgical SEO, and scalable architectural solutions.";
   const defaultKeywords =
     "Weblynx Infotech, MERN Stack, React Developer Pune, Node.js Engineering, Custom Web Applications, Digital Systems, SaaS Architecture, SEO Systems, Shubham Pawale";
-  const defaultOgImage = `${baseDomain}/weblynx-logo.png`;
+  const defaultOgImage = `${baseDomain}/og-image.png`;
 
   const finalTitle = title ? `${title} | Weblynx Infotech` : defaultTitle;
   const finalDescription = description || defaultDescription;
