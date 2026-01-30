@@ -52,6 +52,7 @@ const TechStackTicker = () => {
             <span className="text-brand-accent font-mono text-xs uppercase tracking-[0.3em] mb-4 block">
               Hardware_Software_Stack
             </span>
+
             <h2
               id="tech-stack-heading"
               className="font-display text-5xl md:text-7xl font-black text-brand-dark dark:text-white tracking-tighter leading-none"
@@ -61,7 +62,16 @@ const TechStackTicker = () => {
                 Engine.
               </span>
             </h2>
+
+            {/* SEO Semantic Context (Invisible) */}
+            <p className="sr-only">
+              Technology stack used by Weblynx Infotech including React,
+              Node.js, MongoDB, TypeScript, AWS, WordPress, Tailwind CSS, and
+              Firebase for building scalable MERN stack web applications and
+              cloud-ready digital platforms.
+            </p>
           </motion.header>
+
           <div className="text-sm font-mono opacity-30 uppercase tracking-widest max-w-[250px] text-right hidden md:block">
             <p>
               Vetted MERN Stack Engineering // Scalable AWS Infrastructure //
@@ -77,7 +87,7 @@ const TechStackTicker = () => {
         role="region"
         aria-label="Weblynx Technology Stack Marquee"
       >
-        {/* Surgical Fades */}
+        {/* Edge Fades */}
         <div
           className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white dark:from-brand-dark to-transparent z-10"
           aria-hidden="true"
@@ -93,7 +103,6 @@ const TechStackTicker = () => {
           animate="animate"
           role="list"
         >
-          {/* Tripled list for absolute seamless transition */}
           {[...techStack, ...techStack, ...techStack].map((tech, index) => (
             <TechModule key={index} {...tech} />
           ))}
@@ -110,7 +119,6 @@ const TechModule = ({ name, Icon, category }) => (
     whileHover={{ y: -4 }}
     className="group flex-shrink-0 relative w-48 md:w-56 p-6 border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-white/5 transition-all duration-500 overflow-hidden"
   >
-    {/* Identification Metadata */}
     <div className="flex justify-between items-center mb-8">
       <span className="font-mono text-[8px] opacity-20 tracking-widest uppercase">
         {category.replace(/_/g, " ")}
@@ -121,7 +129,6 @@ const TechModule = ({ name, Icon, category }) => (
       />
     </div>
 
-    {/* The Icon & Label */}
     <div className="flex flex-col gap-4">
       <Icon
         size={32}
@@ -133,13 +140,11 @@ const TechModule = ({ name, Icon, category }) => (
       </h3>
     </div>
 
-    {/* Hidden semantic text for crawlers to understand technology relevance */}
     <p className="sr-only">
       Professional {name} development and architectural services provided by
       Weblynx Infotech.
     </p>
 
-    {/* Decorative Background ID - Hidden from crawlers */}
     <span
       className="absolute -bottom-2 -right-2 font-mono text-[40px] font-black opacity-[0.02] select-none uppercase"
       aria-hidden="true"
@@ -147,7 +152,6 @@ const TechModule = ({ name, Icon, category }) => (
       {name.substring(0, 2)}
     </span>
 
-    {/* Animated Bottom Line */}
     <div
       className="absolute bottom-0 left-0 h-0.5 bg-brand-accent w-0 group-hover:w-full transition-all duration-500"
       aria-hidden="true"

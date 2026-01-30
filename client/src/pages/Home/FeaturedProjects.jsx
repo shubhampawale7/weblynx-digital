@@ -15,7 +15,7 @@ const FeaturedProjects = () => {
       aria-labelledby="featured-heading"
       className="relative bg-white dark:bg-brand-dark py-24 md:py-40 overflow-hidden"
     >
-      {/* Background Decorative Element - aria-hidden to avoid screen reader clutter */}
+      {/* Background Decorative Element */}
       <div
         className="absolute top-0 right-0 p-20 opacity-[0.02] dark:opacity-[0.05] pointer-events-none"
         aria-hidden="true"
@@ -40,15 +40,23 @@ const FeaturedProjects = () => {
                 Selected Case Studies
               </span>
             </div>
+
             <h2
               id="featured-heading"
               className="font-display text-6xl md:text-8xl font-bold text-brand-dark dark:text-white tracking-tighter leading-[0.85]"
             >
-              Proof of <br />{" "}
+              Proof of <br />
               <span className="text-brand-accent italic font-light">
                 Execution.
               </span>
             </h2>
+
+            {/* SEO Semantic Context (Invisible to UI) */}
+            <p className="sr-only">
+              Featured web development and full-stack projects by Weblynx
+              Infotech, showcasing scalable MERN stack applications, modern UI
+              systems, and high-performance digital platforms.
+            </p>
           </motion.div>
 
           <p className="text-xl text-brand-light-blue dark:text-brand-gray max-w-sm font-light leading-relaxed">
@@ -77,13 +85,12 @@ const FeaturedProjects = () => {
             ))}
           </nav>
 
-          {/* Right: Technical Viewport (Sticky) */}
+          {/* Right: Technical Viewport */}
           <aside
             className="hidden lg:block lg:col-span-7 lg:sticky top-40"
             aria-label="Project Preview Viewport"
           >
             <div className="relative group">
-              {/* Browser Mockup Frame */}
               <div className="absolute -top-10 left-0 right-0 h-10 bg-gray-100 dark:bg-brand-dark-blue/40 rounded-t-3xl border-t border-x border-gray-200 dark:border-white/10 flex items-center px-6 gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-400/50" />
                 <div className="w-3 h-3 rounded-full bg-yellow-400/50" />
@@ -110,7 +117,6 @@ const FeaturedProjects = () => {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />
-                    {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-brand-dark/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                       <Link
                         to="/our-work"
@@ -124,7 +130,6 @@ const FeaturedProjects = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Data Status Label */}
               <div className="absolute -bottom-6 -right-6 p-6 bg-brand-dark border border-white/10 rounded-2xl shadow-xl hidden xl:flex items-center gap-4">
                 <FiActivity
                   className="text-brand-accent animate-pulse"
@@ -167,7 +172,9 @@ const ProjectListItem = ({ project, isActive, setActiveIndex, index }) => (
     <div className="flex justify-between items-center relative z-10">
       <div className="flex items-start gap-8">
         <span
-          className={`font-mono text-sm mt-2 transition-colors ${isActive ? "text-brand-accent" : "text-brand-gray opacity-30"}`}
+          className={`font-mono text-sm mt-2 transition-colors ${
+            isActive ? "text-brand-accent" : "text-brand-gray opacity-30"
+          }`}
         >
           0{index + 1}
         </span>
@@ -191,7 +198,6 @@ const ProjectListItem = ({ project, isActive, setActiveIndex, index }) => (
           exit={{ opacity: 0, height: 0 }}
           className="overflow-hidden pl-16 md:pl-20"
         >
-          {/* Mobile Only Image - Semantic optimization */}
           <div className="lg:hidden w-full aspect-video rounded-2xl overflow-hidden my-6 border border-white/10">
             <img
               src={project.imageUrl}

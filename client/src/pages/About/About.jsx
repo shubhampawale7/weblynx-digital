@@ -42,7 +42,7 @@ const About = () => {
       >
         {/* --- HERO SECTION: Dossier Header --- */}
         <section
-          aria-labelledby="about-hero-title"
+          aria-label="about-hero-title"
           className="pt-32 pb-20 px-6 border-b border-gray-100 dark:border-white/5 relative"
         >
           <div className="container mx-auto">
@@ -122,7 +122,7 @@ const About = () => {
         </section>
 
         {/* Tech Stack: The Hardware */}
-        <section aria-labelledby="stack-heading" className="py-20">
+        <section aria-label="stack-heading" className="py-20">
           <div className="container mx-auto px-6 mb-12 flex justify-between items-center opacity-30">
             <span
               id="stack-heading"

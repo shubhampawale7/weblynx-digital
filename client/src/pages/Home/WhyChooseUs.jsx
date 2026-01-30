@@ -84,11 +84,12 @@ const WhyChooseUs = () => {
               <span
                 className="h-[2px] w-12 bg-brand-accent"
                 aria-hidden="true"
-              ></span>
+              />
               <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
                 System Differentiators
               </span>
             </div>
+
             <h2
               id="why-choose-heading"
               className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85]"
@@ -96,6 +97,14 @@ const WhyChooseUs = () => {
               The Weblynx <br />{" "}
               <span className="text-brand-accent italic font-light">Edge.</span>
             </h2>
+
+            {/* SEO Semantic Context (Invisible) */}
+            <p className="sr-only">
+              Reasons to choose Weblynx Infotech include scalable MERN stack
+              development, secure software architecture, premium UI/UX design,
+              on-time delivery, and long-term digital engineering partnerships
+              for businesses in Pune and across India.
+            </p>
           </motion.div>
 
           <motion.div
@@ -129,7 +138,6 @@ const WhyChooseUs = () => {
               transition={{ delay: index * 0.1 }}
               className="group relative bg-white dark:bg-brand-dark p-12 transition-all duration-500 hover:bg-brand-accent/5 overflow-hidden"
             >
-              {/* Card Metadata */}
               <div className="flex justify-between items-start mb-16 relative z-10">
                 <span
                   className="font-mono text-[10px] opacity-20 group-hover:opacity-100 group-hover:text-brand-accent transition-all"
@@ -142,7 +150,6 @@ const WhyChooseUs = () => {
                 </div>
               </div>
 
-              {/* Card Content */}
               <div className="relative z-10">
                 <h3 className="font-mono font-black text-xl text-brand-dark dark:text-white tracking-tighter mb-4 group-hover:translate-x-2 transition-transform duration-500 uppercase">
                   {feature.title.replace(/_/g, " ")}
@@ -150,11 +157,9 @@ const WhyChooseUs = () => {
                 <p className="text-base text-brand-light-blue dark:text-brand-gray leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity">
                   {feature.description}
                 </p>
-                {/* Semantic Long Description for SEO indexing */}
                 <p className="sr-only">{feature.longDesc}</p>
               </div>
 
-              {/* Background Watermark - Hidden from bots */}
               <div
                 className="absolute -bottom-10 -right-10 opacity-[0.01] dark:opacity-[0.02] group-hover:opacity-[0.05] group-hover:scale-110 transition-all duration-700 pointer-events-none"
                 aria-hidden="true"
@@ -162,7 +167,6 @@ const WhyChooseUs = () => {
                 <feature.Icon size={220} />
               </div>
 
-              {/* Surgical Border Accent */}
               <div
                 className="absolute bottom-0 left-0 w-full h-[2px] bg-brand-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
                 aria-hidden="true"
@@ -171,7 +175,6 @@ const WhyChooseUs = () => {
           ))}
         </div>
 
-        {/* Tactical Footnote */}
         <footer className="mt-16 flex justify-center">
           <div className="flex items-center gap-4 px-6 py-2 rounded-full border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
             <FiActivity

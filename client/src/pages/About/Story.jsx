@@ -1,7 +1,5 @@
 // client/src/components/About/Story.jsx
 import React from "react";
-
-import Seo from "../../components/common/Seo.jsx";
 import {
   FiZap,
   FiTrendingUp,
@@ -50,11 +48,6 @@ const Story = () => {
       aria-labelledby="story-heading"
       className="bg-white dark:bg-brand-dark py-24 md:py-40 border-t border-gray-100 dark:border-white/5 overflow-hidden"
     >
-      <Seo
-        title="History of Innovation | Our Engineering Journey"
-        description="Explore the operational timeline of Weblynx Infotech. From MERN stack initialization to global software engineering excellence."
-      />
-
       <div className="container mx-auto px-6">
         {/* Technical Header */}
         <header className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
@@ -68,11 +61,12 @@ const Story = () => {
               <span
                 className="h-[2px] w-12 bg-brand-accent"
                 aria-hidden="true"
-              ></span>
+              />
               <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
                 Operational Timeline
               </span>
             </div>
+
             <h2
               id="story-heading"
               className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] uppercase italic"
@@ -80,6 +74,13 @@ const Story = () => {
               History of <br />{" "}
               <span className="text-brand-accent">Innovation.</span>
             </h2>
+
+            {/* SEO Semantic Context (Invisible, About-page safe) */}
+            <p className="sr-only">
+              The origin story of Weblynx Infotech, a Pune-based software
+              engineering company, tracing its evolution from MERN stack
+              specialization to delivering scalable, global digital solutions.
+            </p>
           </motion.div>
 
           <div
@@ -91,7 +92,7 @@ const Story = () => {
           </div>
         </header>
 
-        {/* The Timeline Blueprint Grid - Semantic Ordered List */}
+        {/* Timeline Grid */}
         <ol
           role="list"
           className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-gray-100 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[2.5rem] overflow-hidden"
@@ -115,7 +116,6 @@ const StoryPhase = ({ point, index }) => {
       transition={{ delay: index * 0.2 }}
       className="bg-white dark:bg-brand-dark p-12 md:p-16 group relative overflow-hidden transition-all duration-500 hover:bg-brand-accent/5"
     >
-      {/* Background Index Marker - Decorative */}
       <div
         className="absolute top-10 right-10 font-mono text-8xl font-black opacity-[0.02] dark:opacity-[0.05] group-hover:opacity-[0.1] transition-opacity duration-700"
         aria-hidden="true"
@@ -149,24 +149,23 @@ const StoryPhase = ({ point, index }) => {
             {point.description}
           </p>
 
-          {/* Hidden SEO Context for Semantic Crawling */}
           <p className="sr-only">{point.seoContext}</p>
         </div>
 
-        {/* Surgical Step Indicator */}
         <footer
           className="flex items-center gap-4 opacity-20 group-hover:opacity-100 transition-opacity"
           aria-hidden="true"
         >
           <div
-            className={`w-3 h-3 rounded-full border border-current ${index === 2 ? "bg-brand-accent border-brand-accent" : ""}`}
+            className={`w-3 h-3 rounded-full border border-current ${
+              index === 2 ? "bg-brand-accent border-brand-accent" : ""
+            }`}
           />
           <div className="flex-grow h-px bg-current" />
           <FiActivity className="text-xs" />
         </footer>
       </article>
 
-      {/* Hover Background Light */}
       <div
         className="absolute -bottom-24 -right-24 w-64 h-64 bg-brand-accent/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"
         aria-hidden="true"
@@ -176,3 +175,4 @@ const StoryPhase = ({ point, index }) => {
 };
 
 export default Story;
+   

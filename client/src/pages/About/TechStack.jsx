@@ -1,7 +1,6 @@
 // client/src/pages/About/TechStack.jsx
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Seo from "../../components/common/Seo.jsx";
 import {
   SiReact,
   SiNodedotjs,
@@ -126,11 +125,6 @@ const TechStack = () => {
       aria-labelledby="tech-stack-heading"
       className="bg-white dark:bg-brand-dark py-24 md:py-40 border-t border-gray-100 dark:border-white/5 overflow-hidden"
     >
-      <Seo
-        title="Technical Stack | Modern Web Engineering"
-        description="Explore the surgical stack of Weblynx Infotech: MERN, TypeScript, AWS, and modern motion libraries for elite digital builds."
-      />
-
       <div className="container mx-auto px-6">
         {/* Technical Header */}
         <header className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
@@ -143,17 +137,25 @@ const TechStack = () => {
               <span
                 className="h-[2px] w-12 bg-brand-accent"
                 aria-hidden="true"
-              ></span>
+              />
               <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
                 Hardware_Software_Stack
               </span>
             </div>
+
             <h2
               id="tech-stack-heading"
               className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] uppercase italic"
             >
               Core <span className="text-brand-accent">Engine.</span>
             </h2>
+
+            {/* SEO Semantic Context (About page safe) */}
+            <p className="sr-only">
+              The core technology stack used by Weblynx Infotech, including the
+              MERN stack, TypeScript, modern motion libraries, and scalable
+              frontend and backend engineering tools.
+            </p>
           </motion.div>
 
           <div
@@ -170,18 +172,13 @@ const TechStack = () => {
         </header>
 
         <div className="max-w-6xl mx-auto">
-          {/* Information Terminal Panel (ARIA Live region) */}
+          {/* Active Module Panel */}
           <div
             className="relative mb-12 p-8 md:p-12 bg-gray-50 dark:bg-brand-dark-blue/20 border border-gray-200 dark:border-white/5 rounded-[3rem] overflow-hidden backdrop-blur-xl group"
             role="tabpanel"
             id={`panel-${activeTech.id}`}
             aria-labelledby={`tab-${activeTech.id}`}
           >
-            <div
-              className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-accent/30 to-transparent"
-              aria-hidden="true"
-            />
-
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTech.name}
@@ -222,7 +219,7 @@ const TechStack = () => {
             />
           </div>
 
-          {/* Module Selection Grid (Semantic Tab List) */}
+          {/* Tech Grid */}
           <nav
             className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-px bg-gray-200 dark:bg-white/5 border border-gray-200 dark:border-white/5 rounded-[2.5rem] overflow-hidden"
             role="tablist"
@@ -237,33 +234,36 @@ const TechStack = () => {
                 aria-controls={`panel-${tech.id}`}
                 onMouseEnter={() => setActiveTech(tech)}
                 onClick={() => setActiveTech(tech)}
-                className={`group relative bg-white dark:bg-brand-dark aspect-square flex flex-col items-center justify-center cursor-pointer transition-all duration-500 overflow-hidden outline-none focus:bg-brand-accent/5
-                  ${activeTech.name === tech.name ? "bg-brand-accent/5" : "hover:bg-gray-50 dark:hover:bg-white/5"}`}
+                className={`group relative bg-white dark:bg-brand-dark aspect-square flex flex-col items-center justify-center cursor-pointer transition-all duration-500 overflow-hidden outline-none
+                  ${
+                    activeTech.name === tech.name
+                      ? "bg-brand-accent/5"
+                      : "hover:bg-gray-50 dark:hover:bg-white/5"
+                  }`}
               >
                 <tech.Icon
-                  className={`text-4xl transition-all duration-500 z-10 
-                  ${activeTech.name === tech.name ? "text-brand-accent scale-110" : "text-brand-light-blue dark:text-brand-gray opacity-30 group-hover:opacity-100"}`}
+                  className={`text-4xl transition-all duration-500 z-10 ${
+                    activeTech.name === tech.name
+                      ? "text-brand-accent scale-110"
+                      : "text-brand-light-blue dark:text-brand-gray opacity-30 group-hover:opacity-100"
+                  }`}
                   aria-hidden="true"
                 />
 
-                {/* SEMANTIC SEO: Hidden text for bots to index all tech in the grid */}
                 <span className="sr-only">
                   Expertise in {tech.name} ({tech.cat})
                 </span>
 
-                <span className="absolute bottom-4 font-mono text-[8px] opacity-0 group-hover:opacity-20 transition-opacity tracking-widest uppercase">
-                  {tech.id}
-                </span>
-
                 <div
-                  className={`absolute bottom-0 left-0 h-1 bg-brand-accent transition-all duration-500 ${activeTech.name === tech.name ? "w-full" : "w-0"}`}
+                  className={`absolute bottom-0 left-0 h-1 bg-brand-accent transition-all duration-500 ${
+                    activeTech.name === tech.name ? "w-full" : "w-0"
+                  }`}
                   aria-hidden="true"
                 />
               </button>
             ))}
           </nav>
 
-          {/* Infrastructure Footnote */}
           <footer className="mt-12 flex justify-center items-center gap-6 opacity-20 font-mono text-[9px] uppercase tracking-[0.4em]">
             <div className="h-px w-20 bg-current" aria-hidden="true" />
             <FiLayers /> Stack_Integrity_Verified_V4

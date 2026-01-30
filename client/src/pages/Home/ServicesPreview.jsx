@@ -89,20 +89,29 @@ const ServicesPreview = () => {
               <span
                 className="h-[2px] w-12 bg-brand-accent"
                 aria-hidden="true"
-              ></span>
+              />
               <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
                 Engineering Menu
               </span>
             </div>
+
             <h2
               id="services-preview-heading"
               className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85]"
             >
-              Surgical <br />{" "}
+              Surgical <br />
               <span className="text-brand-accent italic font-light">
                 Capabilities.
               </span>
             </h2>
+
+            {/* SEO Semantic Context (Invisible) */}
+            <p className="sr-only">
+              Core services offered by Weblynx Infotech including custom web
+              application development, MERN stack engineering, mobile app
+              development, SEO optimization, and scalable WordPress solutions
+              for startups, businesses, and enterprises.
+            </p>
           </motion.div>
 
           <motion.div
@@ -119,7 +128,7 @@ const ServicesPreview = () => {
           </motion.div>
         </header>
 
-        {/* The Blueprint Grid - Semantic List Wrapper */}
+        {/* Services Grid */}
         <div
           role="list"
           className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-gray-200 dark:bg-white/5 border border-gray-200 dark:border-white/5 overflow-hidden rounded-[2.5rem]"
@@ -136,7 +145,7 @@ const ServicesPreview = () => {
             aria-label="View all technical services and documentation"
             className="group flex items-center gap-4 text-xs font-mono font-bold uppercase tracking-[0.4em] dark:text-white/40 hover:text-brand-accent transition-all"
           >
-            View Full Technical Documentation{" "}
+            View Full Technical Documentation
             <FiArrowRight
               className="group-hover:translate-x-2 transition-transform"
               aria-hidden="true"
@@ -157,7 +166,6 @@ const ServiceCard = ({ service, index }) => (
     transition={{ delay: index * 0.1 }}
     className={`${service.colSpan} relative bg-white dark:bg-brand-dark p-10 md:p-14 group transition-all duration-500 ${service.bg} overflow-hidden`}
   >
-    {/* Identification Metadata */}
     <div className="flex justify-between items-start mb-16 relative z-10">
       <span
         className="font-mono text-[10px] opacity-20 group-hover:opacity-100 group-hover:text-brand-accent transition-all duration-500"
@@ -177,7 +185,6 @@ const ServiceCard = ({ service, index }) => (
       </div>
     </div>
 
-    {/* Content */}
     <div className="relative z-10">
       <div
         className="mb-8 p-4 w-fit rounded-2xl bg-gray-50 dark:bg-white/5 text-brand-dark dark:text-white group-hover:bg-brand-accent group-hover:text-brand-dark transition-colors duration-500 shadow-xl"
@@ -185,9 +192,11 @@ const ServiceCard = ({ service, index }) => (
       >
         <service.Icon size={32} />
       </div>
+
       <h3 className="text-4xl font-bold dark:text-white tracking-tighter mb-4 uppercase">
         {service.title}
       </h3>
+
       <p className="text-lg dark:text-brand-gray leading-tight max-w-sm font-light mb-10 opacity-60 group-hover:opacity-100 transition-opacity">
         {service.description}
       </p>
@@ -212,7 +221,6 @@ const ServiceCard = ({ service, index }) => (
       </Link>
     </div>
 
-    {/* Dynamic Background Watermark - Hidden to keep crawler focused on text */}
     <div
       className="absolute -bottom-10 -right-10 opacity-[0.02] dark:opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-110 transition-all duration-700 pointer-events-none"
       aria-hidden="true"
@@ -220,7 +228,6 @@ const ServiceCard = ({ service, index }) => (
       <service.Icon size={400} />
     </div>
 
-    {/* Corner Glow Effect */}
     <div
       className="absolute -top-24 -left-24 w-48 h-48 bg-brand-accent/5 blur-[80px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
       aria-hidden="true"

@@ -1,7 +1,6 @@
 // client/src/components/About/FounderNote.jsx
 import React from "react";
 import { motion } from "framer-motion";
-import Seo from "../../components/common/Seo.jsx";
 import { FiTerminal, FiCpu, FiActivity, FiCode } from "react-icons/fi";
 
 const signatureVariants = {
@@ -19,12 +18,7 @@ const FounderNote = () => {
       aria-labelledby="founder-directive-heading"
       className="relative bg-white dark:bg-brand-dark py-24 md:py-40 overflow-hidden border-t border-gray-100 dark:border-white/5"
     >
-      <Seo
-        title="Technical Directive | Shubham Pawale - Weblynx Founder"
-        description="A strategic technical directive from Shubham Pawale, Founder of Weblynx Infotech, on the clean-room engineering philosophy driving our MERN stack solutions."
-      />
-
-      {/* Background Architectural Layer - Hidden from crawlers */}
+      {/* Background Architectural Layer */}
       <div
         className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none select-none"
         aria-hidden="true"
@@ -43,7 +37,7 @@ const FounderNote = () => {
           className="max-w-6xl mx-auto"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
-            {/* Left: Technical Core Module */}
+            {/* Left: Founder Technical Core */}
             <aside
               className="lg:col-span-5 relative"
               aria-label="Founder Technical Credentials"
@@ -56,11 +50,11 @@ const FounderNote = () => {
                   >
                     <FiCpu size={48} className="animate-spin-slow" />
                   </div>
+
                   <h3 className="font-mono text-xs font-bold text-brand-accent uppercase tracking-[0.4em] mb-4">
                     Core_Logic_Center
                   </h3>
 
-                  {/* Performance Visualization */}
                   <div
                     className="w-full space-y-3 opacity-40"
                     aria-hidden="true"
@@ -84,7 +78,7 @@ const FounderNote = () => {
                   </div>
                 </div>
 
-                {/* Status Metadata - Structured for crawler indexing */}
+                {/* Structured founder authority signals */}
                 <div className="mt-12 space-y-4 font-mono text-[9px] uppercase tracking-widest opacity-30">
                   <div className="flex justify-between border-b border-white/5 pb-2">
                     <span className="font-bold">Authority</span>
@@ -93,12 +87,12 @@ const FounderNote = () => {
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-white/5 pb-2">
-                    <span className="font-bold">Access_Key</span>
-                    <span>Founder_Auth_01</span>
+                    <span className="font-bold">Role</span>
+                    <span>Founder</span>
                   </div>
                   <div className="flex justify-between border-b border-white/5 pb-2">
-                    <span className="font-bold">Protocol</span>
-                    <span>Surgical_Engineering_V4</span>
+                    <span className="font-bold">Location</span>
+                    <span>Pune, India</span>
                   </div>
                 </div>
 
@@ -109,14 +103,11 @@ const FounderNote = () => {
               </div>
             </aside>
 
-            {/* Right: The Technical Directive */}
+            {/* Right: Founder Statement */}
             <article className="lg:col-span-7">
               <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
                 <header className="flex items-center gap-3 mb-8">
-                  <span
-                    className="h-[1px] w-12 bg-brand-accent"
-                    aria-hidden="true"
-                  ></span>
+                  <span className="h-[1px] w-12 bg-brand-accent" aria-hidden />
                   <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
                     Founding Directive
                   </span>
@@ -130,6 +121,14 @@ const FounderNote = () => {
                   <span className="text-brand-accent">Excellence.</span>
                 </h2>
 
+                {/* Semantic SEO reinforcement */}
+                <p className="sr-only">
+                  Shubham Pawale is the Founder and Lead MERN Stack Developer at
+                  Weblynx Infotech, a Pune-based digital engineering firm
+                  specializing in scalable MERN architecture and
+                  high-performance web systems.
+                </p>
+
                 <div className="space-y-8 text-xl text-brand-light-blue dark:text-brand-gray font-light leading-relaxed">
                   <p>
                     Weblynx Infotech was established on a singular engineering
@@ -139,23 +138,22 @@ const FounderNote = () => {
                     </strong>{" "}
                     is the only sustainable path to global digital growth.
                   </p>
+
                   <p>
                     As a{" "}
                     <strong className="font-bold text-brand-dark dark:text-white">
                       Lead MERN Stack Developer
                     </strong>
-                    , my obsession is with the underlying logic. We don't just
-                    build interfaces; we engineer high-stakes systems that solve
-                    real-world problems through
+                    , my obsession is with the underlying logic. We don’t just
+                    build interfaces; we engineer high-stakes systems through{" "}
                     <strong className="font-bold text-brand-dark dark:text-white">
-                      {" "}
                       clean-room code
                     </strong>{" "}
                     and scalable cloud performance.
                   </p>
                 </div>
 
-                {/* Signature Block */}
+                {/* Signature */}
                 <div className="mt-16 flex flex-col items-start relative">
                   <svg
                     className="w-64 h-24 absolute -top-12 -left-4 pointer-events-none opacity-40 dark:opacity-60"
@@ -177,7 +175,7 @@ const FounderNote = () => {
                       Shubham Pawale
                     </h3>
                     <cite className="not-italic text-xs font-mono text-brand-accent uppercase tracking-[0.4em] mt-2 block">
-                      Lead Developer & Founder // Weblynx Infotech
+                      Founder & Lead MERN Developer // Weblynx Infotech
                     </cite>
                   </div>
 
@@ -187,7 +185,7 @@ const FounderNote = () => {
                   >
                     <FiTerminal size={14} />
                     <span className="text-[9px] font-mono uppercase tracking-widest italic">
-                      Commit: initial_architectural_vision_pune_hq
+                      Commit: founding_architecture_pune_hq
                     </span>
                   </div>
                 </div>
@@ -196,8 +194,6 @@ const FounderNote = () => {
           </div>
         </motion.div>
       </div>
-
-      {/* ... Styles remain ... */}
     </section>
   );
 };

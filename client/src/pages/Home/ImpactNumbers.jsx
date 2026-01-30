@@ -60,7 +60,7 @@ const ImpactNumbers = () => {
       aria-labelledby="impact-heading"
       className="relative bg-white dark:bg-brand-dark py-24 md:py-32 overflow-hidden border-y border-gray-100 dark:border-white/5"
     >
-      {/* Background Decorative Data Grid - aria-hidden to save crawl budget */}
+      {/* Background Decorative Data Grid */}
       <div
         className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.07] pointer-events-none font-mono text-[10px] grid grid-cols-6 gap-10 p-10 overflow-hidden select-none"
         aria-hidden="true"
@@ -81,21 +81,22 @@ const ImpactNumbers = () => {
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
           <header className="flex items-center gap-4 mb-16 opacity-40">
-            <span
-              className="h-px flex-grow bg-current"
-              aria-hidden="true"
-            ></span>
+            <span className="h-px flex-grow bg-current" aria-hidden="true" />
             <h2
               id="impact-heading"
               className="text-[10px] font-mono uppercase tracking-[0.4em]"
             >
               Agency_Performance_Telemetry_v4.0
             </h2>
-            <span
-              className="h-px flex-grow bg-current"
-              aria-hidden="true"
-            ></span>
+            <span className="h-px flex-grow bg-current" aria-hidden="true" />
           </header>
+
+          {/* SEO Semantic Context (Invisible) */}
+          <p className="sr-only">
+            Weblynx Infotech performance metrics including deployed systems,
+            client retention rate, and infrastructure uptime across web
+            development and full-stack engineering projects.
+          </p>
 
           <motion.div
             initial="hidden"
@@ -115,11 +116,14 @@ const ImpactNumbers = () => {
                 key={stat.label}
                 variants={{
                   hidden: { opacity: 0, x: -20 },
-                  visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
+                  visible: {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.8 },
+                  },
                 }}
                 className="group relative bg-white dark:bg-brand-dark p-12 flex flex-col items-center md:items-start transition-colors duration-500 hover:bg-gray-50 dark:hover:bg-brand-dark-blue/20"
               >
-                {/* Visual ID Label */}
                 <div className="flex justify-between w-full items-start mb-12">
                   <span
                     className="font-mono text-[10px] opacity-20"
@@ -132,7 +136,6 @@ const ImpactNumbers = () => {
                   </div>
                 </div>
 
-                {/* The Stat Value */}
                 <div className="relative">
                   <p className="font-display text-7xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-none flex items-baseline gap-1">
                     <AnimatedNumber value={stat.value} />
@@ -151,14 +154,12 @@ const ImpactNumbers = () => {
                   </span>
                 </div>
 
-                {/* Semantic Labeling */}
                 <h3 className="mt-8 font-mono text-xs font-bold text-brand-light-blue dark:text-brand-gray tracking-[0.3em] uppercase">
                   {stat.label.replace(/_/g, " ")}
                 </h3>
 
                 <p className="sr-only">{stat.description}</p>
 
-                {/* Decorative Scanline */}
                 <div
                   className="mt-4 w-full h-1 bg-gray-100 dark:bg-white/5 rounded-full overflow-hidden"
                   aria-hidden="true"

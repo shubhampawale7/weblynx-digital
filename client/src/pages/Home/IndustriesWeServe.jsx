@@ -59,7 +59,7 @@ const IndustriesWeServe = () => {
       aria-labelledby="industries-main-heading"
       className="relative bg-white dark:bg-brand-dark py-24 md:py-40 overflow-hidden border-t border-gray-100 dark:border-white/5"
     >
-      {/* Background Section Title - Hidden from crawlers to avoid spam flag */}
+      {/* Background Section Title */}
       <div
         className="absolute top-0 left-0 p-10 opacity-[0.02] dark:opacity-[0.05] pointer-events-none select-none"
         aria-hidden="true"
@@ -83,7 +83,7 @@ const IndustriesWeServe = () => {
                 <span
                   className="h-[2px] w-12 bg-brand-accent"
                   aria-hidden="true"
-                ></span>
+                />
                 <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
                   Market Verticals
                 </span>
@@ -93,13 +93,21 @@ const IndustriesWeServe = () => {
                 id="industries-main-heading"
                 className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] mb-10"
               >
-                Surgical <br />{" "}
+                Surgical <br />
                 <span className="text-brand-accent italic font-light">
                   Versatility.
                 </span>
               </h2>
 
-              {/* ARIA Live Region for dynamic text content updates */}
+              {/* SEO Semantic Context (Invisible) */}
+              <p className="sr-only">
+                Industries served by Weblynx Infotech including eCommerce, SaaS
+                platforms, enterprise infrastructure, fintech solutions,
+                non-profit organizations, and real estate technology using
+                scalable MERN stack and full-stack web development.
+              </p>
+
+              {/* Dynamic Industry Description */}
               <div
                 className="relative p-10 bg-gray-50 dark:bg-brand-dark-blue/20 rounded-[3rem] border border-gray-100 dark:border-white/5 overflow-hidden"
                 aria-live="polite"
@@ -119,16 +127,18 @@ const IndustriesWeServe = () => {
                       <div
                         className="h-px flex-grow bg-brand-accent/20"
                         aria-hidden="true"
-                      ></div>
+                      />
                       <FiActivity
                         className="text-brand-accent animate-pulse"
                         aria-hidden="true"
                       />
                     </div>
+
                     <h3 className="text-3xl font-bold dark:text-white mb-4 uppercase tracking-tighter">
                       {industriesData[activeIndex].name.replace("_", " ")}{" "}
                       Solutions
                     </h3>
+
                     <p className="text-lg text-brand-light-blue dark:text-brand-gray font-light leading-relaxed">
                       {industriesData[activeIndex].desc}
                     </p>
@@ -147,7 +157,7 @@ const IndustriesWeServe = () => {
             </motion.div>
           </div>
 
-          {/* Right: Technical Industry Selector */}
+          {/* Right: Industry Selector */}
           <nav
             className="lg:col-span-7"
             aria-label="Industry sector navigation"
@@ -194,7 +204,9 @@ const IndustryTile = ({ industry, isActive, onSelect }) => (
   >
     <div className="relative z-10 flex flex-col gap-6">
       <div
-        className={`text-3xl transition-colors duration-500 ${isActive ? "text-brand-dark" : "text-brand-accent"}`}
+        className={`text-3xl transition-colors duration-500 ${
+          isActive ? "text-brand-dark" : "text-brand-accent"
+        }`}
       >
         <industry.Icon aria-hidden="true" />
       </div>
@@ -209,7 +221,9 @@ const IndustryTile = ({ industry, isActive, onSelect }) => (
     </div>
 
     <div
-      className={`absolute bottom-8 right-8 transition-transform duration-500 ${isActive ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"}`}
+      className={`absolute bottom-8 right-8 transition-transform duration-500 ${
+        isActive ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"
+      }`}
     >
       <FiChevronRight size={20} aria-hidden="true" />
     </div>

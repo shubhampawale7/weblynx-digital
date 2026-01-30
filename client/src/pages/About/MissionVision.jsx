@@ -2,7 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiTarget, FiEye, FiActivity } from "react-icons/fi";
-import Seo from "../../components/common/Seo.jsx";
 
 const principles = [
   {
@@ -34,12 +33,7 @@ const MissionVision = () => {
       aria-labelledby="directives-heading"
       className="relative bg-white dark:bg-brand-dark py-24 md:py-40 overflow-hidden border-t border-gray-100 dark:border-white/5"
     >
-      <Seo
-        title="Strategic Directives | Corporate Vision"
-        description="Explore the mission and vision driving Weblynx Infotech's commitment to digital engineering excellence and high-performance software solutions."
-      />
-
-      {/* Background Architectural Watermark - Hidden from bots to focus on content */}
+      {/* Background Architectural Watermark */}
       <div
         className="absolute top-0 left-0 p-10 opacity-[0.02] dark:opacity-[0.05] pointer-events-none select-none"
         aria-hidden="true"
@@ -62,11 +56,12 @@ const MissionVision = () => {
               <span
                 className="h-[2px] w-12 bg-brand-accent"
                 aria-hidden="true"
-              ></span>
+              />
               <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.3em]">
                 Core Parameters
               </span>
             </div>
+
             <h2
               id="directives-heading"
               className="font-display text-6xl md:text-8xl font-black text-brand-dark dark:text-white tracking-tighter leading-[0.85] uppercase italic"
@@ -74,6 +69,13 @@ const MissionVision = () => {
               Guiding <br />{" "}
               <span className="text-brand-accent">Principles.</span>
             </h2>
+
+            {/* Semantic SEO reinforcement (About page safe) */}
+            <p className="sr-only">
+              Weblynx Infotech’s mission and vision define its commitment to
+              high-performance digital engineering, scalable architecture, and
+              long-term technical excellence.
+            </p>
           </motion.div>
 
           <div
@@ -85,7 +87,7 @@ const MissionVision = () => {
           </div>
         </header>
 
-        {/* The Directive Grid - Semantic List Wrapper */}
+        {/* Directive Grid */}
         <div
           role="list"
           className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-gray-100 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[3rem] overflow-hidden"
@@ -109,7 +111,7 @@ const PrincipleCard = ({ p, index }) => {
       transition={{ delay: index * 0.2 }}
       className="lg:col-span-6 bg-white dark:bg-brand-dark p-12 md:p-20 group relative overflow-hidden"
     >
-      {/* Background ID Marker - Decorative */}
+      {/* Background ID Marker */}
       <div
         className="absolute top-10 right-10 font-mono text-8xl font-black opacity-[0.02] dark:opacity-[0.05] group-hover:opacity-[0.1] transition-opacity duration-700"
         aria-hidden="true"
@@ -126,10 +128,7 @@ const PrincipleCard = ({ p, index }) => {
             <p.Icon size={32} />
           </div>
           <div className="flex flex-col">
-            <span
-              className="text-[10px] font-mono text-brand-accent uppercase tracking-[0.3em]"
-              aria-label={`Current Status: ${p.status}`}
-            >
+            <span className="text-[10px] font-mono text-brand-accent uppercase tracking-[0.3em]">
               {p.status.replace(/_/g, " ")}
             </span>
             <h3 className="text-3xl font-bold dark:text-white tracking-tighter uppercase">
@@ -142,10 +141,10 @@ const PrincipleCard = ({ p, index }) => {
           {p.description}
         </p>
 
-        {/* Hidden SEO context for crawler NLP association */}
+        {/* Hidden SEO Context */}
         <p className="sr-only">{p.seoContext}</p>
 
-        {/* Surgical Progress Bar - Visual Only */}
+        {/* Progress Bar */}
         <div
           className="w-full h-px bg-gray-100 dark:bg-white/10 relative"
           aria-hidden="true"
@@ -160,7 +159,7 @@ const PrincipleCard = ({ p, index }) => {
         </div>
       </div>
 
-      {/* Hover Light Effect */}
+      {/* Hover Glow */}
       <div
         className="absolute -bottom-24 -right-24 w-64 h-64 bg-brand-accent/5 blur-[100px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"
         aria-hidden="true"

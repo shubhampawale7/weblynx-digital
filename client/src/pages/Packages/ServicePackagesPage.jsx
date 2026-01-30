@@ -22,9 +22,10 @@ const ServicePackagesPage = () => {
   return (
     <>
       <Seo
-        title="Service Configurations | Tactical Project Bundles"
+        title="Software Development Packages | MERN Stack Pricing – Weblynx Infotech"
         description="Explore our structured engineering tiers. From MVP rapid-deployment to enterprise-grade MERN architectures, discover the blueprint for your digital growth."
         keywords="Software development pricing, MVP engineering packages, Enterprise MERN stack cost, Pune tech agency bundles"
+        canonical="https://www.weblynxinfotech.com/packages"
       />
 
       <main className="pt-32 pb-20 bg-white dark:bg-brand-dark min-h-screen selection:bg-brand-accent selection:text-brand-dark">
@@ -73,7 +74,7 @@ const ServicePackagesPage = () => {
           </motion.div>
         </section>
 
-        {/* --- CUSTOM TERMINAL FOOTER: Non-Standard Protocol --- */}
+        {/* --- CUSTOM TERMINAL FOOTER --- */}
         <footer className="mt-24 py-16 bg-gray-50 dark:bg-brand-dark-blue/10 border-t border-gray-100 dark:border-white/5">
           <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="text-left">
@@ -121,7 +122,6 @@ const CompactPackageCard = ({ pkg, index }) => {
             : "bg-white dark:bg-brand-dark border-gray-100 dark:border-white/5"
         }`}
     >
-      {/* Top Meta Row */}
       <div className="flex justify-between items-start mb-6">
         <div
           className="p-3 rounded-xl bg-gray-50 dark:bg-white/5 text-brand-accent group-hover:bg-brand-accent group-hover:text-brand-dark transition-all duration-500"
@@ -142,25 +142,23 @@ const CompactPackageCard = ({ pkg, index }) => {
         {pkg.description}
       </p>
 
-      {/* Surgical Feature List */}
       <ul
         className="space-y-3 mb-10 flex-grow"
         aria-label={`${pkg.title} features list`}
       >
         {pkg.features.map((feature) => (
-          <li key={feature} className="flex items-center gap-3 group/item">
+          <li key={feature} className="flex items-center gap-3">
             <div
               className="w-1 h-1 rounded-full bg-brand-accent opacity-40"
               aria-hidden="true"
             />
-            <span className="text-[11px] font-medium dark:text-brand-gray group-hover/item:text-white transition-colors">
+            <span className="text-[11px] font-medium dark:text-brand-gray">
               {feature}
             </span>
           </li>
         ))}
       </ul>
 
-      {/* Action: Deploy Link */}
       <Link
         to="/contact"
         aria-label={`Initialize project with the ${pkg.title} configuration`}
@@ -174,7 +172,6 @@ const CompactPackageCard = ({ pkg, index }) => {
         {pkg.ctaText}
       </Link>
 
-      {/* Status Bar - Purely Decorative */}
       <footer
         className="mt-6 pt-4 border-t border-gray-100 dark:border-white/5 flex items-center justify-between opacity-20 group-hover:opacity-100 transition-opacity"
         aria-hidden="true"
@@ -183,7 +180,9 @@ const CompactPackageCard = ({ pkg, index }) => {
           Protocol: Deployment_Ready
         </span>
         <FiActivity
-          className={`text-[10px] ${pkg.isHighlighted ? "text-brand-accent animate-pulse" : ""}`}
+          className={`text-[10px] ${
+            pkg.isHighlighted ? "text-brand-accent animate-pulse" : ""
+          }`}
         />
       </footer>
     </motion.article>

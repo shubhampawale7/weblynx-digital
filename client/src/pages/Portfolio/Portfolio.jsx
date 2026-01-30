@@ -83,13 +83,14 @@ const Portfolio = () => {
   return (
     <>
       <Seo
-        title="Portfolio Arsenal | Global Engineering Case Studies"
-        description="Explore the surgical project archive of Weblynx Infotech. Showcasing elite MERN stack builds, industrial architectures, and SaaS systems."
-        keywords="Software portfolio Pune, React JS projects, MERN stack case studies, enterprise web builds"
+        title="Software Development Portfolio | MERN Stack Case Studies – Weblynx Infotech"
+        description="Explore real-world software development projects by Weblynx Infotech. Showcasing MERN stack applications, SaaS platforms, and enterprise-grade web systems."
+        keywords="software development portfolio, MERN stack projects, React case studies, web development Pune"
+        canonical="https://www.weblynxinfotech.com/portfolio"
       />
 
       <main className="bg-brand-dark min-h-screen pt-32 selection:bg-brand-accent selection:text-brand-dark">
-        {/* --- Header: Tactical Briefing --- */}
+        {/* --- Header --- */}
         <section
           aria-labelledby="portfolio-hero-title"
           className="container mx-auto px-6 mb-24"
@@ -100,10 +101,7 @@ const Portfolio = () => {
               animate={{ opacity: 1, x: 0 }}
             >
               <div className="flex items-center gap-3 mb-8">
-                <span
-                  className="h-[2px] w-12 bg-brand-accent"
-                  aria-hidden="true"
-                ></span>
+                <span className="h-[2px] w-12 bg-brand-accent" />
                 <span className="text-brand-accent font-mono text-sm uppercase tracking-[0.4em]">
                   Project_Dossier_v4.0
                 </span>
@@ -113,8 +111,8 @@ const Portfolio = () => {
                 className="text-6xl md:text-[10rem] font-black leading-[0.8] tracking-tighter uppercase text-white"
               >
                 The{" "}
-                <span className="text-brand-accent italic font-light text-outline">
-                  Arsenal.
+                <span className="text-brand-accent italic font-light">
+                  WORK.
                 </span>
               </h1>
             </motion.div>
@@ -133,9 +131,9 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* --- The Arsenal Grid --- */}
+        {/* --- Projects Grid --- */}
         <section
-          aria-label="Project Case Studies"
+          aria-label="Software Project Case Studies"
           className="container mx-auto px-6 pb-40"
         >
           <div
@@ -148,31 +146,27 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* --- Deployment CTA --- */}
+        {/* --- CTA --- */}
         <footer className="py-40 bg-brand-dark-blue/10 border-t border-white/5 text-center relative overflow-hidden">
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black text-white/[0.02] pointer-events-none select-none uppercase"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black text-white/[0.02] uppercase"
             aria-hidden="true"
           >
             BUILD
           </div>
           <div className="container mx-auto px-6 relative z-10">
             <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase mb-12">
-              Ready for <br />{" "}
+              Ready for <br />
               <span className="text-brand-accent italic font-light">
                 Deployment?
               </span>
             </h2>
             <Link
               to="/contact"
-              aria-label="Contact Weblynx to initialize your software project"
-              className="group relative inline-flex items-center gap-6 px-12 py-6 bg-brand-accent text-brand-dark font-black text-xl rounded-full transition-all hover:scale-110 hover:shadow-[0_0_50px_rgba(0,245,212,0.4)]"
+              className="group inline-flex items-center gap-6 px-12 py-6 bg-brand-accent text-brand-dark font-black text-xl rounded-full hover:scale-110 transition-all"
             >
               INITIALIZE PROJECT
-              <FiArrowRight
-                className="group-hover:translate-x-2 transition-transform"
-                aria-hidden="true"
-              />
+              <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
             </Link>
           </div>
         </footer>
@@ -188,7 +182,7 @@ const Portfolio = () => {
   );
 };
 
-const ProjectModule = ({ project, index }) => {
+const ProjectModule = ({ project }) => {
   const gridClasses = {
     large: "md:col-span-12 lg:col-span-8",
     medium: "md:col-span-6",
@@ -201,66 +195,50 @@ const ProjectModule = ({ project, index }) => {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      className={`${gridClasses[project.size] || gridClasses.small} group relative bg-brand-dark p-10 border-white/5 overflow-hidden transition-all duration-700 hover:bg-brand-accent/[0.02]`}
+      className={`${gridClasses[project.size]} group relative bg-brand-dark p-10 border-white/5 overflow-hidden transition-all duration-700 hover:bg-brand-accent/[0.02]`}
     >
       <div
-        className="absolute top-10 right-10 font-mono text-8xl font-black opacity-[0.03] group-hover:opacity-[0.08] transition-opacity"
+        className="absolute top-10 right-10 font-mono text-8xl font-black opacity-[0.03]"
         aria-hidden="true"
       >
         {project.id.split("-")[1]}
       </div>
 
       <div className="relative z-10 h-full flex flex-col">
-        {/* Project Visual Module */}
         <figure className="relative aspect-video rounded-[2rem] overflow-hidden border border-white/5 mb-10 group/img">
           <img
             src={project.image}
             alt={`Technical interface of ${project.title}`}
-            className="w-full h-full object-cover grayscale group-hover/img:grayscale-0 transition-all duration-1000 scale-105 group-hover/img:scale-100"
+            className="w-full h-full object-cover grayscale group-hover/img:grayscale-0 transition-all duration-1000"
             loading="lazy"
           />
           <a
             href={project.demoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`View live demo of ${project.title.replace("_", " ")}`}
-            className="absolute top-6 right-6 p-4 bg-brand-accent text-brand-dark rounded-xl opacity-0 translate-y-4 group-hover/img:opacity-100 group-hover/img:translate-y-0 transition-all duration-500 shadow-2xl"
+            className="absolute top-6 right-6 p-4 bg-brand-accent text-brand-dark rounded-xl opacity-0 group-hover/img:opacity-100 transition-all"
           >
-            <FiMaximize2 size={24} aria-hidden="true" />
+            <FiMaximize2 />
           </a>
         </figure>
 
-        <div className="flex flex-col flex-grow">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="font-mono text-[10px] text-brand-accent border border-brand-accent/30 px-2 py-0.5 rounded tracking-widest uppercase">
-              {project.category.replace("_", " ")}
+        <h3 className="text-4xl font-bold text-white mb-6 uppercase tracking-tighter">
+          {project.title.replace("_", " ")}
+        </h3>
+
+        <p className="text-brand-gray text-lg font-light leading-relaxed mb-10 opacity-60">
+          {project.description}
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-4 py-1.5 rounded-lg text-[9px] font-bold border border-white/10 text-white/40 uppercase tracking-[0.2em]"
+            >
+              {tag}
             </span>
-            <span className="sr-only">
-              Project Identification: {project.id}
-            </span>
-          </div>
-
-          <h3 className="text-4xl font-bold text-white mb-6 uppercase tracking-tighter group-hover:text-brand-accent transition-colors">
-            {project.title.replace("_", " ")}
-          </h3>
-
-          <p className="text-brand-gray text-lg font-light leading-relaxed mb-10 flex-grow opacity-60 group-hover:opacity-100 transition-opacity">
-            {project.description}
-          </p>
-
-          <nav
-            className="flex flex-wrap gap-2"
-            aria-label="Project technologies"
-          >
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-4 py-1.5 rounded-lg text-[9px] font-bold border border-white/10 text-white/40 uppercase tracking-[0.2em] group-hover:border-brand-accent/20 transition-all"
-              >
-                {tag}
-              </span>
-            ))}
-          </nav>
+          ))}
         </div>
       </div>
     </motion.article>

@@ -40,7 +40,7 @@ const ProjectPlannerCta = () => {
           viewport={{ once: true }}
           className="relative max-w-6xl mx-auto bg-brand-dark rounded-[4rem] border border-white/10 p-12 md:p-24 overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)]"
         >
-          {/* Background Technical Visuals - aria-hidden to optimize crawl speed */}
+          {/* Background Technical Visuals */}
           <div
             className="absolute inset-0 z-0 pointer-events-none"
             aria-hidden="true"
@@ -80,9 +80,16 @@ const ProjectPlannerCta = () => {
                 id="cta-heading"
                 className="font-display text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.85] uppercase italic"
               >
-                Initialize <br />{" "}
+                Initialize <br />
                 <span className="text-brand-accent">Ascension.</span>
               </h2>
+
+              {/* SEO Semantic Context (Invisible) */}
+              <p className="sr-only">
+                Start a new web development or MERN stack project with Weblynx
+                Infotech. Contact our Pune-based full-stack engineering team for
+                scalable, secure, and high-performance digital solutions.
+              </p>
             </header>
 
             <p className="text-xl md:text-2xl text-brand-gray/60 max-w-2xl mx-auto mb-16 font-light leading-relaxed">
