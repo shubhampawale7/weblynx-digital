@@ -14,11 +14,15 @@ const Seo = ({
   type = "website",
 }) => {
   const baseDomain = "https://www.weblynxinfotech.com";
+
   const defaultTitle = "Weblynx Infotech | Digital Systems Engineering";
+
   const defaultDescription =
     "Pune's premier digital engineering firm specializing in high-stakes MERN stack development, surgical SEO, and scalable architectural solutions.";
+
   const defaultKeywords =
     "Weblynx Infotech, MERN Stack, React Developer Pune, Node.js Engineering, Custom Web Applications, Digital Systems, SaaS Architecture, SEO Systems, Shubham Pawale";
+
   const defaultOgImage = `${baseDomain}/og-image.png`;
 
   const finalTitle = title ? `${title} | Weblynx Infotech` : defaultTitle;
@@ -26,7 +30,6 @@ const Seo = ({
   const finalUrl = ogUrl || canonical || baseDomain;
 
   // --- Schema.org Structured Data (JSON-LD) ---
-  // This tells Google exactly who you are in a technical format.
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -72,23 +75,23 @@ const Seo = ({
       <meta property="og:site_name" content="Weblynx Infotech" />
 
       {/* --- TWITTER / X LAYER --- */}
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={finalUrl} />
-      <meta property="twitter:title" content={ogTitle || finalTitle} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={finalUrl} />
+      <meta name="twitter:title" content={ogTitle || finalTitle} />
       <meta
-        property="twitter:description"
+        name="twitter:description"
         content={ogDescription || finalDescription}
       />
-      <meta property="twitter:image" content={ogImage || defaultOgImage} />
+      <meta name="twitter:image" content={ogImage || defaultOgImage} />
 
-      {/* --- SYSTEM PREFERENCE & THEME --- */}
+      {/* --- SYSTEM / UI META --- */}
       <meta name="theme-color" content="#0D1B2A" />
       <meta
         name="apple-mobile-web-app-status-bar-style"
         content="black-translucent"
       />
 
-      {/* --- STRUCTURED DATA INJECTION --- */}
+      {/* --- STRUCTURED DATA --- */}
       <script type="application/ld+json">
         {JSON.stringify(organizationSchema)}
       </script>

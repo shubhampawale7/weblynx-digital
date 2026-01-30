@@ -24,11 +24,13 @@ const Home = () => {
 
   return (
     <>
-      {/* SEO META — Optimized for Google without affecting UI */}
+      {/* SEO META — Optimized for Google + Social Previews */}
       <Seo
-        title="Web Development Company in Pune | Weblynx Infotech"
+        title="Web Development Company in Pune"
         description="Weblynx Infotech is a Pune-based web development company specializing in MERN stack development, custom web applications, full-stack solutions, and SEO-ready websites for growing businesses."
         keywords="Web Development Pune, Website Development Company Pune, MERN Stack Development Pune, Full Stack Web Development India, Weblynx Infotech"
+        ogImage="https://www.weblynxinfotech.com/og-image.png"
+        ogUrl="https://www.weblynxinfotech.com/"
       />
 
       {/* Global Scroll Indicator */}
@@ -43,7 +45,7 @@ const Home = () => {
         id="main-content"
         className="bg-white dark:bg-brand-dark min-h-screen selection:bg-brand-accent selection:text-brand-dark"
       >
-        {/* Semantic SEO: Hidden H1 for crawler clarity without UI impact */}
+        {/* Semantic SEO: Hidden H1 for crawler clarity */}
         <h1 className="sr-only">
           Weblynx Infotech is a Web Development Company in Pune specializing in
           MERN stack development, scalable web applications, and digital
